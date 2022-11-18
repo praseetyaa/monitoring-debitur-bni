@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
+{
+    /**
+     * Cabang.
+     */
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
+    }
+
+    /**
+     * Vendor.
+     */
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
+    }
+
+    /**
+     * Tipe.
+     */
+    public function tipe()
+    {
+        return $this->belongsTo(Tipe::class, 'tipe_id');
+    }
+}
