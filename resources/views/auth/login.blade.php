@@ -31,26 +31,27 @@
             margin: auto;
         }
         .sign-l{padding-top:9em; padding-bottom:9em;}
-        .sign-r{padding-top:3em; padding-bottom:3rem;}
+        .sign-r{padding-top:3em; padding-bottom:3em;}
+        .bg-glass{backdrop-filter:blur(5px); border:2px solid #fff}
     </style>
     {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </head>
 <body>
     <main class="d-flex align-items-center">
         <div class="container">
-            <div class="row align-items-center shadow rounded-2 bg-white">
-                <div class="col-12 col-lg-5 px-lg-5 sign-l d-none d-lg-block bg-primary rounded-2">
+            <div class="row align-items-center shadow rounded-4 bg-glass p-lg-3">
+                <div class="col-12 col-lg-5 px-lg-5 sign-l d-none d-lg-block bg-primary rounded-3">
                     <img src="{{ asset('assets/images/illustrations/sign-in.png') }}" alt="sign-in" class="img-fluid">
                     <div class="greetings text-white text-center mt-3">
-                        <p class="mb-0 fw-bold">Selamat datang di aplikasi monitoring ATM BNI</p>
-                        <p class="small">Anda dapat melakukan monitoring fasilitas yang ada di ATM dan melakukan report</p>
+                        <p class="mb-0 fw-bold">Selamat Datang Di Aplikasi Monitoring Debitur</p>
+                        <p class="small">Anda dapat melakukan monitoring jalanya debitur dan melakukan report</p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-7 px-lg-5 sign-r">
                     <form class="login-box text-start" method="post" action="{{ route('auth.login') }}">
                         @csrf
                         <img src="{{ asset('assets/images/logo/BNI_logo.png') }}" width="100" alt="bni logo">
-                        <p class="small">Monitoring ATM</p>
+                        <p class="small">Monitoring Debitur</p>
                         <h1 class="h3">Masuk</h1>
                         <p class="mb-4">Silahkan masuk menggunakan username dan password</p>
                         @if($errors->has('message'))
@@ -60,22 +61,22 @@
                         <div class="alert alert-danger" role="alert">Anda terindikasi robot!</div>
                         @endif
                         <div class="mb-3">
-                            <input type="text" name="username" class="form-control {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('username') }}" placeholder="{{ config('faturhelper.auth.allow_login_by_email') === true ? 'Email atau Username' : 'Username' }}" autofocus>
+                            <input type="text" name="username" class="form-control rounded-3 {{ $errors->has('username') ? 'border-danger' : '' }}" value="{{ old('username') }}" placeholder="{{ config('faturhelper.auth.allow_login_by_email') === true ? 'Email atau Username' : 'Username' }}" autofocus>
                             @if($errors->has('username'))
                             <div class="small text-danger text-start">{{ $errors->first('username') }}</div>
                             @endif
                         </div>
                         <div class="mb-3">
                             <div class="input-group">
-                                <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'border-danger' : '' }}" placeholder="Password">
-                                <button type="button" class="btn {{ $errors->has('password') ? 'btn-outline-danger' : 'btn-outline-secondary' }} btn-toggle-password"><i class="bi-eye"></i></button>
+                                <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'border-danger' : '' }}" placeholder="Password" style="border-radius:2rem 0 0 2rem">
+                                <button type="button" class="btn {{ $errors->has('password') ? 'btn-outline-danger' : 'btn-outline-secondary' }} btn-toggle-password btn-primary" style="border-radius:0 2rem 2rem 0"><i class="bi-eye"></i></button>
                             </div>
                             @if($errors->has('password'))
                             <div class="small text-danger text-start">{{ $errors->first('password') }}</div>
                             @endif
                         </div>
                         <div class="mb-3 d-flex justify-content-center">{!! htmlFormSnippet() !!}</div>
-                        <button class="w-100 btn btn-primary" type="submit">Log in</button>
+                        <button class="w-100 btn btn-primary rounded-3" type="submit">Log in</button>
                         @if(config('faturhelper.auth.socialite') == true)
                         <div class="btn-group mt-3">
                             <a href="{{ route('auth.login.provider', ['provider' => 'google']) }}" class="btn btn-outline-primary">Google</a>
