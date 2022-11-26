@@ -11,6 +11,7 @@ use Ajifatur\Helpers\DateTimeExt;
 use App\Models\Cabang;
 use App\Models\Kategori;
 use App\Models\MonitoringDetail;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -24,7 +25,6 @@ class DashboardController extends Controller
     {
         // Check the access
         // has_access(method(__METHOD__), Auth::user()->role_id);
-
         $t1 = $request->query('t1') != null ? DateTimeExt::change($request->query('t1')) : date('Y-m-d');
         $t2 = $request->query('t2') != null ? DateTimeExt::change($request->query('t2')) : date('Y-m-d');
         $cabang_id = $request->query('cabang');
@@ -74,6 +74,8 @@ class DashboardController extends Controller
             })->has('kategori')->where('kategori_id','=',$e->id)->where('jawaban','=',$e->is_reverse)->count();
             $eksterior[$key]->count = $count;
         }
+        $user = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
+        // dd($user);
 
         // View
         return view('admin/dashboard/index', [
@@ -81,7 +83,8 @@ class DashboardController extends Controller
             't1' => $t1,
             't2' => $t2,
             'interior' => $interior,
-            'eksterior' => $eksterior
+            'eksterior' => $eksterior,
+            'user'      => $user
         ]);
     }
 }

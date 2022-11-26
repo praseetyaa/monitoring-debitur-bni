@@ -123,6 +123,37 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/monitoring/delete', 'MonitoringController@delete')->name('admin.monitoring.delete');
     Route::post('/admin/monitoring/delete-bulk', 'MonitoringController@deleteBulk')->name('admin.monitoring.delete-bulk');
 
+
+
+    Route::prefix('master')->group(function(){
+        Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
+        Route::get('/picapproval', 'MstUserController@index')->name('picapproval');
+        Route::get('/picverifikator', 'MstUserController@index')->name('picverifikator');
+        Route::get('/picinputer', 'MstUserController@index')->name('picinputer');
+        Route::get('/picadmin', 'MstUserController@index')->name('picadmin');
+
+        Route::post('/picdelete', 'MstUserController@delete')->name('picdelete');
+        Route::get('/piccreate/{roles?}', 'MstUserController@create')->name('piccreate');
+        Route::post('/picstore', 'MstUserController@store')->name('picstore');
+        Route::get('/picedit/{id?}', 'MstUserController@edit')->name('picedit');
+        Route::post('/picupdate', 'MstUserController@update')->name('picupdate');
+
+        Route::get('/sektor', 'MstSektorController@index')->name('sektor');
+        Route::post('/picdelete', 'MstSektorController@delete')->name('sektordelete');
+        Route::get('/sektorcreate', 'MstSektorController@create')->name('sektorcreate');
+        Route::post('/sektorstore', 'MstSektorController@store')->name('sektorstore');
+        Route::get('/sektoredit/{id?}', 'MstSektorController@edit')->name('sektoredit');
+        Route::post('/sektorupdate', 'MstSektorController@update')->name('sektorupdate');
+
+        Route::get('/sumber', 'MstSumberController@index')->name('sumber');
+        Route::post('/picdelete', 'MstSumberController@delete')->name('sumberdelete');
+        Route::get('/sumbercreate', 'MstSumberController@create')->name('sumbercreate');
+        Route::post('/sumberstore', 'MstSumberController@store')->name('sumberstore');
+        Route::get('/sumberedit/{id?}', 'MstSumberController@edit')->name('sumberedit');
+        Route::post('/sumberupdate', 'MstSumberController@update')->name('sumberupdate');
+
+    });
+
     // Users Settings
     Route::get('/admin/profile', 'UserSettingController@index')->name('admin.profile');
     Route::get('/admin/settings/profile', 'UserSettingController@profile')->name('admin.settings.profile');
