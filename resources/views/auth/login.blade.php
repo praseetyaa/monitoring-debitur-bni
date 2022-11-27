@@ -4,9 +4,9 @@
     <!-- Metas -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="sistem informasi monitoring ATM BNI">
+    <meta name="description" content="Sistem Informasi Monitoring Debitur">
     <meta name="author" content="Spandiv Digital">
-    <meta name="keywords" content="sistem informasi monitoring ATM BNI">
+    <meta name="keywords" content="Sistem Informasi Monitoring Debitur">
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="3 days">
     <meta name="language" content="id">
