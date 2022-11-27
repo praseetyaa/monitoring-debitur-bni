@@ -35,18 +35,17 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="row mb-3">
-                        <label class="col-lg-3 col-md-4 col-form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                        <label class="col-lg-3 col-md-4 col-form-label">NPP <span class="text-danger">*</span></label>
                         <div class="col-lg-9 col-md-8">
-                            <div class="input-group input-group-sm">
-                                <input type="text" name="birthdate" class="form-control form-control-sm {{ $errors->has('birthdate') ? 'border-danger' : '' }}" value="{{ Auth::user()->attribute && Auth::user()->attribute->birthdate != null ? date('d/m/Y', strtotime(Auth::user()->attribute->birthdate)) : '' }}" autocomplete="off">
-                                <span class="input-group-text"><i class="bi-calendar2"></i></span>
-                            </div>
-                            @if($errors->has('birthdate'))
-                            <div class="small text-danger">{{ $errors->first('birthdate') }}</div>
+                            <input type="text" name="npp" class="form-control form-control-sm {{ $errors->has('npp') ? 'border-danger' : '' }}" value="{{ $user->attribute->npp }}" autofocus>
+                            @if($errors->has('npp'))
+                            <div class="small text-danger">{{ $errors->first('npp') }}</div>
                             @endif
                         </div>
                     </div>
+
                     <div class="row mb-3">
                         <label class="col-lg-3 col-md-4 col-form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                         <div class="col-lg-9 col-md-8">
@@ -60,6 +59,15 @@
                             @endforeach
                             @if($errors->has('gender'))
                             <div class="small text-danger">{{ $errors->first('gender') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-3 col-md-4 col-form-label">Email <span class="text-danger">*</span></label>
+                        <div class="col-lg-9 col-md-8">
+                            <input type="email" name="email" class="form-control form-control-sm {{ $errors->has('email') ? 'border-danger' : '' }}" value="{{ Auth::user()->email }}" autofocus>
+                            @if($errors->has('email'))
+                            <div class="small text-danger">{{ $errors->first('email') }}</div>
                             @endif
                         </div>
                     </div>
@@ -103,7 +111,7 @@
         nameProp: "name",
         bracketProp: "dial_code"
     });
-    
+
     // Datepicker
     Spandiv.DatePicker("input[name=birthdate]");
 </script>

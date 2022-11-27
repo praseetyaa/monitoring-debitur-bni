@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Ajifatur\FaturHelper\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,6 +45,12 @@ class User extends \Ajifatur\FaturHelper\Models\User
     public function attribute()
     {
         return $this->hasOne(UserAttribute::class);
+    }
+
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     /**

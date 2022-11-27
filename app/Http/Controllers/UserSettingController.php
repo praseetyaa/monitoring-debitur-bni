@@ -11,6 +11,9 @@ use Illuminate\Validation\Rule;
 use Ajifatur\Helpers\DateTimeExt;
 use Ajifatur\FaturHelper\Models\User;
 use Ajifatur\FaturHelper\Models\UserAvatar;
+use App\Models\Cabang;
+use App\Models\Jabatan;
+use App\Models\User as ModelsUser;
 
 class UserSettingController extends \App\Http\Controllers\Controller
 {
@@ -22,7 +25,9 @@ class UserSettingController extends \App\Http\Controllers\Controller
     public function index()
     {
         // Get the user
-        $user = User::findOrFail(Auth::user()->id);
+        // $user = User::findOrFail(Auth::user()->id);
+        // dd(Auth::user()->role_id);
+        $user = ModelsUser::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
 
         // View
         return view('admin/user-setting/index', [
@@ -38,7 +43,16 @@ class UserSettingController extends \App\Http\Controllers\Controller
     public function profile()
     {
         // View
-        return view('admin/user-setting/profile');
+        $cabang = Cabang::orderBy('nama','asc')->get();
+        $jabatan = Jabatan::orderBy('nama','asc')->get();
+        $user = ModelsUser::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
+
+        return view('admin/user-setting/profile', [
+            'cabang'    => $cabang,
+            'jabatan'   => $jabatan,
+            'user'      => $user
+        ]);
+
     }
 
     /**
@@ -52,12 +66,14 @@ class UserSettingController extends \App\Http\Controllers\Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
-            'birthdate' => 'required',
+            'email' => [
+                'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
+            ],
             'gender' => 'required',
             'country_code' => 'required',
             'phone_number' => 'required|numeric'
         ]);
-        
+
         // Check errors
         if($validator->fails()) {
             // Back to form page with validation error messages
@@ -67,6 +83,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
             // Update the user profile
             $user = User::find(Auth::user()->id);
             $user->name = $request->name;
+            $user->email = $request->email;
             $user->save();
 
             // Update the user attribute
@@ -112,7 +129,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
                 'required', 'alpha_dash', 'min:4', Rule::unique('users')->ignore(Auth::user()->id, 'id')
             ],
         ]);
-        
+
         // Check errors
         if($validator->fails()) {
             // Back to form page with validation error messages
@@ -155,7 +172,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
             'new_password' => 'required|min:6',
             'confirm_password' => 'required|min:6|same:new_password',
         ]);
-        
+
         // Check errors
         if($validator->fails()) {
             // Back to form page with validation error messages

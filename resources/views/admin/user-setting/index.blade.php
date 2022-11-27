@@ -43,14 +43,26 @@
                         <div>{{ $user->name }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
-                        <div>Tanggal Lahir:</div>
-                        <div>{{ $user->attribute && $user->attribute->birthdate != null ? date('d/m/Y', strtotime($user->attribute->birthdate)) : '-' }}</div>
+                        <div>NPP:</div>
+                        <div>{{ $user->attribute->npp }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Jenis Kelamin:</div>
                         <div>{{ $user->attribute && $user->attribute->gender != null ? gender($user->attribute->gender) : '-' }}</div>
                     </li>
-                    <li class="list-group-item px-0 py-1 d-none">
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
+                        <div>No. Telephone:</div>
+                        <div>{{ $user->attribute->phone_number }}</div>
+                    </li>
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
+                        <div>Cabang:</div>
+                        <div>{{ $user->attribute->cabang->nama }}</div>
+                    </li>
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
+                        <div>Jabatan:</div>
+                        <div>{{ $user->attribute->jabatan->nama }}</div>
+                    </li>
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Email:</div>
                         <div>{{ $user->email }}</div>
                     </li>

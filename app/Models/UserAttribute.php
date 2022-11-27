@@ -15,6 +15,11 @@ class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
         return $this->belongsTo(Cabang::class, 'cabang_id');
     }
 
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
+
     /**
      * Vendor.
      */

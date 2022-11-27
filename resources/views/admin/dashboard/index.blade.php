@@ -21,6 +21,49 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table>
+                    <tr>
+                        <td>Nama</td>
+                        <td>: {{$user->name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td>: {{$user->username}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>: {{$user->email}}</td>
+                    </tr>
+                    <tr>
+                        <td>Role</td>
+                        <td>: {{@$user->role->name}}</td>
+                    </tr>
+                    <tr>
+                        <td>NPP</td>
+                        <td>: {{@$user->attribute->npp}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nomor Telepon</td>
+                        <td>: {{@$user->attribute->phone_number}}</td>
+                    </tr>
+                    <tr>
+                        <td>Cabang</td>
+                        <td>: {{@$user->attribute->cabang->nama}}</td>
+                    </tr>
+                    <tr>
+                        <td>Jabatan</td>
+                        <td>: {{@$user->attribute->jabatan->nama}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('js')
