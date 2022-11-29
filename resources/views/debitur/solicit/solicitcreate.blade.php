@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Data Leads<span class="text-danger reqdataleads" style="display: none">*</span></label>
-                            <input disabled placeholder="Data Leads" type="text" name="dataleads" id="dataleads" class="form-control {{ $errors->has('dataleads') ? 'border-danger' : '' }}" value="{{ old('dataleads') }}" autofocus>
+                            <input readonly placeholder="Data Leads" type="text" name="dataleads" id="dataleads" class="form-control {{ $errors->has('dataleads') ? 'border-danger' : '' }}" value="{{ old('dataleads') }}" autofocus>
                             @if($errors->has('dataleads'))
                                 <div class="small text-danger">{{ $errors->first('dataleads') }}</div>
                             @endif
@@ -97,7 +97,10 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2 text-center">
+                            <a class="btn btn-primary btn-block" onclick="GetLocation()">Ambil Data lokasi</a>
+                        </div>
+                        {{-- <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
                             <select required name="provinsi" id="provinsi" class="form-select {{ $errors->has('provinsi') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Provinsi--</option>
@@ -144,6 +147,55 @@
                             @if($errors->has('provinsi'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
+                        </div> --}}
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Latitude<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control {{ $errors->has('latitude') ? 'border-danger' : '' }}" value="{{ old('latitude') }}" autofocus>
+                            @if($errors->has('latitude'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Longitude<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control {{ $errors->has('longitude') ? 'border-danger' : '' }}" value="{{ old('longitude') }}" autofocus>
+                            @if($errors->has('longitude'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Provinsi" type="text" name="provinsi" id="provinsi" class="form-control {{ $errors->has('provinsi') ? 'border-danger' : '' }}" value="{{ old('provinsi') }}" autofocus>
+                            @if($errors->has('provinsi'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Kabupaten/Kota<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Kabupaten/Kota" type="text" name="kota" id="kota" class="form-control {{ $errors->has('kota') ? 'border-danger' : '' }}" value="{{ old('kota') }}" autofocus>
+                            @if($errors->has('kota'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Kecamatan<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Kecamatan" type="text" name="kecamatan" id="kecamatan" class="form-control {{ $errors->has('kecamatan') ? 'border-danger' : '' }}" value="{{ old('kecamatan') }}" autofocus>
+                            @if($errors->has('kecamatan'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Desa<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Desa" type="text" name="desa" id="desa" class="form-control {{ $errors->has('desa') ? 'border-danger' : '' }}" value="{{ old('desa') }}" autofocus>
+                            @if($errors->has('desa'))
+                            <div class="small text-danger">{{ $errors->first('desa') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Kode Pos<span class="text-danger">*</span></label>
+                            <input readonly placeholder="Kode Pos" type="text" name="kodepos" id="kodepos" class="form-control {{ $errors->has('kodepos') ? 'border-danger' : '' }}" value="{{ old('kodepos') }}" autofocus>
+                            @if($errors->has('provinsi'))
+                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
+                            @endif
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Detail Alamat</label>
@@ -169,34 +221,92 @@
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
 <script>
+    var DataLat     = '';
+    var DataLong    = '';
+
     $(document).ready(function(){
-        $('#provinsi').on('change', function(){
-            GetChild('provinsi', this.value)
-        })
-        $('#kota').on('change', function(){
-            GetChild('kota', this.value)
-        })
-        $('#kecamatan').on('change', function(){
-            GetChild('kecamatan', this.value)
-        })
-        $('#desa').on('change', function(){
-            GetChild('desa', this.value)
-        })
+        // $('#provinsi').on('change', function(){
+        //     GetChild('provinsi', this.value)
+        // })
+        // $('#kota').on('change', function(){
+        //     GetChild('kota', this.value)
+        // })
+        // $('#kecamatan').on('change', function(){
+        //     GetChild('kecamatan', this.value)
+        // })
+        // $('#desa').on('change', function(){
+        //     GetChild('desa', this.value)
+        // })
         $('#sumber').on('change', function(){
             if(this.value == 'Data Leads')
             {
                 $('.reqdataleads').css('display', 'inline-block')
-                $('#dataleads').attr('disabled', false)
+                $('#dataleads').attr('readonly', false)
                 $('#dataleads').attr('required', true)
             }
             else
             {
                 $('.reqdataleads').css('display', 'none')
-                $('#dataleads').attr('disabled', true)
+                $('#dataleads').attr('readonly', true)
                 $('#dataleads').attr('required', false)
+                $('#dataleads').val('')
             }
         })
     })
+
+    function GetLocation()
+    {
+        navigator.permissions.query({
+            name: 'geolocation'
+        }).then(function(result) {
+            if (result.state == 'granted') {
+                // console.log(result.state);
+                navigator.geolocation.getCurrentPosition(GetLatlong);
+            } else if (result.state == 'prompt') {
+                // console.log(result.state);
+                navigator.geolocation.getCurrentPosition(GetLatlong);
+            } else if (result.state == 'denied') {
+                // console.log(result.state);
+                Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
+                    Swal.fire({
+                        title: 'Akses Lokasi',
+                        text: 'Kami membutuhkan ijin lokasi anda, silahkan beri ijin lokasi untuk aplikasi ini sesuai langkah dibawah',
+                        icon: "warning",
+                        allowOutsideClick: false,
+                        confirmButtonText: "Cara Memberi Ijin Lokasi",
+                        confirmButtonColor: "#3085d6"
+                    }).then(function(){
+                        window.open('https://support.google.com/chrome/answer/142065?hl=id', '_blank').focus();
+                    });
+                });
+            }
+            result.onchange = function() {
+                // console.log(result.state);
+            }
+        });
+    }
+
+    function GetLatlong(data)
+    {
+        DataLat     = data.coords.latitude;
+        DataLong    = data.coords.longitude;
+
+        $('#latitude ').val(DataLat)
+        $('#longitude').val(DataLong)
+        var url     = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+DataLat+"&lon="+DataLong+""
+        GetData(url, AfterGetLatlong)
+    }
+
+    function AfterGetLatlong(data)
+    {
+        swal.close()
+        $('#provinsi').val(data.address.state)
+        $('#kota').val(data.address.city)
+        $('#kecamatan').val(data.address.city_district)
+        $('#desa').val(data.address.village)
+        $('#kodepos').val(data.address.postcode)
+        $('#detail_alamat').val(data.display_name)
+    }
 
     function GetChild(parent, idparent)
     {

@@ -59,3 +59,17 @@ function sendFormData(urls, datas, resultSend, bfrSend = beforeAjax())
 	})
 }
 
+function GetData(urls, resultSend, bfrSend = beforeAjax())
+{
+	$.ajax({
+		url: urls,
+		type: "GET",
+		cache: false,
+		processData: false,
+		contentType: false,
+		beforeSend: bfrSend,
+		success: resultSend,
+		error: errorSend
+	})
+}
+
