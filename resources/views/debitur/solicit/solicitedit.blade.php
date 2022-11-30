@@ -97,6 +97,17 @@
                         </div>
                     </div>
                     <hr>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <a target="_blank" href="{{ route('openfile', ['path' => $data->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <label class="mb-2" style="font-weight: bold">Foto Lokasi<span class="text-danger" style="display: none">*</span></label>
+                                <input type="file" class="form-control" name="foto_lokasi" accept="image/*" capture="camera">
+                                <small>*Silahkan pilih file jika ingin memperbaharui</small>
+                            </div>
+                        </div>
+                    <hr>
                     {{-- <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
