@@ -13,13 +13,14 @@ use App\Models\Wilayah\Kota;
 use App\Models\Wilayah\Provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SolicitController extends Controller
 {
     public function index()
     {
-        $data = DataDebitur::get();
+        $data = DataDebitur::with('statusdebitur')->get();
         return view('debitur/solicit/solicit',[
             'data'  => $data,
         ]);
@@ -63,9 +64,15 @@ class SolicitController extends Controller
         ]);
     }
 
+    public function openfile($path, $name)
+    {
+        return response()->file(Storage::path("$path/$name"));
+    }
 
     public function store(Request $request)
     {
+        $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi')->extension();;
+        Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi'), $nama);
         $user = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data = new DataDebitur();
         $data->nama_debitur                 = $request->nama_debitur;
@@ -92,10 +99,20 @@ class SolicitController extends Controller
         $data->id_input                     = $user->id;
         $data->nama_input                   = $user->name;
         $data->npp_input                    = $user->attribute->npp;
+        $data->dokumen_lokasi               = 'Dokumen Lokasi/'.$nama;
 
         $data->save();
 
         return redirect()->route('solicit')->with(['message' => 'Berhasil menambah data.']);
+    }
+
+    public function detail($id)
+    {
+        $data       = DataDebitur::with('statusdebitur')->findOrFail($id);
+        return view('debitur/solicit/solicitdetail', [
+            'data'      => $data
+        ]);
+
     }
 
     public function edit($id)
@@ -112,11 +129,22 @@ class SolicitController extends Controller
         ]);
     }
 
+
     public function update(Request $request)
     {
+        $user              = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data              = DataDebitur::find($request->id);
 
-        $user = User::with('attribute')->where('id', Auth::user()->id)->first();
-        $data                               = DataDebitur::find($request->id);
+        if ($request->hasFile('foto_lokasi')) {
+            $datadebitur       = DataDebitur::where('id', $request->id)->first();
+            if (Storage::exists($datadebitur->dokumen_lokasi)) {
+                Storage::delete($datadebitur->dokumen_lokasi);
+            }
+            $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi')->extension();;
+            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi'), $nama);
+            $data->dokumen_lokasi               = 'Dokumen Lokasi/'.$nama;
+        }
+
         $data->nama_debitur                 = $request->nama_debitur;
         $data->latitude                     = $request->latitude;
         $data->longitude                    = $request->longitude;
@@ -133,12 +161,46 @@ class SolicitController extends Controller
         $data->indikasi_kebutuhan_produk    = $request->indikasi_kebutuhan_produk;
         $data->sumber                       = $request->sumber;
         $data->dataleads                    = $request->dataleads;
-        $data->id_update                     = $user->id;
-        $data->nama_update                   = $user->name;
-        $data->npp_update                    = $user->attribute->npp;
+        $data->id_update                    = $user->id;
+        $data->nama_update                  = $user->name;
+        $data->npp_update                   = $user->attribute->npp;
+        $data->tanggal_update               = date('Y-m-d H:i:s');
+
         $data->save();
         return redirect()->route('solicit')->with(['message' => 'Berhasil mengupdate data.']);
     }
+
+    public function verifisolicit(Request $request)
+    {
+        $user                   = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data                   = DataDebitur::find($request->id);
+        $data->pre_screen       = @$request->pre_screen == null ? 0 : 1;
+        $data->ots_penyelia     = @$request->ots_penyelia == null ? 0 : 1;
+        $data->ots_pemimpin     = @$request->ots_pemimpin == null ? 0 : 1;
+        $data->id_verif         = $user->id;
+        $data->nama_verif       = $user->name;
+        $data->npp_verif        = $user->attribute->npp;
+        $data->status_debitur   = 2;
+        $data->tanggal_verif    = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->route('solicitdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Memverifikasi Data']);
+    }
+
+    public function appsolicit(Request $request)
+    {
+        $user                     = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data                     = DataDebitur::find($request->id);
+        $data->id_approve         = $user->id;
+        $data->nama_approve       = $user->name;
+        $data->npp_approve        = $user->attribute->npp;
+        $data->status_debitur     = 3;
+        $data->tanggal_approve    = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->route('solicitdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
+    }
+
+
+
 
 
     public function delete(Request $request)

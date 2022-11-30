@@ -13,4 +13,10 @@ class DataDebitur extends Model
 
     protected $table = 'data_debitur';
     protected $primary_key = 'id';
+
+    public function statusdebitur()
+    {
+        return $this->hasOne(StatusDebitur::class, 'status_debitur', 'status_debitur');
+        // return $this->belongsTo(DataDebitur::class, 'status_debitur');
+    }
 }

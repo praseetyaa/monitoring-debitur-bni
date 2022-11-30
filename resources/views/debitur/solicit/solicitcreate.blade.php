@@ -96,6 +96,13 @@
                         </div>
                     </div>
                     <hr>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <label class="mb-2" style="font-weight: bold">Foto Lokasi<span class="text-danger" style="display: none">*</span></label>
+                                <input required type="file" class="form-control" name="foto_lokasi" accept="image/*" capture="camera">
+                            </div>
+                        </div>
+                    <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
                             <a class="btn btn-primary btn-block" onclick="GetLocation()">Ambil Data lokasi</a>

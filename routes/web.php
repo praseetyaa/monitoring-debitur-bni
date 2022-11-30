@@ -112,7 +112,6 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/petugas/delete-bulk', 'PetugasController@deleteBulk')->name('admin.petugas.delete-bulk');
 
     // Monitoring
-    Route::get('/admin/monitoring', 'MonitoringController@index')->name('admin.monitoring.index');
     Route::get('/admin/monitoring/create', 'MonitoringController@create')->name('admin.monitoring.create');
     Route::post('/admin/monitoring/store', 'MonitoringController@store')->name('admin.monitoring.store');
     Route::get('/admin/monitoring/detail/{id}', 'MonitoringController@detail')->name('admin.monitoring.detail');
@@ -131,9 +130,12 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
         Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');
         Route::get('/solicitedit/{id?}', 'SolicitController@edit')->name('solicitedit');
+        Route::get('/solicitdetail/{id?}', 'SolicitController@detail')->name('solicitdetail');
         Route::post('/solicitupdate', 'SolicitController@update')->name('solicitupdate');
+        Route::post('/verifisolicit', 'SolicitController@verifisolicit')->name('verifisolicit');
+        Route::post('/appsolicit', 'SolicitController@appsolicit')->name('appsolicit');
     });
-
+    Route::get('/openfile/{path?}/{name?}', 'SolicitController@openfile')->name('openfile');
 
     Route::prefix('master')->group(function(){
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
