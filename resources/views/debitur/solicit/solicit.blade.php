@@ -45,7 +45,7 @@
                             <tr>
                                 <td class="text-center">{{$index+1}}</td>
                                 <td>{{ $a->nama_debitur }}</td>
-                                <td>{{ $a->desa }}, {{ $a->kecamatan }}, {{ $a->kota }}, {{ $a->provinsi }} ({{ $a->detail_alamat }})</td>
+                                <td>{{ $a->detail_alamat }}</td>
                                 <td>{{ $a->kodepos }}</td>
                                 <td>{{ $a->sektor }}</td>
                                 <td>{{ $a->bidang_usaha }}</td>
