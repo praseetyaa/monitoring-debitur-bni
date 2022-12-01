@@ -20,24 +20,26 @@
 
                     <div class="row mb-4">
                         <div class="col-md-12 mb-2">
-                            <table class="table table-sm w-100" style="border:0 solid black">
-                                <tr>
-                                    <td>Dibuat Oleh</td>
-                                    <td>: {{$data->nama_input}} | {{date('d M Y H:i:s', strtotime($data->created_at))}}</td>
-                                </tr>
+                            <div class="row">
+                                <div class="col-lg-3 mb-3">
+                                    <div><span class="fw-bold">Dibuat Oleh</span><br>{{$data->nama_input}}<br>{{date('d M Y H:i:s', strtotime($data->created_at))}}</div>
+                                </div>
                                 @if($data->status_debitur > 1)
-                                    <tr>
-                                        <td>Diverifikasi Oleh</td>
-                                        <td>: {{$data->nama_verif}} | {{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</td>
-                                    </tr>
+                                <div class="col-lg-3 mb-3">
+                                    <div><span class="fw-bold">Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
+                                </div>
                                 @endif
                                 @if($data->status_debitur > 2)
-                                    <tr>
-                                        <td>Disetujui Oleh</td>
-                                        <td>: {{$data->nama_approve}} | {{date('d M Y H:i:s', strtotime($data->tanggal_approve))}}</td>
-                                    </tr>
+                                <div class="col-lg-3 mb-3">
+                                    <div><span class="fw-bold">Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
+                                </div>
                                 @endif
-                            </table>
+                                @if(Auth::user()->role_id == 6 || Auth::user()->role_id == 3)
+                                <div class="col-lg-3 mb-3">
+                                    <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->nama_input}}">{{$data->nama_input}}</a></div>
+                                </div>
+                                @endif
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="alert alert-{{ $data->statusdebitur->color }}" role="alert">
@@ -166,7 +168,7 @@
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="ModalShowListLabel">Verifikasi Data</h5>
-                <button type="button" class="btn btn-sm btn-primary" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -203,7 +205,7 @@
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="ModalShowListLabel">Approval Data</h5>
-                <button type="button" class="btn btn-sm btn-primary" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

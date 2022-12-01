@@ -46,7 +46,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 text-center">
+                    <div class="col-md-3 text-end">
                         <label class="mb-2" style="font-weight: bold">&nbsp;</label><br>
                         <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2">Filter Data</a>
                         <a onclick="resetfilter()" class="btn btn-sm btn-danger">Reset Filter</a>
@@ -73,12 +73,22 @@
                         <thead class="bg-light">
                             <tr>
                                 <th rowspan="2" style="width: 1px;white-space:nowrap">No</th>
+                                @if(Auth::user()->role_id != role('inputer'))
+                                <th rowspan="2" style="white-space: nowrap">Nama Inputer</th>
+                                @else
                                 <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
+                                @endif
+                                <th rowspan="2" style="white-space: nowrap">Waktu</th>
+                                @if(Auth::user()->role_id != role('inputer'))
+                                <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
+                                @endif
                                 <th colspan="2">Lokasi Usaha</th>
                                 <th rowspan="2">Sektor</th>
                                 <th rowspan="2">Sumber</th>
                                 <th rowspan="2">Status</th>
+                                @if(Auth::user()->role_id == 4)
                                 <th rowspan="2">Opsi</th>
+                                @endif
                             </tr>
                             <tr>
                                 <th style="width: 40%!important">Alamat Detail</th>
@@ -89,7 +99,15 @@
                             @foreach($data as $index=>$a)
                             <tr>
                                 <td class="text-center pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{$index+1}}</td>
+                                @if(Auth::user()->role_id != role('inputer'))
+                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_input }}</td>
+                                @else
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
+                                @endif
+                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{date('d M Y H:i:s', strtotime($a->created_at))}}</td>
+                                @if(Auth::user()->role_id != role('inputer'))
+                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
+                                @endif
                                 <td>
                                     <span  class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">
                                         {{ $a->detail_alamat }}
@@ -100,12 +118,14 @@
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sektor }}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sumber }} {{($a->dataleads != '' ? '('.$a->dataleads.')' : '')}}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')"><span class="badge bg-{{ $a->statusdebitur->color }}">{{ $a->statusdebitur->narasi }}</span>  </td>
+                                @if(Auth::user()->role_id == 4)
                                 <td class="text-center" style="white-space: nowrap">
                                     @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1)
                                         <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     @endif
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

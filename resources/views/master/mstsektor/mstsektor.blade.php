@@ -6,9 +6,11 @@
 
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
     <h1 class="h3 mb-2 mb-sm-0">Master Sektor</h1>
+    @if(Auth::user()->role_id != role('monitoring'))
     <div class="btn-group">
         <a href="{{ route('sektorcreate') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Data</a>
     </div>
+    @endif
 </div>
 <div class="row">
 	<div class="col-12">
@@ -26,7 +28,9 @@
                             <tr>
                                 <th width="30">No</th>
                                 <th>Nama Sektor</th>
+                                @if(Auth::user()->role_id != role('monitoring'))
                                 <th width="60">Opsi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -34,10 +38,12 @@
                             <tr>
                                 <td class="text-center">{{$index+1}}</td>
                                 <td>{{ $a->nama_sektor }}</td>
+                                @if(Auth::user()->role_id != role('monitoring'))
                                 <td class="text-center" style="white-space: nowrap">
                                     <a href="{{ route('sektoredit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                     <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

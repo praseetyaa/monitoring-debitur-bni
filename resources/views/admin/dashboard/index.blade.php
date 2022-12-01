@@ -5,7 +5,7 @@
 @section('content')
 
 
-{{-- <div class="alert alert-success" role="alert">
+<div class="alert alert-success" role="alert">
     <div class="alert-message d-flex align-items-center">
         @if(Auth::user()->avatar != '' && File::exists(public_path('assets/images/users/'.Auth::user()->avatar)))
             <img src="{{ asset('assets/images/users/'.Auth::user()->avatar) }}" class="img-fluid bg-white me-3 rounded-circle me-1" alt="{{ Auth::user()->name }}" width="70">
@@ -19,45 +19,53 @@
             <p class="mb-0">Selamat datang kembali <strong>{{ Auth::user()->name }}</strong> di {{ config('app.name') }}.</p>
         </div>
     </div>
-</div> --}}
+</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <table>
-                    <tr>
-                        <td>Nama</td>
-                        <td>: {{$user->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Username</td>
-                        <td>: {{$user->username}}</td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td>: {{$user->email}}</td>
-                    </tr>
-                    <tr>
-                        <td>Role</td>
-                        <td>: {{@$user->role->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>NPP</td>
-                        <td>: {{@$user->attribute->npp}}</td>
-                    </tr>
-                    <tr>
-                        <td>Nomor Telepon</td>
-                        <td>: {{@$user->attribute->phone_number}}</td>
-                    </tr>
-                    <tr>
-                        <td>Cabang</td>
-                        <td>: {{@$user->attribute->cabang->nama}}</td>
-                    </tr>
-                    <tr>
-                        <td>Jabatan</td>
-                        <td>: {{@$user->attribute->jabatan->nama}}</td>
-                    </tr>
-                </table>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div>
+                            <p class="mb-0 fw-bold">Nama</p>
+                            <p>{{$user->name}}</p>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Username</p>
+                            <p>{{$user->username}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <p class="mb-0 fw-bold">Email</p>
+                            <p>{{$user->email}}</p>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Role</p>
+                            <p>{{@$user->role->name}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <p class="mb-0 fw-bold">NPP</p>
+                            <p>{{@$user->attribute->npp}}</p>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Nomor Telepon</p>
+                            <p>{{@$user->attribute->phone_number}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div>
+                            <p class="mb-0 fw-bold">Cabang</p>
+                            <p>{{@$user->attribute->cabang->nama}}</p>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Jabatan</p>
+                            <p>{{@$user->attribute->jabatan->nama}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
