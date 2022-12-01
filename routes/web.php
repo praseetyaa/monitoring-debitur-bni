@@ -124,6 +124,8 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
 
     Route::prefix('solicit')->group(function(){
         Route::post('/getchilddata', 'SolicitController@getchilddata');
+        Route::post('/GetParentByChild', 'SolicitController@GetParentByChild');
+
 
         Route::get('/', 'SolicitController@index')->name('solicit');
         Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');

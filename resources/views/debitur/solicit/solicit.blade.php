@@ -37,9 +37,7 @@
                                 <th rowspan="2">Sektor</th>
                                 <th rowspan="2">Sumber</th>
                                 <th rowspan="2">Status</th>
-                                @if(in_array(Auth::user()->role_id, array(1,4,5)))
-                                    <th rowspan="2">Opsi</th>
-                                @endif
+                                <th rowspan="2">Opsi</th>
                             </tr>
                             <tr>
                                 <th style="width: 40%!important">Alamat Detail</th>
@@ -59,12 +57,12 @@
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sektor }}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sumber }} {{($a->dataleads != '' ? '('.$a->dataleads.')' : '')}}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')"><span class="badge bg-{{ $a->statusdebitur->color }}">{{ $a->statusdebitur->narasi }}</span>  </td>
-                                @if(in_array(Auth::user()->role_id, array(1,4,5)))
-                                    <td class="text-center" style="white-space: nowrap">
+                                <td class="text-center" style="white-space: nowrap">
+                                    @if(in_array(Auth::user()->role_id, array(4)) && $a->status_debitur == 1)
                                         <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
-                                    </td>
-                                @endif
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

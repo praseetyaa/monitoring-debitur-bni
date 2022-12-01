@@ -313,74 +313,118 @@
         $('#desa').val(data.address.village)
         $('#kodepos').val(data.address.postcode)
         $('#detail_alamat').val(data.display_name)
+
+        if(data.address.city_district == '' && data.address.village != '' && data.address.city != '')
+        {
+            GetParentByChild('kecamatan', data.address.village, data.address.city)
+            // GetParentByChild('kecamatan', 'CANDI', 'SEMARANG')
+        }
+
+        if(data.address.city_district == '' && data.address.postcode != '' && data.address.city != '')
+        {
+            GetParentByChild('desa', data.address.postcode, data.address.city)
+        }
+
+        if(data.address.postcode == '' && data.address.village != '' && data.address.city != '')
+        {
+            GetParentByChild('kodepos', data.address.village, data.address.city)
+        }
+
+        if(data.address.state != '')
+        {
+            GetParentByChild('provinsi', data.address.city, '')
+        }
     }
 
-    function GetChild(parent, idparent)
+
+    function GetParentByChild(parent, childparam, grandparentparam)
     {
         url = "{{url('solicit')}}";
         var datas = new FormData();
+        datas.append('grandparentparam',grandparentparam);
         datas.append('parent',parent);
-        datas.append('idparent',idparent);
+        datas.append('childparam',childparam);
         datas.append('_token','{{csrf_token()}}');
-        sendFormData(url+'/getchilddata',datas,AfterGetChild);
+        sendFormData(url+'/GetParentByChild',datas, AfterGetParentByChild);
     }
 
-    function AfterGetChild(data)
+    function AfterGetParentByChild(data)
     {
-        Swal.close()
-
-        if(data.parent == 'provinsi')
+        swal.close()
+        if(data.parentparam != '')
         {
-            $('.selectkota').remove();
-            $('.selectkecamatan').remove();
-            $('.selectdesa').remove();
-            $('.selectkodepos').remove();
-            var datas = ''
-            data.data.forEach(element => {
-                datas += "<option class='selectkota' value='"+element.id_kota+"_"+element.nama_kota+"' {{ old('kota') == "+element.id_kota+" ? 'selected' : '' }}>"+element.nama_kota+"</option>"
-            });
-            $('#kota').append(datas)
-            $('#kota').val('')
-            $('#kecamatan').val('')
-            $('#desa').val('')
-            $('#kodepos').val('')
+            $('#'+data.parent).val(data.parentparam)
         }
-        else if(data.parent == 'kota')
-        {
-            $('.selectkecamatan').remove();
-            $('.selectdesa').remove();
-            $('.selectkodepos').remove();
-            var datas = ''
-            data.data.forEach(element => {
-                datas += "<option class='selectkecamatan' value='"+element.id_kecamatan+"_"+element.nama_kecamatan+"' {{ old('kecamatan') == "+element.id_kecamatan+" ? 'selected' : '' }}>"+element.nama_kecamatan+"</option>"
-            });
-            $('#kecamatan').append(datas)
-            $('#kecamatan').val('')
-            $('#desa').val('')
-            $('#kodepos').val('')
-        }
-        else if(data.parent == 'kecamatan')
-        {
-            $('.selectdesa').remove();
-            $('.selectkodepos').remove();
-            var datas = ''
-            data.data.forEach(element => {
-                datas += "<option class='selectdesa' value='"+element.id_desa+"_"+element.nama_desa+"' {{ old('desa') == "+element.id_desa+" ? 'selected' : '' }}>"+element.nama_desa+"</option>"
-            });
-            $('#desa').append(datas)
-            $('#desa').val('')
-            $('#kodepos').val('')
-        }
-        else if(data.parent == 'desa')
-        {
-            $('.selectkodepos').remove();
-            var datas = ''
-            data.data.forEach(element => {
-                datas += "<option class='selectkodepos' value='"+element.id_kodepos+"_"+element.kodepos+"' {{ old('kodepos') == "+element.id_kodepos+" ? 'selected' : '' }}>"+element.kodepos+"</option>"
-            });
-            $('#kodepos').append(datas)
-            $('#kodepos').val('')
-        }
+        // console.log(data)
     }
+
+
+    // function GetChild(parent, idparent)
+    // {
+    //     url = "{{url('solicit')}}";
+    //     var datas = new FormData();
+    //     datas.append('parent',parent);
+    //     datas.append('idparent',idparent);
+    //     datas.append('_token','{{csrf_token()}}');
+    //     sendFormData(url+'/getchilddata',datas,AfterGetChild);
+    // }
+
+    // function AfterGetChild(data)
+    // {
+    //     Swal.close()
+
+    //     if(data.parent == 'provinsi')
+    //     {
+    //         $('.selectkota').remove();
+    //         $('.selectkecamatan').remove();
+    //         $('.selectdesa').remove();
+    //         $('.selectkodepos').remove();
+    //         var datas = ''
+    //         data.data.forEach(element => {
+    //             datas += "<option class='selectkota' value='"+element.id_kota+"_"+element.nama_kota+"' {{ old('kota') == "+element.id_kota+" ? 'selected' : '' }}>"+element.nama_kota+"</option>"
+    //         });
+    //         $('#kota').append(datas)
+    //         $('#kota').val('')
+    //         $('#kecamatan').val('')
+    //         $('#desa').val('')
+    //         $('#kodepos').val('')
+    //     }
+    //     else if(data.parent == 'kota')
+    //     {
+    //         $('.selectkecamatan').remove();
+    //         $('.selectdesa').remove();
+    //         $('.selectkodepos').remove();
+    //         var datas = ''
+    //         data.data.forEach(element => {
+    //             datas += "<option class='selectkecamatan' value='"+element.id_kecamatan+"_"+element.nama_kecamatan+"' {{ old('kecamatan') == "+element.id_kecamatan+" ? 'selected' : '' }}>"+element.nama_kecamatan+"</option>"
+    //         });
+    //         $('#kecamatan').append(datas)
+    //         $('#kecamatan').val('')
+    //         $('#desa').val('')
+    //         $('#kodepos').val('')
+    //     }
+    //     else if(data.parent == 'kecamatan')
+    //     {
+    //         $('.selectdesa').remove();
+    //         $('.selectkodepos').remove();
+    //         var datas = ''
+    //         data.data.forEach(element => {
+    //             datas += "<option class='selectdesa' value='"+element.id_desa+"_"+element.nama_desa+"' {{ old('desa') == "+element.id_desa+" ? 'selected' : '' }}>"+element.nama_desa+"</option>"
+    //         });
+    //         $('#desa').append(datas)
+    //         $('#desa').val('')
+    //         $('#kodepos').val('')
+    //     }
+    //     else if(data.parent == 'desa')
+    //     {
+    //         $('.selectkodepos').remove();
+    //         var datas = ''
+    //         data.data.forEach(element => {
+    //             datas += "<option class='selectkodepos' value='"+element.id_kodepos+"_"+element.kodepos+"' {{ old('kodepos') == "+element.id_kodepos+" ? 'selected' : '' }}>"+element.kodepos+"</option>"
+    //         });
+    //         $('#kodepos').append(datas)
+    //         $('#kodepos').val('')
+    //     }
+    // }
 </script>
 @endsection
