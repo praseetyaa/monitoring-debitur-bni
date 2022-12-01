@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataDebitur;
 use App\Models\Sektor;
+use App\Models\StatusDebitur;
 use App\Models\Sumber;
 use App\Models\User;
 use App\Models\Wilayah\Desa;
@@ -18,18 +19,31 @@ use Illuminate\Support\Facades\Validator;
 
 class SolicitController extends Controller
 {
-    public function index()
+    public function index($startd = '', $endd = '', $status_deb = '')
     {
-        if(Auth::user()->role_id == 4)
-        {
-            $data = DataDebitur::where('id_input', Auth::user()->id)->with('statusdebitur')->get();
-        }
-        else
-        {
-            $data = DataDebitur::with('statusdebitur')->get();
-        }
+        // dd($status_deb);
+
+        $StatusDebitur = StatusDebitur::get();
+        $data = DataDebitur::with('statusdebitur')
+                ->when(Auth::user()->role_id == 4, function($query){
+                    $query->where('id_input', Auth::user()->id);
+                })
+                ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
+                    $query->where('status_debitur', $status_deb);
+                })
+                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
+                    $query->whereDate('created_at', '>=' ,$startd);
+                })
+                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
+                    $query->whereDate('created_at', '<=' ,$endd);
+                })
+                ->get();
         return view('debitur/solicit/solicit',[
             'data'  => $data,
+            'startd'    =>$startd,
+            'endd'    =>$endd,
+            'status'    =>$status_deb,
+            'StatusDebitur' => $StatusDebitur
         ]);
     }
 

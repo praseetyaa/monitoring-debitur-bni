@@ -122,12 +122,15 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/monitoring/delete', 'MonitoringController@delete')->name('admin.monitoring.delete');
     Route::post('/admin/monitoring/delete-bulk', 'MonitoringController@deleteBulk')->name('admin.monitoring.delete-bulk');
 
+    Route::prefix('daftarsolicit')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}', 'SolicitController@index')->name('solicit');
+    });
+
     Route::prefix('solicit')->group(function(){
         Route::post('/getchilddata', 'SolicitController@getchilddata');
         Route::post('/GetParentByChild', 'SolicitController@GetParentByChild');
 
 
-        Route::get('/', 'SolicitController@index')->name('solicit');
         Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
         Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');
