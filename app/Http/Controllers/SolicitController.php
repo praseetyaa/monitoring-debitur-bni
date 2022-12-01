@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataDebitur;
 use App\Models\Sektor;
+use App\Models\StatusDebitur;
 use App\Models\Sumber;
 use App\Models\User;
 use App\Models\Wilayah\Desa;
@@ -18,12 +19,80 @@ use Illuminate\Support\Facades\Validator;
 
 class SolicitController extends Controller
 {
-    public function index()
+    public function index($startd = '', $endd = '', $status_deb = '')
     {
-        $data = DataDebitur::with('statusdebitur')->get();
+        // dd($status_deb);
+
+        $StatusDebitur = StatusDebitur::get();
+        $data = DataDebitur::with('statusdebitur')
+                ->when(Auth::user()->role_id == 4, function($query){
+                    $query->where('id_input', Auth::user()->id);
+                })
+                ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
+                    $query->where('status_debitur', $status_deb);
+                })
+                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
+                    $query->whereDate('created_at', '>=' ,$startd);
+                })
+                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
+                    $query->whereDate('created_at', '<=' ,$endd);
+                })
+                ->get();
         return view('debitur/solicit/solicit',[
             'data'  => $data,
+            'startd'    =>$startd,
+            'endd'    =>$endd,
+            'status'    =>$status_deb,
+            'StatusDebitur' => $StatusDebitur
         ]);
+    }
+
+    public function GetParentByChild(Request $request)
+    {
+        $parentparam    = '';
+        if($request->parent == 'provinsi')
+        {
+            $datachild = Kota::where('nama_kota', $request->childparam)->first();
+            if(!empty($datachild))
+            {
+                $data = Provinsi::where('id_provinsi', $datachild->id_provinsi)->first();
+                $parentparam = $data->nama_provinsi;
+            }
+        }
+        else if($request->parent == 'kecamatan')
+        {
+            $grandparentparam= $request->grandparentparam;
+            $datachild = Desa::with(['kecamatan.kota'])->whereHas('kecamatan.kota', function($q) use($grandparentparam) {$q->where('nama_kota', '=', $grandparentparam);})->where('nama_desa', $request->childparam)->first();
+            if(!empty($datachild))
+            {
+                $data = Kecamatan::where('id_kecamatan', $datachild->id_kecamatan)->first();
+                $parentparam = $data->nama_kecamatan;
+            }
+        }
+        else if($request->parent == 'desa')
+        {
+            $grandparentparam= $request->grandparentparam;
+            $datachild = Kodepos::with(['desa.kecamatan.kota'])->whereHas('desa.kecamatan.kota', function($q) use($grandparentparam) {$q->where('nama_kota', '=', $grandparentparam);})->where('kodepos', $request->childparam)->first();
+            if(!empty($datachild))
+            {
+                $data = Desa::where('id_desa', $datachild->id_desa)->first();
+                $parentparam = $data->nama_desa;
+            }
+        }
+        else if($request->parent == 'kodepos')
+        {
+            $grandparentparam= $request->grandparentparam;
+            $datachild = Desa::with(['kecamatan.kota', 'kodepos'])->whereHas('kecamatan.kota', function($q) use($grandparentparam) {$q->where('nama_kota', '=', $grandparentparam);})->where('nama_desa', $request->childparam)->first();
+            if(!empty($datachild))
+            {
+                $data = Kodepos::where('id_desa', $datachild->id_desa)->first();
+                $parentparam = $data->kodepos;
+            }
+        }
+        return response()->json(array(
+            'parent'            => $request->parent,
+            'parentparam'       => $parentparam
+        ));
     }
 
     public function getchilddata(Request $request)

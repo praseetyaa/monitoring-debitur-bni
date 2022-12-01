@@ -181,11 +181,11 @@
                         <div class="col-4 mb-2">
                         </div>
                         <div class="col-8 mb-2">
-                            <input type="checkbox" name="pre_screen" value="1">
+                            <input required type="checkbox" name="pre_screen" value="1">
                             <label for="pre_screen" style="font-weight: bold"> Pre Screen</label><br>
-                            <input type="checkbox" name="ots_penyelia" value="1">
+                            <input required type="checkbox" name="ots_penyelia" value="1">
                             <label for="ots_penyelia" style="font-weight: bold"> OTS Penyelia</label><br>
-                            <input type="checkbox" name="ots_pemimpin" value="1">
+                            <input required type="checkbox" name="ots_pemimpin" value="1">
                             <label for="ots_pemimpin" style="font-weight: bold"> OTS Pemimpin</label><br>
                         </div>
                         <div class="col-md-12 mb-2 mt-2 text-center">

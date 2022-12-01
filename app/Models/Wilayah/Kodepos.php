@@ -28,6 +28,6 @@ class Kodepos extends Model
 
     public function desa()
     {
-        return $this->belongsTo(Provinsi::class, 'id_desa', 'id_desa');
+        return $this->belongsTo(Desa::class, 'id_desa', 'id_desa');
     }
 }
