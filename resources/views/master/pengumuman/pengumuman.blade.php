@@ -37,8 +37,8 @@
                     </div>
                     <div class="col-md-3 text-end">
                         <label class="mb-2" style="font-weight: bold">&nbsp;</label><br>
-                        <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2">Filter Data</a>
-                        <a onclick="resetfilter()" class="btn btn-sm btn-danger">Reset Filter</a>
+                        <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2"><i class="bi bi-filter-square"></i> Filter Data</a>
+                        <a onclick="resetfilter()" class="btn btn-sm btn-warning"><i class="bi bi-x-circle"></i> Reset Filter</a>
                     </div>
                 </div>
                 <script>

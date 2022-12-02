@@ -57,6 +57,7 @@
 html {scroll-behavior: smooth;}
 body {background-color: var(--light)}
 
+.pointer{cursor: pointer;}
 
 .card{box-shadow: var(--shadow-sm)!important}
 .card.bg-light{background-color: var(--bs-white)!important}

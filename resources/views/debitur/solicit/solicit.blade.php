@@ -29,15 +29,15 @@
                 </div>
                 @endif
                 <div class="row mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="mb-2" style="font-weight: bold">Tanggal Awal</label>
                         <input required type="date" value="{{$startd}}" class="form-control" id="startd">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="mb-2" style="font-weight: bold">Tanggal Akhir</label>
                         <input required type="date" value="{{$endd}}" class="form-control" id="endd">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="mb-2" style="font-weight: bold">Status</label>
                         <select required id="status" class="form-select">
                             <option value="" {{$status == '' ? 'selected' : ''}}>Semua Status Data</option>
@@ -46,10 +46,17 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3 text-end">
+                    <div class="col-md-2">
+                        <label class="mb-2" style="font-weight: bold">Cabang</label>
+                        <select required id="status" class="form-select">
+                            <option value="" {{$status == '' ? 'selected' : ''}}>Semua Cabang</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 text-end">
                         <label class="mb-2" style="font-weight: bold">&nbsp;</label><br>
-                        <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2">Filter Data</a>
-                        <a onclick="resetfilter()" class="btn btn-sm btn-danger">Reset Filter</a>
+                        <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2"><i class="bi bi-filter-square"></i> Filter Data</a>
+                        <a onclick="resetfilter()" class="btn btn-sm btn-warning"><i class="bi bi-x-circle"></i> Reset Filter</a>
+                        <a onclick="#" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Hapus</a>
                     </div>
                 </div>
                 <script>
@@ -72,9 +79,12 @@
                     <table class="table table-sm table-hover table-bordered w-100" id="datatable">
                         <thead class="bg-light">
                             <tr>
+                                <th rowspan="2"><input type="checkbox" class="form-check-input checkbox-all"></th>
                                 <th rowspan="2" style="width: 1px;white-space:nowrap">No</th>
                                 @if(Auth::user()->role_id != role('inputer'))
                                 <th rowspan="2" style="white-space: nowrap">Nama Inputer</th>
+                                <th rowspan="2" style="white-space: nowrap">NPP</th>
+                                <th rowspan="2" style="white-space: nowrap">Cabang</th>
                                 @else
                                 <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
                                 @endif
@@ -83,27 +93,28 @@
                                 <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
                                 @endif
                                 <th colspan="2">Lokasi Usaha</th>
-                                <th rowspan="2">Sektor</th>
-                                <th rowspan="2">Sumber</th>
                                 <th rowspan="2">Status</th>
                                 @if(Auth::user()->role_id == 4)
                                 <th rowspan="2">Opsi</th>
                                 @endif
                             </tr>
                             <tr>
-                                <th style="width: 40%!important">Alamat Detail</th>
+                                <th style="width: 30%!important">Alamat Detail</th>
                                 <th>KodePos</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($data as $index=>$a)
                             <tr>
+                                <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td class="text-center pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{$index+1}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_input }}</td>
                                 @else
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
                                 @endif
+                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->npp_input }}</td>
+                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->cabang_input }}</td> <!-- PERLU DICEK -->
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{date('d M Y H:i:s', strtotime($a->created_at))}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
@@ -115,11 +126,9 @@
                                     <a target="_blank" href="{{ route('openfile', ['path' => $a->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
                                 </td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
-                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sektor }}</td>
-                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sumber }} {{($a->dataleads != '' ? '('.$a->dataleads.')' : '')}}</td>
                                 <td class="pointer text-center" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">
-                                    <span class="badge bg-{{ $a->statusdebitur->color }}">{{ $a->statusdebitur->narasi }}</span> <br>
-                                    <span> Dari
+                                    <p class="badge bg-{{ $a->statusdebitur->color }} mb-1"><i class="bi {{ $a->statusdebitur->status_debitur == 3 ? 'bi-check2-all' : 'bi-clock-history' }} "></i> {{ $a->statusdebitur->narasi }}</p>
+                                    <p class="mb-0">
                                         @php
                                             $datas      = $a->toArray();
 
@@ -137,7 +146,7 @@
                                             }
                                         @endphp
                                          Yang Lalu
-                                    </span>
+                                    </p>
 
                                 </td>
                                 @if(Auth::user()->role_id == 4)

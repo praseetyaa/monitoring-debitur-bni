@@ -206,8 +206,7 @@
                 }
 
                 .shadow_anc {
-                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                    box-shadow: 0 0 0.875rem 0 rgb(33 37 41 / 5%)
                 }
 
                 .border_anc {
@@ -233,8 +232,7 @@
                 }
 
             </style>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <h4 style="font-weight: bold"><i class="fa fa-bullhorn"></i> Pengumuman</h4>
+            <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
             <main>
                 @foreach ($pengumuman as $item)
                     @php
@@ -242,21 +240,21 @@
                         $juduls     = base64_encode($item->judul);
                     @endphp
                     <div class="container_anc div" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
-                        <article class="card_anc border_anc curve_anc shadow_anc">
+                        <article class="card_anc curve_anc shadow_anc">
                         <div class="text-center col-1">
                             @if ($item->thumbnail == null && $item->thumbnail == '')
-                                <i class="fa fa-image fa-4x"></i>
+                                <i class="bi bi-card-image"></i>
                             @else
                                 <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
                             @endif
                         </div>
                         <div class="col-11" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
-                            <h4><strong>{{$item->judul}}</strong></h4>
+                            <h5 class="fw-bold">{{$item->judul}}</h5>
                             <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:70%">
                                 {{ strip_tags($item->isi) }}
                             </div>
                             <span style="font-size: 11px">
-                                <i class="fa fa-user"></i>
+                                <i class="bi bi-person"></i>
                                 {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
                             </span>
                         </div>
