@@ -167,7 +167,132 @@
                 window.location.href = NewUrl
             }
         </script>
+    {{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
+        @if(count($pengumuman)>0)
+            <style>
+                .container_anc {
+                    width: 100%;
+                    margin: 1rem auto;
+                }
 
+                .card_anc {
+                    height: 120px;
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 1rem;
+                    overflow: hidden;
+                    background-color: #fff;
+                }
+
+                .card_anc div:first-child {
+                    flex-basis: 25%;
+                }
+
+                .card_anc div:last-child {
+                    flex-basis: 75%;
+                    padding: 0 0.5rem 0.25rem;
+                }
+
+                .card_anc img {
+                    display: block;
+                    width: 100%;
+                    height: 120px;
+                    object-fit: cover;
+                }
+
+                .card_anc p {
+                    margin-top: 0.5rem;
+                    margin-bottom: 0.35rem;
+                }
+
+                .shadow_anc {
+                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                }
+
+                .border_anc {
+                    border: 1px solid #ddd;
+                }
+
+                .curve_anc {
+                    border-radius: 0.35rem;
+                }
+
+                @media (min-width: 768px) {
+                    .container_anc {
+                        max-width: 100%;
+                    }
+
+                    .card_anc div:first-child {
+                        flex-basis: 25%;
+                    }
+
+                    .card_anc div:last-child {
+                        flex-basis: 75%;
+                    }
+                }
+
+            </style>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <h4 style="font-weight: bold"><i class="fa fa-bullhorn"></i> Pengumuman</h4>
+            <main>
+                @foreach ($pengumuman as $item)
+                    @php
+                        $datas      = base64_encode($item->isi);
+                        $juduls     = base64_encode($item->judul);
+                    @endphp
+                    <div class="container_anc div" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
+                        <article class="card_anc border_anc curve_anc shadow_anc">
+                        <div class="text-center col-1">
+                            @if ($item->thumbnail == null && $item->thumbnail == '')
+                                <i class="fa fa-image fa-4x"></i>
+                            @else
+                                <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
+                            @endif
+                        </div>
+                        <div class="col-11" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
+                            <h4><strong>{{$item->judul}}</strong></h4>
+                            <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:70%">
+                                {{ strip_tags($item->isi) }}
+                            </div>
+                            <span style="font-size: 11px">
+                                <i class="fa fa-user"></i>
+                                {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
+                            </span>
+                        </div>
+                        </article>
+                    </div>
+                @endforeach
+            </main>
+
+            <div class="modal fade" id="modal_show_pengumuman" tabindex="-1" aria-labelledby="modal_show_pengumuman" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="modal_judul_pengumuman"></h5>
+                            <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12" id="body_show_pengumuman">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function show_pengumuman(data, judul)
+                {
+                    $('#modal_judul_pengumuman').html(atob(judul))
+                    $('#body_show_pengumuman').html(atob(data));
+                    $('#modal_show_pengumuman').modal('show');
+                }
+            </script>
+        @endif
 
 @endsection
 

@@ -12,6 +12,7 @@ use App\Models\Cabang;
 use App\Models\DataDebitur;
 use App\Models\Kategori;
 use App\Models\MonitoringDetail;
+use App\Models\Pengumuman;
 use App\Models\User;
 
 class DashboardController extends Controller
@@ -27,11 +28,12 @@ class DashboardController extends Controller
         $verifsolicit       = DataDebitur::with('statusdebitur')->where('status_debitur','=',1)->get();
         $appsolicit         = DataDebitur::with('statusdebitur')->where('status_debitur','=',2)->get();
         $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
-
+        $pengumuman         = Pengumuman::whereDate('expired', '>=' ,date('Y-m-d'))->orderBy("tanggal_pebuatan", "desc")->get();
         return view('admin/dashboard/index', [
             'user'              => $user,
             'verifsolicit'      => $verifsolicit,
-            'appsolicit'        => $appsolicit
+            'appsolicit'        => $appsolicit,
+            'pengumuman'        => $pengumuman
         ]);
     }
 }
