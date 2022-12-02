@@ -36,7 +36,7 @@
                                 @endif
                                 @if(Auth::user()->role_id == 6 || Auth::user()->role_id == 3)
                                 <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->nama_input}}">{{$data->nama_input}}</a></div>
+                                    <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->picinputer->attribute->phone_number}}">{{$data->nama_input}} | {{$data->picinputer->attribute->phone_number}}</a></div>
                                 </div>
                                 @endif
                             </div>
@@ -122,7 +122,7 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Detail Alamat</label>
-                            <textarea disabled placeholder="RT/RW, Jalan, Nomor Rumah" name="detail_alamat" id="detail_alamat" class="form-control {{ $errors->has('detail_alamat') ? 'border-danger' : '' }}" value="{{ old('detail_alamat') }}" autofocus></textarea>
+                            <textarea disabled placeholder="RT/RW, Jalan, Nomor Rumah" name="detail_alamat" id="detail_alamat" class="form-control" autofocus>{{ $data->detail_alamat }}</textarea>
                         </div>
                     </div>
                         @if($data->status_debitur > 1)

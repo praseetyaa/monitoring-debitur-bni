@@ -127,9 +127,7 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     });
 
     Route::prefix('solicit')->group(function(){
-        Route::post('/getchilddata', 'SolicitController@getchilddata');
-        Route::post('/GetParentByChild', 'SolicitController@GetParentByChild');
-
+        Route::post('/GetDataByCodePos', 'SolicitController@GetDataByCodePos');
 
         Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
@@ -169,6 +167,13 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/sumberedit/{id?}', 'MstSumberController@edit')->name('sumberedit');
         Route::post('/sumberupdate', 'MstSumberController@update')->name('sumberupdate');
 
+        Route::get('/pengumuman/{ed?}', 'PengumumanController@index')->name('pengumuman');
+        Route::post('/pengumumandelete', 'PengumumanController@delete')->name('pengumumandelete');
+        Route::get('/pengumumancreate', 'PengumumanController@create')->name('pengumumancreate');
+        Route::post('/pengumumanuploadimg', 'PengumumanController@pengumumanuploadimg')->name('pengumumanuploadimg');
+        Route::post('/pengumumanstore', 'PengumumanController@store')->name('pengumumanstore');
+        Route::get('/pengumumanedit/{id?}', 'PengumumanController@edit')->name('pengumumanedit');
+        Route::post('/pengumumanupdate', 'PengumumanController@update')->name('pengumumanupdate');
     });
 
     // Users Settings

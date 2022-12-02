@@ -117,7 +117,29 @@
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sektor }}</td>
                                 <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->sumber }} {{($a->dataleads != '' ? '('.$a->dataleads.')' : '')}}</td>
-                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')"><span class="badge bg-{{ $a->statusdebitur->color }}">{{ $a->statusdebitur->narasi }}</span>  </td>
+                                <td class="pointer text-center" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">
+                                    <span class="badge bg-{{ $a->statusdebitur->color }}">{{ $a->statusdebitur->narasi }}</span> <br>
+                                    <span> Dari
+                                        @php
+                                            $datas      = $a->toArray();
+
+                                            $from       = date_create(date('Y-m-d', strtotime($datas[$a->statusdebitur->kolom_acuan_waktu])));
+                                            $to         = date_create(date('Y-m-d'));
+                                            $diff       = date_diff($to,$from);
+                                            if($diff->format('%a') <= 34)
+                                            {
+                                                echo $diff->format('%a Hari');
+                                            }
+                                            else
+                                            {
+                                                echo round($diff->format('%a')/30.417 , 0).' Bulan';
+;
+                                            }
+                                        @endphp
+                                         Yang Lalu
+                                    </span>
+
+                                </td>
                                 @if(Auth::user()->role_id == 4)
                                 <td class="text-center" style="white-space: nowrap">
                                     @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1)

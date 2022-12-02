@@ -107,106 +107,59 @@
                         <div class="col-md-12 mb-2 text-center">
                             <a class="btn btn-primary btn-block" onclick="GetLocation()">Ambil Data lokasi</a>
                         </div>
-                        {{-- <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
-                            <select required name="provinsi" id="provinsi" class="form-select {{ $errors->has('provinsi') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Provinsi--</option>
-                                @foreach($Provinsi as $c)
-                                <option value="{{ $c->id_provinsi }}_{{ $c->nama_provinsi }}" {{ old('provinsi') == $c->id_provinsi ? 'selected' : '' }}>{{ $c->nama_provinsi }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('provinsi'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
+
                         <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kabupaten/Kota<span class="text-danger">*</span></label>
-                            <select required name="kota" id="kota" class="form-select {{ $errors->has('kota') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kabupaten/Kota--</option>
-                            </select>
-                            @if($errors->has('kota'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kecamatan<span class="text-danger">*</span></label>
-                            <select required name="kecamatan" id="kecamatan" class="form-select {{ $errors->has('kecamatan') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kecamatan--</option>
-                            </select>
-                            @if($errors->has('kecamatan'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Desa<span class="text-danger">*</span></label>
-                            <select required name="desa" id="desa" class="form-select {{ $errors->has('desa') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Desa--</option>
-                            </select>
-                            @if($errors->has('desa'))
-                            <div class="small text-danger">{{ $errors->first('desa') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kode Pos<span class="text-danger">*</span></label>
-                            <select required name="kodepos" id="kodepos" class="form-select {{ $errors->has('kodepos') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kode Pos--</option>
-                            </select>
-                            @if($errors->has('provinsi'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div> --}}
-                        <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Latitude<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Latitude</label>
                             <input readonly placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control {{ $errors->has('latitude') ? 'border-danger' : '' }}" value="{{ old('latitude') }}" autofocus>
                             @if($errors->has('latitude'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Longitude<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Longitude</label>
                             <input readonly placeholder="Longitude" type="text" name="longitude" id="longitude" class="form-control {{ $errors->has('longitude') ? 'border-danger' : '' }}" value="{{ old('longitude') }}" autofocus>
                             @if($errors->has('longitude'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Provinsi</label>
                             <input readonly placeholder="Provinsi" type="text" name="provinsi" id="provinsi" class="form-control {{ $errors->has('provinsi') ? 'border-danger' : '' }}" value="{{ old('provinsi') }}" autofocus>
                             @if($errors->has('provinsi'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kabupaten/Kota<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Kabupaten/Kota</label>
                             <input readonly placeholder="Kabupaten/Kota" type="text" name="kota" id="kota" class="form-control {{ $errors->has('kota') ? 'border-danger' : '' }}" value="{{ old('kota') }}" autofocus>
                             @if($errors->has('kota'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kecamatan<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Kecamatan</label>
                             <input readonly placeholder="Kecamatan" type="text" name="kecamatan" id="kecamatan" class="form-control {{ $errors->has('kecamatan') ? 'border-danger' : '' }}" value="{{ old('kecamatan') }}" autofocus>
                             @if($errors->has('kecamatan'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Desa<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Desa</label>
                             <input readonly placeholder="Desa" type="text" name="desa" id="desa" class="form-control {{ $errors->has('desa') ? 'border-danger' : '' }}" value="{{ old('desa') }}" autofocus>
                             @if($errors->has('desa'))
                             <div class="small text-danger">{{ $errors->first('desa') }}</div>
                             @endif
                         </div>
                         <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kode Pos<span class="text-danger">*</span></label>
+                            <label class="mb-2"  style="font-weight: bold">Kode Pos</label>
                             <input readonly placeholder="Kode Pos" type="text" name="kodepos" id="kodepos" class="form-control {{ $errors->has('kodepos') ? 'border-danger' : '' }}" value="{{ old('kodepos') }}" autofocus>
                             @if($errors->has('provinsi'))
                             <div class="small text-danger">{{ $errors->first('sektor') }}</div>
                             @endif
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Detail Alamat</label>
-                            <textarea placeholder="RT/RW, Jalan, Nomor Rumah" name="detail_alamat" id="detail_alamat" class="form-control {{ $errors->has('detail_alamat') ? 'border-danger' : '' }}" value="{{ old('detail_alamat') }}" autofocus></textarea>
+                            <label class="mb-2"  style="font-weight: bold">Detail Alamat<span class="text-danger">*</span></label>
+                            <textarea required placeholder="RT/RW, Jalan, Nomor Rumah" name="detail_alamat" id="detail_alamat" class="form-control {{ $errors->has('detail_alamat') ? 'border-danger' : '' }}" value="{{ old('detail_alamat') }}" autofocus></textarea>
                             @if($errors->has('detail_alamat'))
                                 <div class="small text-danger">{{ $errors->first('detail_alamat') }}</div>
                             @endif
@@ -232,18 +185,7 @@
     var DataLong    = '';
 
     $(document).ready(function(){
-        // $('#provinsi').on('change', function(){
-        //     GetChild('provinsi', this.value)
-        // })
-        // $('#kota').on('change', function(){
-        //     GetChild('kota', this.value)
-        // })
-        // $('#kecamatan').on('change', function(){
-        //     GetChild('kecamatan', this.value)
-        // })
-        // $('#desa').on('change', function(){
-        //     GetChild('desa', this.value)
-        // })
+
         $('#sumber').on('change', function(){
             if(this.value == 'Data Leads')
             {
@@ -298,6 +240,9 @@
         DataLat     = data.coords.latitude;
         DataLong    = data.coords.longitude;
 
+        // DataLat     = -7.514271;
+        // DataLong    = 110.516980;
+
         $('#latitude ').val(DataLat)
         $('#longitude').val(DataLong)
         var url     = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="+DataLat+"&lon="+DataLong+""
@@ -307,124 +252,76 @@
     function AfterGetLatlong(data)
     {
         swal.close()
-        $('#provinsi').val(data.address.state)
-        $('#kota').val(data.address.city)
-        $('#kecamatan').val(data.address.city_district)
-        $('#desa').val(data.address.village)
-        $('#kodepos').val(data.address.postcode)
-        $('#detail_alamat').val(data.display_name)
 
-        if(data.address.city_district == '' && data.address.village != '' && data.address.city != '')
+        if(data.address.city == 'Special Capital Region of Jakarta')
         {
-            GetParentByChild('kecamatan', data.address.village, data.address.city)
-            // GetParentByChild('kecamatan', 'CANDI', 'SEMARANG')
+            $('#provinsi').val(data.address.city)
+            $('#kota').val(data.address.city_district)
+            $('#kecamatan').val(data.address.municipality)
+            $('#desa').val(data.address.neighbourhood)
+            $('#kodepos').val(data.address.postcode)
+            $('#detail_alamat').val(data.display_name)
+        }
+        else if(data.address.state == 'Special Region of Yogyakarta')
+        {
+            $('#provinsi').val(data.address.state)
+            $('#kota').val(data.address.county)
+            $('#kecamatan').val(data.address.municipality)
+            $('#desa').val(data.address.village)
+            $('#kodepos').val(data.address.postcode)
+            $('#detail_alamat').val(data.display_name)
+        }
+        else
+        {
+            $('#provinsi').val(data.address.state)
+            $('#kota').val(data.address.city)
+            $('#kecamatan').val(data.address.city_district != undefined ? data.address.city_district : data.address.municipality)
+            $('#desa').val(data.address.village != undefined ? data.address.village : data.address.neighbourhood)
+            $('#kodepos').val(data.address.postcode)
+            $('#detail_alamat').val(data.display_name)
         }
 
-        if(data.address.city_district == '' && data.address.postcode != '' && data.address.city != '')
+        if(data.address.postcode != undefined || data.address.postcode != '')
         {
-            GetParentByChild('desa', data.address.postcode, data.address.city)
-        }
-
-        if(data.address.postcode == '' && data.address.village != '' && data.address.city != '')
-        {
-            GetParentByChild('kodepos', data.address.village, data.address.city)
-        }
-
-        if(data.address.state != '')
-        {
-            GetParentByChild('provinsi', data.address.city, '')
+            if(data.address.city != 'Special Capital Region of Jakarta' && data.address.state != 'Special Region of Yogyakarta')
+            {
+                if($('#desa').val() == '')
+                {
+                    GetDataByCodePos(data.address.postcode, 'desa')
+                }
+                if($('#kecamatan').val() == '')
+                {
+                    GetDataByCodePos(data.address.postcode, 'kecamatan')
+                }
+                if($('#kota').val() == '')
+                {
+                    GetDataByCodePos(data.address.postcode, 'kota')
+                }
+                if($('#provinsi').val() == '')
+                {
+                    GetDataByCodePos(data.address.postcode, 'provinsi')
+                }
+            }
         }
     }
 
-
-    function GetParentByChild(parent, childparam, grandparentparam)
+    function GetDataByCodePos(kodepos, finddata)
     {
         url = "{{url('solicit')}}";
         var datas = new FormData();
-        datas.append('grandparentparam',grandparentparam);
-        datas.append('parent',parent);
-        datas.append('childparam',childparam);
+        datas.append('kodepos',kodepos);
+        datas.append('finddata',finddata);
         datas.append('_token','{{csrf_token()}}');
-        sendFormData(url+'/GetParentByChild',datas, AfterGetParentByChild);
+        sendFormData(url+'/GetDataByCodePos',datas, AfterGetDataByCodePos);
     }
 
-    function AfterGetParentByChild(data)
+    function AfterGetDataByCodePos(data)
     {
         swal.close()
-        if(data.parentparam != '')
+        if(data[data.finddata] != '')
         {
-            $('#'+data.parent).val(data.parentparam)
+            $('#'+data.finddata).val(data[data.finddata])
         }
-        // console.log(data)
     }
-
-
-    // function GetChild(parent, idparent)
-    // {
-    //     url = "{{url('solicit')}}";
-    //     var datas = new FormData();
-    //     datas.append('parent',parent);
-    //     datas.append('idparent',idparent);
-    //     datas.append('_token','{{csrf_token()}}');
-    //     sendFormData(url+'/getchilddata',datas,AfterGetChild);
-    // }
-
-    // function AfterGetChild(data)
-    // {
-    //     Swal.close()
-
-    //     if(data.parent == 'provinsi')
-    //     {
-    //         $('.selectkota').remove();
-    //         $('.selectkecamatan').remove();
-    //         $('.selectdesa').remove();
-    //         $('.selectkodepos').remove();
-    //         var datas = ''
-    //         data.data.forEach(element => {
-    //             datas += "<option class='selectkota' value='"+element.id_kota+"_"+element.nama_kota+"' {{ old('kota') == "+element.id_kota+" ? 'selected' : '' }}>"+element.nama_kota+"</option>"
-    //         });
-    //         $('#kota').append(datas)
-    //         $('#kota').val('')
-    //         $('#kecamatan').val('')
-    //         $('#desa').val('')
-    //         $('#kodepos').val('')
-    //     }
-    //     else if(data.parent == 'kota')
-    //     {
-    //         $('.selectkecamatan').remove();
-    //         $('.selectdesa').remove();
-    //         $('.selectkodepos').remove();
-    //         var datas = ''
-    //         data.data.forEach(element => {
-    //             datas += "<option class='selectkecamatan' value='"+element.id_kecamatan+"_"+element.nama_kecamatan+"' {{ old('kecamatan') == "+element.id_kecamatan+" ? 'selected' : '' }}>"+element.nama_kecamatan+"</option>"
-    //         });
-    //         $('#kecamatan').append(datas)
-    //         $('#kecamatan').val('')
-    //         $('#desa').val('')
-    //         $('#kodepos').val('')
-    //     }
-    //     else if(data.parent == 'kecamatan')
-    //     {
-    //         $('.selectdesa').remove();
-    //         $('.selectkodepos').remove();
-    //         var datas = ''
-    //         data.data.forEach(element => {
-    //             datas += "<option class='selectdesa' value='"+element.id_desa+"_"+element.nama_desa+"' {{ old('desa') == "+element.id_desa+" ? 'selected' : '' }}>"+element.nama_desa+"</option>"
-    //         });
-    //         $('#desa').append(datas)
-    //         $('#desa').val('')
-    //         $('#kodepos').val('')
-    //     }
-    //     else if(data.parent == 'desa')
-    //     {
-    //         $('.selectkodepos').remove();
-    //         var datas = ''
-    //         data.data.forEach(element => {
-    //             datas += "<option class='selectkodepos' value='"+element.id_kodepos+"_"+element.kodepos+"' {{ old('kodepos') == "+element.id_kodepos+" ? 'selected' : '' }}>"+element.kodepos+"</option>"
-    //         });
-    //         $('#kodepos').append(datas)
-    //         $('#kodepos').val('')
-    //     }
-    // }
 </script>
 @endsection
