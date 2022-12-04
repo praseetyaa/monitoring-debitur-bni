@@ -1,6 +1,6 @@
 @extends('faturhelper::layouts/admin/main')
 
-@section('title', 'Data Solicit')
+@section('title', $title)
 
 @section('content')
 <style>
@@ -16,8 +16,8 @@
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-2 mb-sm-0">Data Solicit</h1>
-    @if(in_array(Auth::user()->role_id, array(1,4,5)))
+    <h1 class="h3 mb-2 mb-sm-0">{{$title}}</h1>
+    @if(in_array(Auth::user()->role_id, array(1,4,5)) && Request::route()->getName() == 'DataSol')
         <div class="btn-group">
             <a href="{{ route('solicitcreate') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Input Solicit</a>
         </div>
@@ -76,21 +76,28 @@
                                 $('#cabang').attr('disabled', true)
                             }
 
-                            console.log("{{Request::route()->getName()}}")
+                            if("{{Request::route()->getName() != 'DataSol'}}")
+                            {
+                                $('#status').attr('disabled', true)
+                            }
                         })
                         function resetfilter()
                         {
-                            var NewUrl = "<?= URL::to('DataDeb/') ?>"
+                            routename = "{{Request::route()->getName()}}"
+                            console.log(routename);
+                            var NewUrl = "<?= URL::to('"+routename+"/') ?>"
                             window.location.href = NewUrl
                         }
                         function setfilter()
                         {
+                            routename = "{{Request::route()->getName()}}"
+                            routename = routename.replace('Menu', '')
                             var stard = $('#startd').val() != '' ?  $('#startd').val() : null
                             var endd = $('#endd').val() != '' ?  $('#endd').val() : null
                             var status = $('#status').val() != '' ?  $('#status').val() : null
                             var cabang = $('#cabang').val() != '' ?  $('#cabang').val() : null
 
-                            var NewUrl = "<?= URL::to('DataDeb/"+stard+"/"+endd+"/"+status+"/"+cabang+"') ?>"
+                            var NewUrl = "<?= URL::to('"+routename+"/"+stard+"/"+endd+"/"+status+"/"+cabang+"') ?>"
                             window.location.href = NewUrl
                         }
                     </script>
@@ -100,7 +107,7 @@
                             <div class="col-md-12 text-center">
                                 @if(in_array(Auth::user()->role_id, array(6)))
                                     <a onclick="action_all('verif')" class="btn btn-sm btn-primary">Verif Data Terpilih</a>
-                                @elseif(in_array(Auth::user()->role_id, array(3)))
+                                @elseif(in_array(Auth::user()->role_id, array(3)) && Request::route()->getName() == 'DataSol')
                                     <a onclick="action_all('app')" class="btn btn-sm btn-primary">Approve Data Terpilih</a>
                                 @endif
                                 <a onclick="action_all('deny')" class="btn btn-sm btn-warning">Tolak Data Terpilih</a>
@@ -109,8 +116,6 @@
                         </div>
                     @endif
                 @endif
-
-
 
                 <div class="table-responsive">
                     <table class="table table-sm table-hover table-bordered w-100" id="datatable">
@@ -149,31 +154,31 @@
                                     <td class="text-center">
                                         @if(Auth::user()->role_id == 6 && $a->status_debitur == 1)
                                             <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
-                                        @elseif(Auth::user()->role_id == 3 && $a->status_debitur == 2)
+                                        @elseif(Auth::user()->role_id == 3 && ($a->status_debitur == 2 || $a->status_debitur == 3))
                                             <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
                                         @endif
                                     </td>
                                 @endif
-                                <td class="text-center pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{$index+1}}</td>
+                                <td class="text-center pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{$index+1}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
-                                    <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_input }}</td>
-                                    <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->npp_input }}</td>
-                                    <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
+                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_input }}</td>
+                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->npp_input }}</td>
+                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
                                 @else
-                                    <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
+                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
                                 @endif
-                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{date('d M Y H:i:s', strtotime($a->created_at))}}</td>
+                                <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{date('d M Y H:i:s', strtotime($a->created_at))}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
-                                    <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
+                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
                                 @endif
                                 <td>
-                                    <span  class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">
+                                    <span  class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">
                                         {{ $a->detail_alamat }}
                                     </span> <br>
                                     <a target="_blank" href="{{ route('openfile', ['path' => $a->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
                                 </td>
-                                <td class="pointer" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
-                                <td class="pointer text-center" onclick="OpenURL('solicit/solicitdetail/{{ $a->id }}')">
+                                <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
+                                <td class="pointer text-center" onclick="OpenURL('datadebdetail/{{ $a->id }}')">
                                     <p class="badge bg-{{ $a->statusdebitur->color }} mb-1"><i class="bi {{ $a->statusdebitur->status_debitur == 3 ? 'bi-check2-all' : 'bi-clock-history' }} "></i> {{ $a->statusdebitur->narasi }}</p>
                                     <p class="mb-0">
                                         @php
@@ -196,12 +201,12 @@
 
                                 </td>
                                 @if(Auth::user()->role_id == 4)
-                                <td class="text-center" style="white-space: nowrap">
-                                    @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1)
-                                        <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
-                                    @endif
-                                </td>
+                                    <td class="text-center" style="white-space: nowrap">
+                                        @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1 && Request::route()->getName() == 'DataSol')
+                                            <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                            <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
+                                        @endif
+                                    </td>
                                 @endif
                             </tr>
                             @endforeach
@@ -221,18 +226,22 @@
 <form class="d-none" id="solicitdeleteall" method="post" action="{{ route('solicitdeleteall') }}">
     @csrf
     <input type="hidden" name="id" id="id_deleteall">
+    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
 <form class="d-none" id="solicitdenyall" method="post" action="{{ route('solicitdenyall') }}">
     @csrf
     <input type="hidden" name="id" id="id_denyall">
+    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
 <form class="d-none" id="solicitverifall" method="post" action="{{ route('solicitverifall') }}">
     @csrf
     <input type="hidden" name="id" id="id_verifall">
+    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
 <form class="d-none" id="solicitappall" method="post" action="{{ route('solicitappall') }}">
     @csrf
     <input type="hidden" name="id" id="id_appall">
+    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
 <script>
     $(document).ready(function(){

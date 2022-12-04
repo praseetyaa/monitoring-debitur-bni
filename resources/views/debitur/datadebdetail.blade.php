@@ -153,6 +153,8 @@
                             @if(Auth::user()->role_id == 3)
                                 @if($data->status_debitur == 2)
                                     <a class="btn btn-primary" onclick="openmodal('mdlappsolicit')">Approval Solicit</a>
+                                @elseif($data->status_debitur == 3)
+                                    <a class="btn btn-primary" onclick="openmodal('mdlprospekdata')">Prospek Data</a>
                                 @endif
                             @endif
                         </div
@@ -221,6 +223,61 @@
                     <div class="row">
                         <div class="col-md-12 mb-2 mt-2 text-center">
                             <button type="submit" class="btn btn-primary">Ya, Setujui</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="mdlprospekdata" tabindex="-1" aria-labelledby="mdlverifikasi" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ModalShowListLabel">Prospek Data</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ route('prospekdata') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Nominal Usulan</label>
+                            <input required placeholder="Nominal Usulan" type="number" step="any" name="nominal_usulan" class="form-control" value="" autofocus>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Jenis Fasilitas</label>
+                            <select required name="jenis_fasilitas" id="jenis_fasilitas" class="form-select">
+                                <option value="" disabled selected>-- Pilih Jenis Fasilitas --</option>
+                                @foreach($mst_jenis_fasilitas as $c)
+                                    <option value="{{ $c->jenis_fasilitas }}">{{ $c->jenis_fasilitas }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Skim</label>
+                            <select required name="skim" id="skim" class="form-select">
+                                <option value="" disabled selected>-- Pilih Skim --</option>
+                                @foreach($mst_skim as $c)
+                                    <option value="{{ $c->skim }}">{{ $c->skim }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Kewenangan Komite</label>
+                            <select required name="kewenangan_komite" id="kewenangan_komite" class="form-select">
+                                <option value="" disabled selected>-- Pilih Kewenangan --</option>
+                                <option value="Komite SBE/STA">Komite SBE/STA</option>
+                                <option value="Komite Wilayah">Komite Wilayah</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Update Data</button>
                         </div>
                     </div>
                 </form>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\DataDebitur;
+use App\Models\Jenis_Fasilitas;
 use App\Models\Sektor;
+use App\Models\SKIM;
 use App\Models\StatusDebitur;
 use App\Models\Sumber;
 use App\Models\User;
@@ -22,8 +24,8 @@ class SolicitController extends Controller
 {
     public function index($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
-        $DCabang = Cabang::get();
-        $StatusDebitur = StatusDebitur::get();
+        $DCabang        = Cabang::get();
+        $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
@@ -40,6 +42,7 @@ class SolicitController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
+                ->where('status_debitur', '<', 3)
                 ->get();
         return view('debitur/solicit/solicit',[
             'data'  => $data,
@@ -48,7 +51,39 @@ class SolicitController extends Controller
             'status'    =>$status_deb,
             'cabang'     => $cabang,
             'StatusDebitur' => $StatusDebitur,
-            'DCabang'        => $DCabang
+            'DCabang'        => $DCabang,
+            'title'     => 'Data Solicit'
+        ]);
+    }
+
+    public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '')
+    {
+        $DCabang = Cabang::get();
+        $StatusDebitur = StatusDebitur::get();
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
+                ->when(Auth::user()->role_id == 4, function($query){
+                    $query->where('id_input', Auth::user()->id);
+                })
+                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
+                    $query->whereDate('created_at', '>=' ,$startd);
+                })
+                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
+                    $query->whereDate('created_at', '<=' ,$endd);
+                })
+                ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
+                    $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
+                })
+                ->where('status_debitur', 3)
+                ->get();
+        return view('debitur/solicit/solicit',[
+            'data'  => $data,
+            'startd'    =>$startd,
+            'endd'    =>$endd,
+            'status'    =>3,
+            'cabang'     => $cabang,
+            'StatusDebitur' => $StatusDebitur,
+            'DCabang'        => $DCabang,
+            'title'     => 'Data Prospek'
         ]);
     }
 
@@ -160,16 +195,19 @@ class SolicitController extends Controller
 
         $data->save();
 
-        return redirect()->route('solicit')->with(['message' => 'Berhasil menambah data.']);
+        return redirect()->route('DataSol')->with(['message' => 'Berhasil menambah data.']);
     }
 
     public function detail($id)
     {
-        $data       = DataDebitur::with('statusdebitur', 'picinputer.attribute')->findOrFail($id);
-        return view('debitur/solicit/solicitdetail', [
-            'data'      => $data
+        $mst_jenis_fasilitas    = Jenis_Fasilitas::get();
+        $mst_skim               = SKIM::get();
+        $data                   = DataDebitur::with('statusdebitur', 'picinputer.attribute')->findOrFail($id);
+        return view('debitur/datadebdetail', [
+            'data'                      => $data,
+            'mst_skim'                  => $mst_skim,
+            'mst_jenis_fasilitas'       => $mst_jenis_fasilitas
         ]);
-
     }
 
     public function edit($id)
@@ -185,7 +223,6 @@ class SolicitController extends Controller
             'data'      => $data
         ]);
     }
-
 
     public function update(Request $request)
     {
@@ -224,7 +261,7 @@ class SolicitController extends Controller
         $data->tanggal_update               = date('Y-m-d H:i:s');
 
         $data->save();
-        return redirect()->route('solicit')->with(['message' => 'Berhasil mengupdate data.']);
+        return redirect()->route('DataSol')->with(['message' => 'Berhasil mengupdate data.']);
     }
 
     public function verifisolicit(Request $request)
@@ -240,7 +277,7 @@ class SolicitController extends Controller
         $data->status_debitur   = 2;
         $data->tanggal_verif    = date('Y-m-d H:i:s');
         $data->save();
-        return redirect()->route('solicitdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Memverifikasi Data']);
+        return redirect()->route('datadebdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Memverifikasi Data']);
     }
 
     public function appsolicit(Request $request)
@@ -253,7 +290,7 @@ class SolicitController extends Controller
         $data->status_debitur     = 3;
         $data->tanggal_approve    = date('Y-m-d H:i:s');
         $data->save();
-        return redirect()->route('solicitdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
+        return redirect()->route('datadebdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
     }
 
 
@@ -272,7 +309,7 @@ class SolicitController extends Controller
 
         $data = DataDebitur::find($request->id);
         $data->delete();
-        return redirect()->route('solicit')->with(['message' => 'Berhasil menghapus data.']);
+        return redirect()->route('DataSol')->with(['message' => 'Berhasil menghapus data.']);
     }
 
 
@@ -296,7 +333,7 @@ class SolicitController extends Controller
                 }
             }
         }
-        return redirect()->route('solicit', ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
+        return redirect()->route($request->routename, ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
     }
 
 
@@ -323,7 +360,7 @@ class SolicitController extends Controller
                 }
             }
         }
-        return redirect()->route('solicit', ['id'=>$request->id])->with(['message' => 'Berhasil Memverifikasi Data']);
+        return redirect()->route($request->routename, ['id'=>$request->id])->with(['message' => 'Berhasil Memverifikasi Data']);
     }
 
     public function solicitdenyall(Request $request)
@@ -346,7 +383,7 @@ class SolicitController extends Controller
                 }
             }
         }
-        return redirect()->route('solicit')->with(['message' => 'Berhasil menolak data.']);
+        return redirect()->route($request->routename)->with(['message' => 'Berhasil menolak data.']);
     }
 
     public function solicitdeleteall(Request $request)
@@ -371,8 +408,27 @@ class SolicitController extends Controller
                 }
             }
         }
-        return redirect()->route('solicit')->with(['message' => 'Berhasil menghapus data.']);
+        return redirect()->route($request->routename)->with(['message' => 'Berhasil menghapus data.']);
     }
+
+    public function prospekdata(Request $request)
+    {
+        $user              = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data              = DataDebitur::find($request->id);
+
+        $data->nominal_usulan           = $request->nominal_usulan;
+        $data->jenis_fasilitas          = $request->jenis_fasilitas;
+        $data->skim                     = $request->skim;
+        $data->kewenangan_komite        = $request->kewenangan_komite;
+        $data->id_update_prospek        = $user->id;
+        $data->nama_update_prospek      = $user->name;
+        $data->npp_update_prospek       = $user->attribute->npp;
+        $data->status_debitur           = 4;
+        $data->tanggal_update_prospek   = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->route('MenuDataPros')->with(['message' => 'Berhasil mengupdate data.']);
+    }
+
 
 
 }

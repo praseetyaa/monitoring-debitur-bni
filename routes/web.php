@@ -122,7 +122,6 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/monitoring/delete', 'MonitoringController@delete')->name('admin.monitoring.delete');
     Route::post('/admin/monitoring/delete-bulk', 'MonitoringController@deleteBulk')->name('admin.monitoring.delete-bulk');
 
-
     Route::prefix('monitoring')->group(function(){
         Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
     });
@@ -130,13 +129,14 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/{id_user?}/{status?}', 'SolicitController@daftarmonitoring')->name('daftarmonitoring');
     });
 
-    Route::prefix('DataDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@index')->name('solicit');
-    });
-    Route::prefix('DataDeb')->group(function(){
-        Route::get('/{start?}/{end?}/3/{cabang?}', 'SolicitController@index')->name('prospek');
+    Route::prefix('DataSol')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@index')->name('DataSol');
     });
 
+    Route::prefix('DataPros')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@DataPros')->name('DataPros');
+        Route::post('/prospekdata', 'SolicitController@prospekdata')->name('prospekdata');
+    });
     Route::prefix('solicit')->group(function(){
         Route::post('/GetDataByCodePos', 'SolicitController@GetDataByCodePos');
 
@@ -147,7 +147,6 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
         Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');
         Route::get('/solicitedit/{id?}', 'SolicitController@edit')->name('solicitedit');
-        Route::get('/solicitdetail/{id?}', 'SolicitController@detail')->name('solicitdetail');
         Route::post('/solicitupdate', 'SolicitController@update')->name('solicitupdate');
         Route::post('/verifisolicit', 'SolicitController@verifisolicit')->name('verifisolicit');
         Route::post('/solicitverifall', 'SolicitController@solicitverifall')->name('solicitverifall');
@@ -156,6 +155,11 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::post('/solicitappall', 'SolicitController@solicitappall')->name('solicitappall');
 
     });
+
+    Route::prefix('datadebdetail')->group(function(){
+        Route::get('/{id?}', 'SolicitController@detail')->name('datadebdetail');
+    });
+
     Route::get('/openfile/{path?}/{name?}', 'SolicitController@openfile')->name('openfile');
 
     Route::prefix('master')->group(function(){

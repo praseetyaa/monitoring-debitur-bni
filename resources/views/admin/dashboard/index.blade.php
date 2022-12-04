@@ -97,6 +97,16 @@
                             </div>
                         </a>
                     @endif
+
+                    @if(count($needprospek)>0)
+                        <a onclick="needprospek()">
+                            <div class="alert alert-success" role="alert">
+                                <div class="alert-message d-flex align-items-center">
+                                    {{count($needprospek)}} Data Prospek memerlukan tindak lanjut dari anda, klik disini untuk melihat
+                                </div>
+                            </div>
+                        </a>
+                    @endif
                 @endif
             </div>
         </div>
@@ -135,7 +145,7 @@
                 var verifsolicit= @json($verifsolicit);
                 var bodytable       = '';
                 verifsolicit.forEach(function(val, i){
-                    bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('solicit/solicitdetail/`+val['id']+`')">
+                    bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
                                         <td class='text-center'>`+(i+1)+`</td>
                                         <td>`+val['nama_debitur']+`</td>
                                         <td>`+val['sektor']+`</td>
@@ -151,7 +161,23 @@
                 var appsolicit= @json($appsolicit);
                 var bodytable       = '';
                 appsolicit.forEach(function(val, i){
-                    bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('solicit/solicitdetail/`+val['id']+`')">
+                    bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                        <td class='text-center'>`+(i+1)+`</td>
+                                        <td>`+val['nama_debitur']+`</td>
+                                        <td>`+val['sektor']+`</td>
+                                    </tr>`
+                });
+                $('#BodyModalShowList').html(bodytable);
+                $('#ModalShowList').modal('show');
+            }
+
+            function needprospek()
+            {
+                $('#ModalShowListLabel').html('Daftar Prospek')
+                var needprospek= @json($needprospek);
+                var bodytable       = '';
+                needprospek.forEach(function(val, i){
+                    bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
                                         <td class='text-center'>`+(i+1)+`</td>
                                         <td>`+val['nama_debitur']+`</td>
                                         <td>`+val['sektor']+`</td>

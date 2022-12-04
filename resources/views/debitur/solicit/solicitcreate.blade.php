@@ -170,7 +170,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
                             <button type="submit" class="btn btn-primary"><i class="bi-save me-1"></i> Submit</button>
-                            <a href="{{ route('solicit') }}" class="btn btn-secondary"><i class="bi-arrow-left me-1"></i> Kembali</a>
+                            <a href="{{ route('DataSol') }}" class="btn btn-secondary"><i class="bi-arrow-left me-1"></i> Kembali</a>
                         </div>
                     </div>
                 </form>

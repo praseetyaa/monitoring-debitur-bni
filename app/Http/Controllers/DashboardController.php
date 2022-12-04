@@ -27,12 +27,14 @@ class DashboardController extends Controller
     {
         $verifsolicit       = DataDebitur::with('statusdebitur')->where('status_debitur','=',1)->get();
         $appsolicit         = DataDebitur::with('statusdebitur')->where('status_debitur','=',2)->get();
+        $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->get();
         $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
         $pengumuman         = Pengumuman::whereDate('expired', '>=' ,date('Y-m-d'))->orderBy("tanggal_pebuatan", "desc")->get();
         return view('admin/dashboard/index', [
             'user'              => $user,
             'verifsolicit'      => $verifsolicit,
             'appsolicit'        => $appsolicit,
+            'needprospek'       => $needprospek,
             'pengumuman'        => $pengumuman
         ]);
     }
