@@ -122,21 +122,39 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/monitoring/delete', 'MonitoringController@delete')->name('admin.monitoring.delete');
     Route::post('/admin/monitoring/delete-bulk', 'MonitoringController@deleteBulk')->name('admin.monitoring.delete-bulk');
 
-    Route::prefix('daftarsolicit')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}', 'SolicitController@index')->name('solicit');
+
+    Route::prefix('monitoring')->group(function(){
+        Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
+    });
+    Route::prefix('daftarmonitoring')->group(function(){
+        Route::get('/{id_user?}/{status?}', 'SolicitController@daftarmonitoring')->name('daftarmonitoring');
+    });
+
+    Route::prefix('DataDeb')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@index')->name('solicit');
+    });
+    Route::prefix('DataDeb')->group(function(){
+        Route::get('/{start?}/{end?}/3/{cabang?}', 'SolicitController@index')->name('prospek');
     });
 
     Route::prefix('solicit')->group(function(){
         Route::post('/GetDataByCodePos', 'SolicitController@GetDataByCodePos');
 
         Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');
+        Route::post('/solicitdeleteall', 'SolicitController@solicitdeleteall')->name('solicitdeleteall');
+        Route::post('/solicitdenyall', 'SolicitController@solicitdenyall')->name('solicitdenyall');
+
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
         Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');
         Route::get('/solicitedit/{id?}', 'SolicitController@edit')->name('solicitedit');
         Route::get('/solicitdetail/{id?}', 'SolicitController@detail')->name('solicitdetail');
         Route::post('/solicitupdate', 'SolicitController@update')->name('solicitupdate');
         Route::post('/verifisolicit', 'SolicitController@verifisolicit')->name('verifisolicit');
+        Route::post('/solicitverifall', 'SolicitController@solicitverifall')->name('solicitverifall');
+
         Route::post('/appsolicit', 'SolicitController@appsolicit')->name('appsolicit');
+        Route::post('/solicitappall', 'SolicitController@solicitappall')->name('solicitappall');
+
     });
     Route::get('/openfile/{path?}/{name?}', 'SolicitController@openfile')->name('openfile');
 

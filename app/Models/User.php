@@ -56,8 +56,23 @@ class User extends \Ajifatur\FaturHelper\Models\User
     /**
      * Monitoring.
      */
-    public function monitoring()
+    // public function monitoring()
+    // {
+    //     return $this->hasMany(Monitoring::class);
+    // }
+
+    public function datainput()
     {
-        return $this->hasMany(Monitoring::class);
+        return $this->hasMany(DataDebitur::class, 'id_input', 'id');
+    }
+
+    public function dataverif()
+    {
+        return $this->hasMany(DataDebitur::class, 'id_verif', 'id');
+    }
+
+    public function dataapp()
+    {
+        return $this->hasMany(DataDebitur::class, 'id_approve', 'id');
     }
 }

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class SolicitController extends Controller
+class ProspekController extends Controller
 {
     public function index($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
