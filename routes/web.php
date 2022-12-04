@@ -143,6 +143,8 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');
         Route::post('/solicitdeleteall', 'SolicitController@solicitdeleteall')->name('solicitdeleteall');
         Route::post('/solicitdenyall', 'SolicitController@solicitdenyall')->name('solicitdenyall');
+        Route::post('/solicitdeny', 'SolicitController@solicitdeny')->name('solicitdeny');
+
 
         Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
         Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');

@@ -146,12 +146,14 @@
                         <div class="col-md-12 text-center">
                             @if(Auth::user()->role_id == 6)
                                 @if($data->status_debitur == 1)
+                                    <a onclick="deny()" class="btn btn-warning">Tolak Solicit</a>
                                     <a class="btn btn-primary" onclick="openmodal('mdlverifikasi')">Verifikasi Solicit</a>
                                 @endif
                             @endif
 
                             @if(Auth::user()->role_id == 3)
                                 @if($data->status_debitur == 2)
+                                    <a onclick="deny()" class="btn btn-warning">Tolak Solicit</a>
                                     <a class="btn btn-primary" onclick="openmodal('mdlappsolicit')">Approval Solicit</a>
                                 @elseif($data->status_debitur == 3)
                                     <a class="btn btn-primary" onclick="openmodal('mdlprospekdata')">Prospek Data</a>
@@ -231,7 +233,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="mdlprospekdata" tabindex="-1" aria-labelledby="mdlverifikasi" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -286,12 +287,36 @@
     </div>
 </div>
 
+<form class="d-none" id="formdenydata" method="post" action="{{ route('solicitdeny') }}">
+    @csrf
+    <input type="text" name="id" value="{{ $data->id }}">
+</form>
+
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
 <script>
     function openmodal(id)
     {
         $('#'+id).modal('show')
+    }
+
+    function deny()
+    {
+        Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
+            Swal.fire({
+                title: 'Perhatian',
+                text: 'Apakah Anda Yakin Ingin Menolak Data Ini?',
+                icon: "warning",
+                confirmButtonText: "Ya Tolak",
+                confirmButtonColor: "#3085d6",
+                showCancelButton: true,
+                cancelButtonText:'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $("#formdenydata").submit();
+                }
+            });
+        })
     }
 </script>
 @endsection

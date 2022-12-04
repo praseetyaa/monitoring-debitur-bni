@@ -293,6 +293,18 @@ class SolicitController extends Controller
         return redirect()->route('datadebdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
     }
 
+    public function solicitdeny(Request $request)
+    {
+        $user                     = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data                     = DataDebitur::find($request->id);
+        $data->id_penolak         = $user->id;
+        $data->nama_penolak       = $user->name;
+        $data->npp_penolak        = $user->attribute->npp;
+        $data->status_debitur     = '0.'.Auth::user()->role_id;
+        $data->tanggal_penolakan  = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->route('datadebdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menolak Data']);
+    }
 
 
 
