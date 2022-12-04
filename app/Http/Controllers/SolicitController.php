@@ -111,7 +111,8 @@ class SolicitController extends Controller
                 'status'        =>'',
                 'cabang'        => '',
                 'StatusDebitur' => $StatusDebitur,
-                'DCabang'       => $DCabang
+                'DCabang'       => $DCabang,
+                'title'     => 'Data Monitoring'
             ]);
         }
         else
