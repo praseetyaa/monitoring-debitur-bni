@@ -439,7 +439,7 @@ class SolicitController extends Controller
         $data->status_debitur           = 4;
         $data->tanggal_update_prospek   = date('Y-m-d H:i:s');
         $data->save();
-        return redirect()->route('MenuDataPros')->with(['message' => 'Berhasil mengupdate data.']);
+        return redirect()->route('DataPros')->with(['message' => 'Berhasil mengupdate data.']);
     }
 
 
