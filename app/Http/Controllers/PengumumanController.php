@@ -65,7 +65,7 @@ class PengumumanController extends Controller
     public function pengumumanuploadimg(Request $request){
         $fileName=$request->file('file')->getClientOriginalName();
         $path=$request->file('file')->storeAs('Dokumen Pengumuman', rand().'_'.$fileName, 'public');
-        return response()->json(['location' => "/storage/$path"]);
+        return response()->json(['location' => URL::asset("/storage/$path")]);
     }
 
 

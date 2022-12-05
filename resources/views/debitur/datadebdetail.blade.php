@@ -249,7 +249,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <label class="mb-2" style="font-weight: bold">Nominal Usulan</label>
-                            <input required placeholder="Nominal Usulan" type="number" step="any" name="nominal_usulan" class="form-control" value="" autofocus>
+                            <input required placeholder="Nominal Usulan" type="text" id="nominal_usulan" name="nominal_usulan" class="form-control" value="" autofocus>
                         </div>
                         <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Jenis Fasilitas</label>
@@ -317,6 +317,25 @@
                 }
             });
         })
+    }
+
+    $('#nominal_usulan').on('input', function(){
+        $('#nominal_usulan').val(formatRupiah(this.value));
+    });
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 </script>
 @endsection

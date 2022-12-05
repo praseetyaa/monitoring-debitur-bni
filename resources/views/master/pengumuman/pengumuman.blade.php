@@ -8,6 +8,11 @@
     {
         cursor: pointer;
     }
+    .img-responsive {
+        display: block!important;
+        max-width: 100%!important;
+        height: auto!important;
+    }
 </style>
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
     <h1 class="h3 mb-2 mb-sm-0">Data Pengumuman</h1>

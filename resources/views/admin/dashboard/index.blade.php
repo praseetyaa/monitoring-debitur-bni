@@ -257,6 +257,12 @@
                     }
                 }
 
+            .img-responsive {
+                display: block!important;
+                max-width: 100%!important;
+                height: auto!important;
+            }
+
             </style>
             <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
             <main>
@@ -314,6 +320,7 @@
                     $('#modal_judul_pengumuman').html(atob(judul))
                     $('#body_show_pengumuman').html(atob(data));
                     $('#modal_show_pengumuman').modal('show');
+                    // $('.img-responsive').css('width', '100%');
                 }
             </script>
         @endif

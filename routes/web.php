@@ -21,6 +21,25 @@ Route::get('/', function () {
 \Ajifatur\Helpers\RouteExt::auth();
 \Ajifatur\Helpers\RouteExt::admin();
 
+
+Route::get('/cacheclear', function () {
+    Artisan::call('cache:clear');
+});
+Route::get('/routecache', function () {
+    Artisan::call('route:cache');
+});
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+});
+Route::get('/routeclear', function () {
+    Artisan::call('route:clear');
+});
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
+
+
 // Guest Routes
 Route::group(['middleware' => ['faturhelper.guest']], function() {
 	Route::get('/login', function() {
