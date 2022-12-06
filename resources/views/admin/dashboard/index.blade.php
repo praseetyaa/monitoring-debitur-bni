@@ -71,6 +71,44 @@
     </div>
 </div>
 
+<div class="counter-task">
+    <div class="row">
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="DataSol">
+                <div class="card bg-primary rounded">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-white">Solicit</h5>
+                        <h1 class="fw-bold text-white">20</h1>
+                    </div>
+                    <div class="card-footer">Lihat Detail</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="DataPros">
+                <div class="card bg-warning rounded">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-white">Prospect</h5>
+                        <h1 class="fw-bold text-white">7</h1>
+                    </div>
+                    <div class="card-footer">Lihat Detail</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="#">
+                <div class="card bg-success rounded">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-white">Pipeline</h5>
+                        <h1 class="fw-bold text-white">3</h1>
+                    </div>
+                    <div class="card-footer">Lihat Detail</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
     {{-- //////////////////////////////////////////// NOTIFICATION //////////////////////////////////////////// --}}
         <div class="row">
             <div class="col-12">
@@ -195,75 +233,6 @@
         </script>
     {{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
         @if(count($pengumuman)>0)
-            <style>
-                .container_anc {
-                    width: 100%;
-                    margin: 1rem auto;
-                }
-
-                .card_anc {
-                    height: 120px;
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 1rem;
-                    overflow: hidden;
-                    background-color: #fff;
-                }
-
-                .card_anc div:first-child {
-                    flex-basis: 25%;
-                }
-
-                .card_anc div:last-child {
-                    flex-basis: 75%;
-                    padding: 0 0.5rem 0.25rem;
-                }
-
-                .card_anc img {
-                    display: block;
-                    width: 100%;
-                    height: 120px;
-                    object-fit: cover;
-                }
-
-                .card_anc p {
-                    margin-top: 0.5rem;
-                    margin-bottom: 0.35rem;
-                }
-
-                .shadow_anc {
-                    box-shadow: 0 0 0.875rem 0 rgb(33 37 41 / 5%)
-                }
-
-                .border_anc {
-                    border: 1px solid #ddd;
-                }
-
-                .curve_anc {
-                    border-radius: 0.35rem;
-                }
-
-                @media (min-width: 768px) {
-                    .container_anc {
-                        max-width: 100%;
-                    }
-
-                    .card_anc div:first-child {
-                        flex-basis: 25%;
-                    }
-
-                    .card_anc div:last-child {
-                        flex-basis: 75%;
-                    }
-                }
-
-            .img-responsive {
-                display: block!important;
-                max-width: 100%!important;
-                height: auto!important;
-            }
-
-            </style>
             <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
             <main>
                 @foreach ($pengumuman as $item)
@@ -293,6 +262,9 @@
                         </article>
                     </div>
                 @endforeach
+                <div class="row mt-3 justify-content-center" id="pagination">
+                    {!! $pengumuman->links() !!}
+                </div>
             </main>
 
             <div class="modal fade" id="modal_show_pengumuman" tabindex="-1" aria-labelledby="modal_show_pengumuman" aria-hidden="true">

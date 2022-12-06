@@ -179,7 +179,13 @@
                                 </td>
                                 <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
                                 <td class="pointer text-center" onclick="OpenURL('datadebdetail/{{ $a->id }}')">
-                                    <p class="badge bg-{{ $a->statusdebitur->color }} mb-1"><i class="bi {{ $a->statusdebitur->status_debitur == 3 ? 'bi-check2-all' : 'bi-clock-history' }} "></i> {{ $a->statusdebitur->narasi }}</p>
+                                    <p class="badge bg-{{ $a->statusdebitur->color }} mb-1">
+                                        <i class="bi {{ $a->statusdebitur->status_debitur == 4 ? 'bi-check2-all' : '' }}
+                                            {{ $a->statusdebitur->status_debitur == 3 ? 'bi-clock-history' : '' }}
+                                            {{ $a->statusdebitur->status_debitur == 1 ? 'bi-clock-history' : '' && $a->statusdebitur->status_debitur == 2 ? 'bi-clock-history' : '' }}
+                                            {{ $a->statusdebitur->narasi == 'Solicit Ditolak Verifikator' ? 'bi-x-circle' : '' && $a->statusdebitur->narasi == 'Solicit Ditolak Approval' ? 'bi-x-circle' : '' }} ">
+                                        </i> {{ $a->statusdebitur->narasi }}
+                                    </p>
                                     <p class="mb-0">
                                         @php
                                             $datas      = $a->toArray();
