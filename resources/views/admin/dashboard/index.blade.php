@@ -4,6 +4,7 @@
 
 @section('content')
 
+<link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}">
 
 <div class="alert alert-success" role="alert">
     <div class="alert-message d-flex align-items-center">
