@@ -26,43 +26,67 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div>
-                            <p class="mb-0 fw-bold">Nama</p>
-                            <p>{{$user->name}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-file-person text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Nama</p>
+                                <p>{{$user->name}}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="mb-0 fw-bold">Username</p>
-                            <p>{{$user->username}}</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div>
-                            <p class="mb-0 fw-bold">Email</p>
-                            <p>{{$user->email}}</p>
-                        </div>
-                        <div>
-                            <p class="mb-0 fw-bold">Role</p>
-                            <p>{{@$user->role->name}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-check text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Username</p>
+                                <p>{{$user->username}}</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div>
-                            <p class="mb-0 fw-bold">NPP</p>
-                            <p>{{@$user->attribute->npp}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-envelope-at text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Email</p>
+                                <p>{{$user->email}}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="mb-0 fw-bold">Nomor Telepon</p>
-                            <p>{{@$user->attribute->phone_number}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-fill-gear text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Role</p>
+                                <p>{{@$user->role->name}}</p>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div>
-                            <p class="mb-0 fw-bold">Cabang</p>
-                            <p>{{@$user->attribute->cabang->nama}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-credit-card-2-front text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">NPP</p>
+                                <p>{{@$user->attribute->npp}}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="mb-0 fw-bold">Jabatan</p>
-                            <p>{{@$user->attribute->jabatan->nama}}</p>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-telephone-forward text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Nomor Telepon</p>
+                                <p>{{@$user->attribute->phone_number}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-boxes text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Cabang</p>
+                                <p>{{@$user->attribute->cabang->nama}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-workspace text-primary h1 me-3"></i>
+                            <div>
+                                <p class="mb-0 fw-bold">Jabatan</p>
+                                <p>{{@$user->attribute->jabatan->nama}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
