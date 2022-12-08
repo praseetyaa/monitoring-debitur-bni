@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->where('id_input','=',Auth::user()->id)->get();
         $needpipeline       = DataDebitur::with('statusdebitur')->where('status_debitur','=',4)->where('id_input','=',Auth::user()->id)->get();
         $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
-        $pengumuman         = Pengumuman::whereDate('expired', '>=' ,date('Y-m-d'))->orderBy("tanggal_pebuatan", "desc")->paginate(2);
+        $pengumuman         = Pengumuman::whereDate('expired', '>=' ,date('Y-m-d'))->orderBy("tanggal_pebuatan", "desc")->get();
 
 
         if(Auth::user()->role_id == 4)

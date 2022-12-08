@@ -4,6 +4,12 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}">
+{{-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/> --}}
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/DataTables-1.13.1/css/dataTables.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Select-1.5.0/css/select.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/>
+
+<script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <style>
     .carddash
     {
@@ -18,6 +24,14 @@
         box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
         -webkit-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
         -moz-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
+    }
+    .table-borderless > tbody > tr > td,
+    .table-borderless > tbody > tr > th,
+    .table-borderless > tfoot > tr > td,
+    .table-borderless > tfoot > tr > th,
+    .table-borderless > thead > tr > td,
+    .table-borderless > thead > tr > th {
+        border: none;
     }
 </style>
 
@@ -38,248 +52,79 @@
 </div>
 
 {{-- //////////////////////////////////////////// NOTIFICATION //////////////////////////////////////////// --}}
-<div class="row">
-    <div class="col-12">
-        @if(Auth::user()->role_id == 6)
-            @if(count($verifsolicit)>0)
-                <a onclick="verifisolicit()">
-                    <div class="alert alert-success notifshadow" role="alert">
-                        <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($verifsolicit)}} Solicit Memerlukan verifikasi dari anda
-                        </div>
-                    </div>
-                </a>
-            @endif
-        @endif
-
-        @if(Auth::user()->role_id == 4)
-            @if(count($needprospek)>0)
-                <a onclick="needprospek()">
-                    <div class="alert alert-success notifshadow" role="alert">
-                        <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needprospek)}} Prospek memerlukan tindak lanjut dari anda
-                        </div>
-                    </div>
-                </a>
-            @endif
-
-            @if(count($needpipeline)>0)
-                <a onclick="needpipeline()">
-                    <div class="alert alert-success notifshadow" role="alert">
-                        <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needpipeline)}} Pipeline memerlukan tindak lanjut dari anda
-                        </div>
-                    </div>
-                </a>
-            @endif
-        @endif
-
-        @if(Auth::user()->role_id == 3)
-            @if(count($appsolicit)>0)
-                <a onclick="appisolicit()">
-                    <div class="alert alert-success notifshadow" role="alert">
-                        <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($appsolicit)}} Solicit Memerlukan approval dari anda
-                        </div>
-                    </div>
-                </a>
-            @endif
-
-
-        @endif
-    </div>
-</div>
-{{-- //////////////////////////////////////////// MODAL SHOW LIST //////////////////////////////////////////// --}}
-<div class="modal fade" id="ModalShowList" tabindex="-1" aria-labelledby="ModalShowListLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="ModalShowListLabel"></h5>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <table class="table table-sm w-100 table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th class="nowrap">Nama Debitur</th>
-                                    <th class="nowrap">sektor</th>
-                                </tr>
-                            </thead>
-                            <tbody id="BodyModalShowList">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    function verifisolicit()
-    {
-        $('#ModalShowListLabel').html('Daftar Solicit Perlu Verifikasi')
-        var verifsolicit= @json($verifsolicit);
-        var bodytable       = '';
-        verifsolicit.forEach(function(val, i){
-            bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
-                                <td class='text-center'>`+(i+1)+`</td>
-                                <td>`+val['nama_debitur']+`</td>
-                                <td>`+val['sektor']+`</td>
-                            </tr>`
-        });
-        $('#BodyModalShowList').html(bodytable);
-        $('#ModalShowList').modal('show');
-    }
-
-    function appisolicit()
-    {
-        $('#ModalShowListLabel').html('Daftar Solicit Perlu Approval')
-        var appsolicit= @json($appsolicit);
-        var bodytable       = '';
-        appsolicit.forEach(function(val, i){
-            bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
-                                <td class='text-center'>`+(i+1)+`</td>
-                                <td>`+val['nama_debitur']+`</td>
-                                <td>`+val['sektor']+`</td>
-                            </tr>`
-        });
-        $('#BodyModalShowList').html(bodytable);
-        $('#ModalShowList').modal('show');
-    }
-
-    function needprospek()
-    {
-        $('#ModalShowListLabel').html('Daftar Prospek')
-        var needprospek= @json($needprospek);
-        var bodytable       = '';
-        needprospek.forEach(function(val, i){
-            bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
-                                <td class='text-center'>`+(i+1)+`</td>
-                                <td>`+val['nama_debitur']+`</td>
-                                <td>`+val['sektor']+`</td>
-                            </tr>`
-        });
-        $('#BodyModalShowList').html(bodytable);
-        $('#ModalShowList').modal('show');
-    }
-
-    function needpipeline()
-    {
-        $('#ModalShowListLabel').html('Daftar Pipeline')
-        var needpipeline= @json($needpipeline);
-        var bodytable       = '';
-        needpipeline.forEach(function(val, i){
-            bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
-                                <td class='text-center'>`+(i+1)+`</td>
-                                <td>`+val['nama_debitur']+`</td>
-                                <td>`+val['sektor']+`</td>
-                            </tr>`
-        });
-        $('#BodyModalShowList').html(bodytable);
-        $('#ModalShowList').modal('show');
-    }
-
-
-
-    function OpenURL(url)
-    {
-        var NewUrl = "<?= URL::to('"+url+"') ?>"
-        window.location.href = NewUrl
-    }
-</script>
-
-<div class="counter-task">
     <div class="row">
-        <div class="col-lg-4">
-            <a class="text-decoration-none" href="{{route('DataSol')}}">
-                <div class="card bg-primary carddash">
-                    <div class="card-body">
-                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
-                        <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
-                        <small class="text-white">Solicit Perlu Tindak Lanjut</small>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-4">
-            <a class="text-decoration-none" href="{{route('DataPros')}}">
-                <div class="card carddash" style="background-color: #F2AF22">
-                    <div class="card-body">
-                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
-                        <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
-                        <small class="text-white">Prospect Perlu Tindak Lanjut</small>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-4">
-            <a class="text-decoration-none" href="{{route('DataPipe')}}">
-                <div class="card bg-success carddash">
-                    <div class="card-body">
-                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
-                        <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
-                        <small class="text-white">Pipeline Perlu Tindak Lanjut</small>
-                    </div>
-                </div>
-            </a>
+        <div class="col-12">
+            @if(Auth::user()->role_id == 6)
+                @if(count($verifsolicit)>0)
+                    <a onclick="verifisolicit()">
+                        <div class="alert alert-success notifshadow" role="alert">
+                            <div class="alert-message d-flex align-items-center">
+                                <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($verifsolicit)}} Solicit Memerlukan verifikasi dari anda
+                            </div>
+                        </div>
+                    </a>
+                @endif
+            @endif
+
+            @if(Auth::user()->role_id == 4)
+                @if(count($needprospek)>0)
+                    <a onclick="needprospek()">
+                        <div class="alert alert-success notifshadow" role="alert">
+                            <div class="alert-message d-flex align-items-center">
+                                <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needprospek)}} Prospek memerlukan tindak lanjut dari anda
+                            </div>
+                        </div>
+                    </a>
+                @endif
+
+                @if(count($needpipeline)>0)
+                    <a onclick="needpipeline()">
+                        <div class="alert alert-success notifshadow" role="alert">
+                            <div class="alert-message d-flex align-items-center">
+                                <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needpipeline)}} Pipeline memerlukan tindak lanjut dari anda
+                            </div>
+                        </div>
+                    </a>
+                @endif
+            @endif
+
+            @if(Auth::user()->role_id == 3)
+                @if(count($appsolicit)>0)
+                    <a onclick="appisolicit()">
+                        <div class="alert alert-success notifshadow" role="alert">
+                            <div class="alert-message d-flex align-items-center">
+                                <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($appsolicit)}} Solicit Memerlukan approval dari anda
+                            </div>
+                        </div>
+                    </a>
+                @endif
+
+
+            @endif
         </div>
     </div>
-</div>
-
-
-{{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
-@if(count($pengumuman)>0)
-    <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
-    <main>
-        @foreach ($pengumuman as $item)
-            @php
-                $datas      = base64_encode($item->isi);
-                $juduls     = base64_encode($item->judul);
-            @endphp
-            <div class="container_anc div" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
-                <article class="card_anc curve_anc shadow_anc">
-                <div class="text-center col-1">
-                    @if ($item->thumbnail == null && $item->thumbnail == '')
-                        <i class="bi bi-card-image"></i>
-                    @else
-                        <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
-                    @endif
-                </div>
-                <div class="col-11" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
-                    <h5 class="fw-bold">{{$item->judul}}</h5>
-                    <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:70%">
-                        {{ strip_tags($item->isi) }}
-                    </div>
-                    <span style="font-size: 11px">
-                        <i class="bi bi-person"></i>
-                        {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
-                    </span>
-                </div>
-                </article>
-            </div>
-        @endforeach
-        <div class="d-flex justify-content-between align-items-center" id="pagination">
-            {!! $pengumuman->links() !!}
-            <a href="#">Lihat Semua <i class="bi bi-arrow-right-short"></i></a>
-        </div>
-    </main>
-
-    <div class="modal fade" id="modal_show_pengumuman" tabindex="-1" aria-labelledby="modal_show_pengumuman" aria-hidden="true">
+{{-- //////////////////////////////////////////// MODAL SHOW LIST //////////////////////////////////////////// --}}
+    <div class="modal fade" id="ModalShowList" tabindex="-1" aria-labelledby="ModalShowListLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="modal_judul_pengumuman"></h5>
-                    <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <h5 class="modal-title" id="ModalShowListLabel"></h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12" id="body_show_pengumuman">
+                        <div class="col-md-12 text-center">
+                            <table class="table table-sm w-100 table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="nowrap">Nama Debitur</th>
+                                        <th class="nowrap">sektor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="BodyModalShowList">
 
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -287,41 +132,266 @@
         </div>
     </div>
     <script>
-        function show_pengumuman(data, judul)
+        function verifisolicit()
         {
-            $('#modal_judul_pengumuman').html(atob(judul))
-            $('#body_show_pengumuman').html(atob(data));
-            $('#modal_show_pengumuman').modal('show');
+            $('#ModalShowListLabel').html('Daftar Solicit Perlu Verifikasi')
+            var verifsolicit= @json($verifsolicit);
+            var bodytable       = '';
+            verifsolicit.forEach(function(val, i){
+                bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                    <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_debitur']+`</td>
+                                    <td>`+val['sektor']+`</td>
+                                </tr>`
+            });
+            $('#BodyModalShowList').html(bodytable);
+            $('#ModalShowList').modal('show');
+        }
+
+        function appisolicit()
+        {
+            $('#ModalShowListLabel').html('Daftar Solicit Perlu Approval')
+            var appsolicit= @json($appsolicit);
+            var bodytable       = '';
+            appsolicit.forEach(function(val, i){
+                bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                    <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_debitur']+`</td>
+                                    <td>`+val['sektor']+`</td>
+                                </tr>`
+            });
+            $('#BodyModalShowList').html(bodytable);
+            $('#ModalShowList').modal('show');
+        }
+
+        function needprospek()
+        {
+            $('#ModalShowListLabel').html('Daftar Prospek')
+            var needprospek= @json($needprospek);
+            var bodytable       = '';
+            needprospek.forEach(function(val, i){
+                bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                    <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_debitur']+`</td>
+                                    <td>`+val['sektor']+`</td>
+                                </tr>`
+            });
+            $('#BodyModalShowList').html(bodytable);
+            $('#ModalShowList').modal('show');
+        }
+
+        function needpipeline()
+        {
+            $('#ModalShowListLabel').html('Daftar Pipeline')
+            var needpipeline= @json($needpipeline);
+            var bodytable       = '';
+            needpipeline.forEach(function(val, i){
+                bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                    <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_debitur']+`</td>
+                                    <td>`+val['sektor']+`</td>
+                                </tr>`
+            });
+            $('#BodyModalShowList').html(bodytable);
+            $('#ModalShowList').modal('show');
+        }
+
+
+
+        function OpenURL(url)
+        {
+            var NewUrl = "<?= URL::to('"+url+"') ?>"
+            window.location.href = NewUrl
         }
     </script>
-@endif
+
+    <div class="counter-task">
+        <div class="row">
+            <div class="col-lg-4">
+                <a class="text-decoration-none" href="{{route('DataSol')}}">
+                    <div class="card bg-primary carddash">
+                        <div class="card-body">
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
+                            <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
+                            <small class="text-white">Solicit Perlu Tindak Lanjut</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <a class="text-decoration-none" href="{{route('DataPros')}}">
+                    <div class="card carddash" style="background-color: #F2AF22">
+                        <div class="card-body">
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
+                            <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
+                            <small class="text-white">Prospect Perlu Tindak Lanjut</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <a class="text-decoration-none" href="{{route('DataPipe')}}">
+                    <div class="card bg-success carddash">
+                        <div class="card-body">
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
+                            <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
+                            <small class="text-white">Pipeline Perlu Tindak Lanjut</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+{{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
+    @if(count($pengumuman)>0)
+        <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm table-borderless" id="datatablexxx" style="table-layout:fixed;">
+                    <thead class="d-none">
+                        <tr>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pengumuman as $item)
+                            @php
+                                $datas      = base64_encode($item->isi);
+                                $juduls     = base64_encode($item->judul);
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="container_anc div notifshadow" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
+                                        <article class="card_anc curve_anc shadow_anc">
+                                        <div class="text-center">
+                                            @if ($item->thumbnail == null && $item->thumbnail == '')
+                                                <i class="bi bi-card-image"></i>
+                                            @else
+                                                <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
+                                            @endif
+                                        </div>
+                                        <div style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
+                                            <h5 class="fw-bold">{{$item->judul}}</h5>
+                                            <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:100%">
+                                                {{ strip_tags($item->isi) }}
+                                            </div>
+                                            <span style="font-size: 11px">
+                                                <i class="bi bi-person"></i>
+                                                {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
+                                            </span>
+                                        </div>
+                                        </article>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function(){
+                let table = new DataTable('#datatablexxx', {
+                        scrollX: false,
+                        scrollCollapse: true,
+                        paging: true,
+                        bFilter: true,
+                        bInfo: false,
+                        dom: 'frtip',
+                        pageLength : 3,
+                        lengthMenu: [[3, 6, 9, -1], [3, 6, 9, 'Todos']],
+                        responsive: true,
+                        buttons: [
+                        {
+                            extend: 'excel',
+                            className: 'exportbtn',
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'exportbtn',
+                        },
+                        {
+                            extend: 'print',
+                            className: 'exportbtn',
+                        }
+
+                    ]
+                });
+            })
+        </script>
+        {{-- <main>
+            @foreach ($pengumuman as $item)
+                @php
+                    $datas      = base64_encode($item->isi);
+                    $juduls     = base64_encode($item->judul);
+                @endphp
+                <div class="container_anc div" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
+                    <article class="card_anc curve_anc shadow_anc">
+                    <div class="text-center col-1">
+                        @if ($item->thumbnail == null && $item->thumbnail == '')
+                            <i class="bi bi-card-image"></i>
+                        @else
+                            <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
+                        @endif
+                    </div>
+                    <div class="col-11" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
+                        <h5 class="fw-bold">{{$item->judul}}</h5>
+                        <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:70%">
+                            {{ strip_tags($item->isi) }}
+                        </div>
+                        <span style="font-size: 11px">
+                            <i class="bi bi-person"></i>
+                            {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
+                        </span>
+                    </div>
+                    </article>
+                </div>
+            @endforeach
+            <div class="d-flex justify-content-between align-items-center" id="pagination">
+                {!! $pengumuman->links() !!}
+                <a href="#">Lihat Semua <i class="bi bi-arrow-right-short"></i></a>
+            </div>
+        </main> --}}
+
+        <div class="modal fade" id="modal_show_pengumuman" tabindex="-1" aria-labelledby="modal_show_pengumuman" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="modal_judul_pengumuman"></h5>
+                        <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12" id="body_show_pengumuman">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function show_pengumuman(data, judul)
+            {
+                $('#modal_judul_pengumuman').html(atob(judul))
+                $('#body_show_pengumuman').html(atob(data));
+                $('#modal_show_pengumuman').modal('show');
+            }
+        </script>
+    @endif
 
 @endsection
 
+
 @section('js')
+    <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 
-<script>
-    // Datepicker
-    Spandiv.DatePicker("input[name=t1], input[name=t2]");
-</script>
-
-@if(Session::get('status'))
-
-<script>
-    alertSuccess("Berhasil menambah data");
-    function alertSuccess(text) {
-        Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
-            Swal.fire({
-                text: text,
-                icon: "success",
-                allowOutsideClick: false,
-                confirmButtonText: "OK",
-                confirmButtonColor: "#3085d6"
-            });
-        });
-    }
-</script>
-
-@endif
+    <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script>
 
 @endsection
