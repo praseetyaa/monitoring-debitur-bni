@@ -177,11 +177,11 @@
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label class="mb-2"  style="font-weight: bold">Tanggal Analisa</label>
-                                    <input disabled placeholder="Tanggal Analisa" type="text" class="form-control" value="{{$data->tanggal_analisa}}" autofocus>
+                                    <input disabled placeholder="Tanggal Analisa" type="text" class="form-control" value="{{date('d M Y', strtotime($data->tanggal_analisa))}}" autofocus>
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label class="mb-2"  style="font-weight: bold">Tanggal Komite</label>
-                                    <input disabled placeholder="Tanggal Komite" type="text" class="form-control" value="{{$data->tanggal_komite}}" autofocus>
+                                    <input disabled placeholder="Tanggal Komite" type="text" class="form-control" value="{{date('d M Y', strtotime($data->tanggal_komite))}}" autofocus>
                                 </div>
                             </div>
                         @endif
@@ -285,7 +285,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdlprospekdata" tabindex="-1" aria-labelledby="mdlverifikasi" aria-hidden="true">
+<div class="modal fade" id="mdlprospekdata" tabindex="-1" aria-labelledby="mdlprospekdata" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -378,6 +378,46 @@
     </div>
 </div>
 
+<div class="modal fade" id="mdlpipelinedata" tabindex="-1" aria-labelledby="mdlpipelinedata" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ModalShowListLabel">Pipeline</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ route('pipelinedata') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Nominal Keputusan</label>
+                            <input required placeholder="Nominal Keputusan" type="text" name="nominal_keputusan" id="nominal_keputusan" class="form-control" value="" autofocus>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Tanggal Tanda Tangan PK</label>
+                            <input required type="date" class="form-control" name="tanggal_tanda_tangan_pk">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Tanggal Pencairan</label>
+                            <input required type="date" class="form-control" name="tanggal_pencairan">
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Nominal Cair</label>
+                            <input required placeholder="Nominal Cair" type="text" name="nominal_cair" id="nominal_cair" class="form-control" value="" autofocus>
+                        </div>
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Update Data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
 <script>
@@ -393,6 +433,12 @@
 
     $('#nominal_usulan').on('input', function(){
         $('#nominal_usulan').val(formatRupiah(this.value));
+    });
+    $('#nominal_cair').on('input', function(){
+        $('#nominal_cair').val(formatRupiah(this.value));
+    });
+    $('#nominal_keputusan').on('input', function(){
+        $('#nominal_keputusan').val(formatRupiah(this.value));
     });
     function formatRupiah(angka, prefix)
     {

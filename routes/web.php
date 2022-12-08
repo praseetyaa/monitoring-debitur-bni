@@ -159,6 +159,14 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
 
     Route::prefix('DataPipe')->group(function(){
         Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPipe')->name('DataPipe');
+        Route::post('/pipelinedata', 'DataDebiturController@pipelinedata')->name('pipelinedata');
+    });
+
+    Route::prefix('CloseDeb')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
+    });
+    Route::prefix('RejectDeb')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
     });
 
     Route::prefix('solicit')->group(function(){

@@ -12,7 +12,19 @@
     {
         overflow: hidden!important;
     }
+    .nowrap
+    {
+        white-space: nowrap!important;
+    }
 </style>
+
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/DataTables-1.13.1/css/dataTables.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Buttons-2.3.3/css/buttons.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/FixedColumns-4.2.1/css/fixedColumns.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Select-1.5.0/css/select.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/>
+
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
@@ -29,10 +41,10 @@
 		<div class="card">
             <div class="card-body">
                 @if(Session::get('message'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <div class="alert-message">{{ Session::get('message') }}</div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert-message">{{ Session::get('message') }}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
 
                 @if(strpos(Request::path() ,'daftarmonitoring') === false)
@@ -47,7 +59,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="mb-2" style="font-weight: bold">Status</label>
-                            <select required id="status" class="form-select">
+                            <select required id="status" class="form-control">
                                 <option value="" {{$status == '' ? 'selected' : ''}}>Semua Status Data</option>
                                 @foreach($StatusDebitur as $c)
                                     <option value="{{ $c->status_debitur }}" {{$status == $c->status_debitur ? 'selected' : ''}}>{{ $c->narasi }}</option>
@@ -56,7 +68,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="mb-2" style="font-weight: bold">Cabang</label>
-                            <select required id="cabang" class="form-select">
+                            <select required id="cabang" class="form-control">
                                 <option value="" {{$status == '' ? 'selected' : ''}}>Semua Cabang</option>
                                 @foreach($DCabang as $c)
                                     <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
@@ -117,39 +129,50 @@
                     @endif
                 @endif
 
-                <div class="table-responsive">
-                    <table class="table table-sm table-hover table-bordered w-100" id="datatable">
+                <div>
+                    <table class="table table-sm table-hover w-100 table-bordered" id="datatablexxx">
                         <thead class="bg-light">
-                            <tr>
+                            <tr class="text-center">
                                 @if(in_array(Auth::user()->role_id, array(3,6)))
-                                    <th rowspan="2"><input type="checkbox" class="form-check-input checkbox-all checkvalueall"></th>
+                                    <th class="text-center" rowspan="2"><input type="checkbox" class="form-check-input checkbox-all checkvalueall"></th>
                                 @endif
                                 <th rowspan="2" style="width: 1px;white-space:nowrap">No</th>
                                 @if(Auth::user()->role_id != role('inputer'))
-                                    <th rowspan="2" style="white-space: nowrap">Nama Inputer</th>
-                                    <th rowspan="2" style="white-space: nowrap">NPP</th>
-                                    <th rowspan="2" style="white-space: nowrap">Cabang</th>
+                                    <th class="text-center nowrap" rowspan="2">Nama Inputer</th>
+                                    <th class="text-center nowrap" rowspan="2">NPP</th>
+                                    <th class="text-center nowrap" rowspan="2">Cabang</th>
                                 @else
-                                    <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
+                                    <th class="text-center nowrap" rowspan="2">Nama Deb</th>
                                 @endif
-                                    <th rowspan="2" style="white-space: nowrap">Waktu</th>
+                                    <th class="text-center nowrap" rowspan="2">Status</th>
+                                    {{-- <th class="text-center nowrap" rowspan="2">Waktu</th> --}}
                                 @if(Auth::user()->role_id != role('inputer'))
-                                    <th rowspan="2" style="white-space: nowrap">Nama Deb</th>
+                                    <th class="text-center nowrap" rowspan="2">Nama Deb</th>
                                 @endif
-                                    <th colspan="2">Lokasi Usaha</th>
-                                    <th rowspan="2">Status</th>
-                                @if(Auth::user()->role_id == 4)
-                                    <th rowspan="2">Opsi</th>
+                                    <th class="text-center nowrap" colspan="2">Lokasi Usaha</th>
+                                    <th class="text-center nowrap" rowspan="2">Bidang Usaha</th>
+                                    <th class="text-center nowrap" rowspan="2">Sektor</th>
+                                    <th class="text-center nowrap" rowspan="2">Kategori</th>
+                                    <th class="text-center nowrap" rowspan="2">Orientasi Ekspor</th>
+                                    <th class="text-center nowrap" rowspan="2">Indikasi Kebutuhan</th>
+                                    <th class="text-center nowrap" rowspan="2">Sumber</th>
+                                @if(Request::route()->getName() == 'DataSol')
+                                    <th class="text-center nowrap" rowspan="2">Opsi</th>
+                                @else
+                                    <th class="text-center nowrap" rowspan="2">Nominal Usulan</th>
+                                    <th class="text-center nowrap" rowspan="2">Nominal Putusan</th>
+                                    <th class="text-center nowrap" rowspan="2">Nominal Cair</th>
                                 @endif
                             </tr>
                             <tr>
-                                <th style="width: 30%!important">Alamat Detail</th>
-                                <th>KodePos</th>
+                                <th class="text-center nowrap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alamat Detail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th class="text-center nowrap">KodePos</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($data as $index=>$a)
                             <tr>
+
                                 @if(in_array(Auth::user()->role_id, array(3,6)))
                                     <td class="text-center">
                                         @if(Auth::user()->role_id == 6 && $a->status_debitur == 1)
@@ -159,34 +182,25 @@
                                         @endif
                                     </td>
                                 @endif
-                                <td class="text-center pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{$index+1}}</td>
+
+                                <td class="text-center pointer redirectdetail">{{$index+1}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
-                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_input }}</td>
-                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->npp_input }}</td>
-                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
+                                    <td class="pointer redirectdetail nowrap">{{ $a->nama_input }}</td>
+                                    <td class="pointer redirectdetail nowrap">{{ $a->npp_input }}</td>
+                                    <td class="pointer redirectdetail nowrap">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
                                 @else
-                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
+                                    <td class="pointer redirectdetail nowrap">{{ $a->nama_debitur }}</td>
                                 @endif
-                                <td class="pointer text-center" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{date('d M Y', strtotime($a->created_at))}}</td>
-                                @if(Auth::user()->role_id != role('inputer'))
-                                    <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
-                                @endif
-                                <td>
-                                    <span  class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">
-                                        {{ $a->detail_alamat }}
-                                    </span> <br>
-                                    <a target="_blank" href="{{ route('openfile', ['path' => $a->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
-                                </td>
-                                <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->kodepos }}</td>
-                                <td class="pointer text-center" onclick="OpenURL('datadebdetail/{{ $a->id }}')">
-                                    <p class="badge bg-{{ $a->statusdebitur->color }} mb-1">
+
+                                <td class="pointer redirectdetail text-center nowrap">
+                                    <span class="badge bg-{{ $a->statusdebitur->color }} mb-1">
                                         <i class="bi {{ $a->statusdebitur->status_debitur == 4 ? 'bi-check2-all' : '' }}
                                             {{ $a->statusdebitur->status_debitur == 3 ? 'bi-clock-history' : '' }}
                                             {{ $a->statusdebitur->status_debitur == 1 ? 'bi-clock-history' : '' && $a->statusdebitur->status_debitur == 2 ? 'bi-clock-history' : '' }}
                                             {{ $a->statusdebitur->narasi == 'Solicit Ditolak Verifikator' ? 'bi-x-circle' : '' && $a->statusdebitur->narasi == 'Solicit Ditolak Approval' ? 'bi-x-circle' : '' }} ">
                                         </i> {{ $a->statusdebitur->narasi }}
-                                    </p>
-                                    <p class="mb-0">
+                                    </span><br>
+                                    <span class="mb-0">
                                         @php
                                             $datas      = $a->toArray();
 
@@ -195,26 +209,54 @@
                                             $diff       = date_diff($to,$from);
                                             if($diff->format('%a') <= 34)
                                             {
-                                                echo $diff->format('%a Hari');
+                                                echo $diff->format('%a hari');
                                             }
                                             else
                                             {
-                                                echo round($diff->format('%a')/30.417 , 0).' Bulan';
+                                                echo round($diff->format('%a')/30.417 , 0).' bulan';
                                             }
                                         @endphp
-                                         Yang Lalu
-                                    </p>
+                                         lalu
+                                    </span>
 
                                 </td>
-                                @if(Auth::user()->role_id == 4)
+
+                                @if(Auth::user()->role_id != role('inputer'))
+                                    <td class="pointer redirectdetail nowrap">{{ $a->nama_debitur }}</td>
+                                @endif
+                                <td class="pointer">
+                                    <span class="redirectdetail">
+                                        {{ $a->detail_alamat }}
+                                    </span> <br>
+                                    <a target="_blank" href="{{ route('openfile', ['path' => $a->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
+                                </td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->kodepos }}</td>
+
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->bidang_usaha }}</td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->sektor }}</td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->kategori }}</td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->orientasiekspor }}</td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->indikasi_kebutuhan_produk }}</td>
+                                <td class="pointer redirectdetail text-center nowrap">{{ $a->sumber }}</td>
+
+                                @if(Request::route()->getName() == 'DataSol')
                                     <td class="text-center" style="white-space: nowrap">
                                         @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1 && Request::route()->getName() == 'DataSol')
                                             <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                             <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                         @endif
                                     </td>
+                                @else
+                                    <td class="pointer redirectdetail text-center nowrap">{{ $a->nominal_usulan }}</td>
+                                    <td class="pointer redirectdetail text-center nowrap">{{ $a->nominal_keputusan }}</td>
+                                    <td class="pointer redirectdetail text-center nowrap">{{ $a->nominal_cair }}</td>
                                 @endif
                             </tr>
+                            <script>
+                                $(document).ready(function(){
+                                   $('.redirectdetail').attr('onclick', "OpenURL('datadebdetail/{{ $a->id }}')")
+                                })
+                            </script>
                             @endforeach
                         </tbody>
                     </table>
@@ -234,16 +276,7 @@
     <input type="hidden" name="id" id="id_deleteall">
     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
-{{-- <form class="d-none" id="solicitdenyall" method="post" action="{{ route('solicitdenyall') }}">
-    @csrf
-    <input type="hidden" name="id" id="id_denyall">
-    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
-</form> --}}
-{{-- <form class="d-none" id="solicitverifall" method="post" action="{{ route('solicitverifall') }}">
-    @csrf
-    <input type="hidden" name="id" id="id_verifall">
-    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
-</form> --}}
+
 <form class="d-none" id="solicitappall" method="post" action="{{ route('solicitappall') }}">
     @csrf
     <input type="hidden" name="id" id="id_appall">
@@ -320,8 +353,46 @@
     </div>
 </div>
 
+
 <script>
+
     $(document).ready(function(){
+        fixed = 0;
+        if("{{Request::route()->getName() == 'DataSol'}}")
+        {
+            fixed = 1;
+        }
+
+        let table = new DataTable('#datatablexxx', {
+            scrollX: true,
+            scrollCollapse: true,
+            paging: true,
+            fixedColumns:
+            {
+                leftColumns: 0,
+                rightColumns:fixed
+            },
+            bFilter: true,
+            bInfo: true,
+            dom: 'Blfrtip',
+            responsive: true,
+            buttons: [
+                {
+                    extend: 'excel',
+                    className: 'exportbtn',
+                },
+                {
+                    extend: 'pdf',
+                    className: 'exportbtn',
+                },
+                {
+                    extend: 'print',
+                    className: 'exportbtn',
+                }
+
+            ]
+        });
+
         $('.checkvalueall').on('change', function(){
             var arr = [];
             $('input.checkvalue:checkbox:checked').each(function () {
@@ -416,16 +487,28 @@
 @endsection
 
 @section('js')
+    <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Bootstrap-4-4.6.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/JSZip-2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/pdfmake-0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/pdfmake-0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Buttons-2.3.3/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Buttons-2.3.3/js/buttons.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Buttons-2.3.3/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Buttons-2.3.3/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/FixedColumns-4.2.1/js/dataTables.fixedColumns.min.js"></script>
+    <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script>
 
-<script type="text/javascript">
-    Spandiv.DataTable("#datatable");
-    Spandiv.ButtonDelete(".btn-delete", ".form-delete");
+    <script type="text/javascript">
+        Spandiv.ButtonDelete(".btn-delete", ".form-delete");
 
-    function OpenURL(url)
-    {
-        var NewUrl = "<?= URL::to('"+url+"') ?>"
-            window.location.href = NewUrl
-    }
-</script>
+        function OpenURL(url)
+        {
+            var NewUrl = "<?= URL::to('"+url+"') ?>"
+                window.location.href = NewUrl
+        }
+    </script>
 
 @endsection
