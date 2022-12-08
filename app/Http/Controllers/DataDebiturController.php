@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class SolicitController extends Controller
+class DataDebiturController extends Controller
 {
     public function index($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
@@ -44,7 +44,7 @@ class SolicitController extends Controller
                 })
                 ->where('status_debitur', '<', 3)
                 ->get();
-        return view('debitur/solicit/solicit',[
+        return view('debitur/datadeb',[
             'data'  => $data,
             'startd'    =>$startd,
             'endd'    =>$endd,
@@ -75,7 +75,7 @@ class SolicitController extends Controller
                 })
                 ->where('status_debitur', 3)
                 ->get();
-        return view('debitur/solicit/solicit',[
+        return view('debitur/datadeb',[
             'data'  => $data,
             'startd'    =>$startd,
             'endd'    =>$endd,
@@ -86,6 +86,38 @@ class SolicitController extends Controller
             'title'     => 'Data Prospek'
         ]);
     }
+
+    public function DataPipe($startd = '', $endd = '', $status_deb = '', $cabang = '')
+    {
+        $DCabang = Cabang::get();
+        $StatusDebitur = StatusDebitur::get();
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
+                ->when(Auth::user()->role_id == 4, function($query){
+                    $query->where('id_input', Auth::user()->id);
+                })
+                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
+                    $query->whereDate('created_at', '>=' ,$startd);
+                })
+                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
+                    $query->whereDate('created_at', '<=' ,$endd);
+                })
+                ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
+                    $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
+                })
+                ->where('status_debitur', 4)
+                ->get();
+        return view('debitur/datadeb',[
+            'data'              => $data,
+            'startd'            => $startd,
+            'endd'              => $endd,
+            'status'            => 4,
+            'cabang'            => $cabang,
+            'StatusDebitur'     => $StatusDebitur,
+            'DCabang'           => $DCabang,
+            'title'             => 'Data Pipeline'
+        ]);
+    }
+
 
     public function daftarmonitoring($id_user = '', $status = '')
     {
@@ -104,7 +136,7 @@ class SolicitController extends Controller
                         $query->where('id_approve', $id_user);
                     })
                     ->get();
-            return view('debitur/solicit/solicit',[
+            return view('debitur/datadeb',[
                 'data'          => $data,
                 'startd'        =>'',
                 'endd'          =>'',
@@ -150,7 +182,7 @@ class SolicitController extends Controller
         $Provinsi = Provinsi::get();
         $sumber = Sumber::get();
         $sektor = Sektor::get();
-        return view('debitur/solicit/solicitcreate', [
+        return view('debitur/datadebcreate', [
             'sumber'  => $sumber,
             'sektor'  => $sektor,
             'Provinsi'  => $Provinsi,
@@ -217,7 +249,7 @@ class SolicitController extends Controller
         $Provinsi   = Provinsi::get();
         $sumber     = Sumber::get();
         $sektor     = Sektor::get();
-        return view('debitur/solicit/solicitedit', [
+        return view('debitur/datadebedit', [
             'sumber'  => $sumber,
             'sektor'  => $sektor,
             'Provinsi'  => $Provinsi,
@@ -298,17 +330,15 @@ class SolicitController extends Controller
     {
         $user                     = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data                     = DataDebitur::find($request->id);
+        $data->alasantolak        = $request->alasantolak;
         $data->id_penolak         = $user->id;
         $data->nama_penolak       = $user->name;
         $data->npp_penolak        = $user->attribute->npp;
-        $data->status_debitur     = '0.'.Auth::user()->role_id;
+        $data->status_debitur     = '0.'.Auth::user()->role_id.$data->status_debitur;
         $data->tanggal_penolakan  = date('Y-m-d H:i:s');
         $data->save();
         return redirect()->route('datadebdetail', ['id'=>$request->id])->with(['message' => 'Berhasil Menolak Data']);
     }
-
-
-
 
     public function delete(Request $request)
     {
@@ -324,7 +354,6 @@ class SolicitController extends Controller
         $data->delete();
         return redirect()->route('DataSol')->with(['message' => 'Berhasil menghapus data.']);
     }
-
 
     public function solicitappall(Request $request)
     {
@@ -348,7 +377,6 @@ class SolicitController extends Controller
         }
         return redirect()->route($request->routename, ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
     }
-
 
     public function solicitverifall(Request $request)
     {
@@ -387,10 +415,11 @@ class SolicitController extends Controller
                 if($id != '')
                 {
                     $data                     = DataDebitur::find($id);
+                    $data->alasantolak        = $request->alasantolak;
                     $data->id_penolak         = $user->id;
                     $data->nama_penolak       = $user->name;
                     $data->npp_penolak        = $user->attribute->npp;
-                    $data->status_debitur     = '0.'.Auth::user()->role_id;
+                    $data->status_debitur     = '0.'.Auth::user()->role_id.$data->status_debitur;
                     $data->tanggal_penolakan  = date('Y-m-d H:i:s');
                     $data->save();
                 }
@@ -436,6 +465,8 @@ class SolicitController extends Controller
         $data->id_update_prospek        = $user->id;
         $data->nama_update_prospek      = $user->name;
         $data->npp_update_prospek       = $user->attribute->npp;
+        $data->tanggal_analisa          = $request->tanggal_analisa;
+        $data->tanggal_komite           = $request->tanggal_komite;
         $data->status_debitur           = 4;
         $data->tanggal_update_prospek   = date('Y-m-d H:i:s');
         $data->save();

@@ -22,22 +22,32 @@
                         <div class="col-md-12 mb-2">
                             <div class="row">
                                 <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Dibuat Oleh</span><br>{{$data->nama_input}}<br>{{date('d M Y H:i:s', strtotime($data->created_at))}}</div>
+                                    <div><span class="fw-bold">Solicit Dibuat Oleh</span><br>{{$data->nama_input}}<br>{{date('d M Y H:i:s', strtotime($data->created_at))}}</div>
                                 </div>
                                 @if($data->status_debitur > 1)
-                                <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
-                                </div>
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Solicit Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
+                                    </div>
                                 @endif
                                 @if($data->status_debitur > 2)
-                                <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
-                                </div>
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Solicit DiApprove Oleh</span><br>{{$data->nama_approve}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_approve))}}</div>
+                                    </div>
+                                @endif
+                                @if($data->status_debitur > 3)
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Prospek Diupdate Oleh</span><br>{{$data->nama_update_prospek}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_update_prospek))}}</div>
+                                    </div>
+                                @endif
+                                @if($data->status_debitur < 1)
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Ditolak Oleh</span><br>{{$data->nama_penolak}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_penolakan))}}</div>
+                                    </div>
                                 @endif
                                 @if(Auth::user()->role_id == 6 || Auth::user()->role_id == 3)
-                                <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->picinputer->attribute->phone_number}}">{{$data->nama_input}} | {{$data->picinputer->attribute->phone_number}}</a></div>
-                                </div>
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->picinputer->attribute->phone_number}}">{{$data->nama_input}} | {{$data->picinputer->attribute->phone_number}}</a></div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -48,6 +58,12 @@
                                 </div>
                             </div>
                         </div>
+                        @if($data->status_debitur < 1)
+                            <div class="col-md-12">
+                                <label class="mb-2" style="font-weight: bold;">Alasan Penolakan</label>
+                                <textarea class="form-control" rows="5" disabled>{{ $data->alasantolak }}</textarea>
+                            </div>
+                        @endif
                     </div>
                 <form enctype="multipart/form-data">
                     @csrf
@@ -141,6 +157,34 @@
                                 </div>
                             </div>
                         @endif
+                        @if($data->status_debitur > 3)
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2" style="font-weight: bold">Nominal Usulan</label>
+                                    <input disabled placeholder="Nominal Usulan" type="text" class="form-control" value="{{$data->nominal_usulan}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Jenis Fasilitas</label>
+                                    <input disabled placeholder="Jenis Fasilitas" type="text" class="form-control" value="{{$data->jenis_fasilitas}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Skim</label>
+                                    <input disabled placeholder="Skim" type="text" class="form-control" value="{{$data->skim}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Kewenangan Komite</label>
+                                    <input disabled placeholder="Kewenangan" type="text" class="form-control" value="{{$data->kewenangan_komite}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Tanggal Analisa</label>
+                                    <input disabled placeholder="Tanggal Analisa" type="text" class="form-control" value="{{$data->tanggal_analisa}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Tanggal Komite</label>
+                                    <input disabled placeholder="Tanggal Komite" type="text" class="form-control" value="{{$data->tanggal_komite}}" autofocus>
+                                </div>
+                            </div>
+                        @endif
                     <hr>
                     <div class="row">
                         <div class="col-md-12 text-center">
@@ -155,11 +199,19 @@
                                 @if($data->status_debitur == 2)
                                     <a onclick="deny()" class="btn btn-warning">Tolak Solicit</a>
                                     <a class="btn btn-primary" onclick="openmodal('mdlappsolicit')">Approval Solicit</a>
-                                @elseif($data->status_debitur == 3)
-                                    <a class="btn btn-primary" onclick="openmodal('mdlprospekdata')">Prospek Data</a>
                                 @endif
                             @endif
-                        </div
+
+                            @if(Auth::user()->role_id == 4)
+                                @if($data->status_debitur == 3)
+                                    <a class="btn btn-primary" onclick="openmodal('mdlprospekdata')">Prospek Data</a>
+                                @endif
+
+                                @if($data->status_debitur == 4)
+                                <a class="btn btn-primary" onclick="openmodal('mdlpipelinedata')">Tindak Lanjut Pipeline</a>
+                            @endif
+                            @endif
+                        </div>
                     </div>
                 </form>
             </div>
@@ -260,7 +312,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Skim</label>
                             <select required name="skim" id="skim" class="form-select">
                                 <option value="" disabled selected>-- Pilih Skim --</option>
@@ -269,13 +321,21 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Kewenangan Komite</label>
                             <select required name="kewenangan_komite" id="kewenangan_komite" class="form-select">
                                 <option value="" disabled selected>-- Pilih Kewenangan --</option>
                                 <option value="Komite SBE/STA">Komite SBE/STA</option>
                                 <option value="Komite Wilayah">Komite Wilayah</option>
                             </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Tanggal Analisa</label>
+                            <input required type="date" class="form-control" name="tanggal_analisa">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Tanggal Komite</label>
+                            <input required type="date" class="form-control" name="tanggal_komite">
                         </div>
                         <div class="col-md-12 mb-2 mt-2 text-center">
                             <button type="submit" class="btn btn-primary">Update Data</button>
@@ -287,10 +347,36 @@
     </div>
 </div>
 
-<form class="d-none" id="formdenydata" method="post" action="{{ route('solicitdeny') }}">
-    @csrf
-    <input type="text" name="id" value="{{ $data->id }}">
-</form>
+<div class="modal fade" id="mdldenydata" tabindex="-1" aria-labelledby="mdldenydata" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Tolak Data</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formdenydata" method="post" action="{{ route('solicitdeny') }}">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2 text-center">
+                            Apakah anda yakin ingin menolak data ini?
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label style="font-weight:bold">Alasan Penolakan</label>
+                            <textarea class="form-control" required name="alasantolak" placeholder="Alasan Penolakan" rows="5"></textarea>
+                        </div>
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Ya, Tolak Data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
@@ -302,21 +388,7 @@
 
     function deny()
     {
-        Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
-            Swal.fire({
-                title: 'Perhatian',
-                text: 'Apakah Anda Yakin Ingin Menolak Data Ini?',
-                icon: "warning",
-                confirmButtonText: "Ya Tolak",
-                confirmButtonColor: "#3085d6",
-                showCancelButton: true,
-                cancelButtonText:'Batal',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $("#formdenydata").submit();
-                }
-            });
-        })
+        $("#mdldenydata").modal('show');
     }
 
     $('#nominal_usulan').on('input', function(){

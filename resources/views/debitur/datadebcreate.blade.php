@@ -1,37 +1,37 @@
 @extends('faturhelper::layouts/admin/main')
 
-@section('title', 'Edit Solicit')
+@section('title', 'Tambah Solicit')
 
 @section('content')
-
+<script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0" style="text-transform: capitalize">Edit Solicit</h1>
+    <h1 class="h3 mb-0" style="text-transform: capitalize">Tambah Solicit</h1>
 </div>
 <div class="row">
 	<div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="post" action="{{ route('solicitupdate') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('solicitstore') }}" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $data->id }}">
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="mb-2" style="font-weight: bold">Nama Debitur<span class="text-danger">*</span></label>
-                            <input required placeholder="Nama Debitur" type="text" name="nama_debitur" id="nama_debitur" class="form-control {{ $errors->has('nama_debitur') ? 'border-danger' : '' }}" value="{{ old('nama_debitur') }}" autofocus>
+                            <input required placeholder="Nama Debitur" type="text" name="nama_debitur" class="form-control {{ $errors->has('nama_debitur') ? 'border-danger' : '' }}" value="{{ old('nama_debitur') }}" autofocus>
                             @if($errors->has('nama_debitur'))
                                 <div class="small text-danger">{{ $errors->first('nama_debitur') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Bidang Usaha<span class="text-danger">*</span></label>
-                            <input required placeholder="Bidang Usaha" type="text" name="bidang_usaha" id="bidang_usaha" class="form-control {{ $errors->has('bidang_usaha') ? 'border-danger' : '' }}" value="{{ old('bidang_usaha') }}" autofocus>
+                            <input required placeholder="Bidang Usaha" type="text" name="bidang_usaha" class="form-control {{ $errors->has('bidang_usaha') ? 'border-danger' : '' }}" value="{{ old('bidang_usaha') }}" autofocus>
                             @if($errors->has('bidang_usaha'))
                                 <div class="small text-danger">{{ $errors->first('bidang_usaha') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Sektor<span class="text-danger">*</span></label>
-                            <select required name="sektor" id="sektor" class="form-select {{ $errors->has('sektor') ? 'border-danger' : '' }}">
+                            <select required name="sektor" class="form-select {{ $errors->has('sektor') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Sektor--</option>
                                 @foreach($sektor as $c)
                                 <option value="{{ $c->nama_sektor }}" {{ old('sektor') == $c->id ? 'selected' : '' }}>{{ $c->nama_sektor }}</option>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Kategori<span class="text-danger">*</span></label>
-                            <select required name="kategori" id="kategori" class="form-select {{ $errors->has('kategori') ? 'border-danger' : '' }}">
+                            <select required name="kategori" class="form-select {{ $errors->has('kategori') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Kategori--</option>
                                 <option value="Pemain Utama">Pemain Utama</option>
                                 <option value="Pemain Non Utama">Pemain Non Utama</option>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Orientasi Ekspor<span class="text-danger">*</span></label>
-                            <select required name="orientasiekspor" id="orientasiekspor" class="form-select {{ $errors->has('orientasiekspor') ? 'border-danger' : '' }}">
+                            <select required name="orientasiekspor" class="form-select {{ $errors->has('orientasiekspor') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Orientasi Ekspor--</option>
                                 <option value="Ya (Orientasi Ekspor)">Ya (Orientasi Ekspor)</option>
                                 <option value="Tidak (non Orientasi Ekspor)">Tidak (non Orientasi Ekspor)</option>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Indikasi Kebutuhan Produk/Jasa<span class="text-danger">*</span></label>
-                            <select required name="indikasi_kebutuhan_produk" id="indikasi_kebutuhan_produk" class="form-select {{ $errors->has('indikasi_kebutuhan_produk') ? 'border-danger' : '' }}">
+                            <select required name="indikasi_kebutuhan_produk" class="form-select {{ $errors->has('indikasi_kebutuhan_produk') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Indikasi Kebutuhan Produk/Jasa--</option>
                                 <option value="Kredit Produkif">Kredit Produkif</option>
                                 <option value="Kredit Konsumer">Kredit Konsumer</option>
@@ -99,76 +99,66 @@
                     <hr>
                         <div class="row">
                             <div class="col-md-12 mb-2">
-                                <a target="_blank" href="{{ route('openfile', ['path' => $data->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label class="mb-2" style="font-weight: bold">Foto Lokasi<span class="text-danger" style="display: none">*</span></label>
-                                <input type="file" class="form-control" name="foto_lokasi" accept="image/*" capture="camera">
-                                <small>*Silahkan pilih file jika ingin memperbaharui</small>
+                                <label class="mb-2" style="font-weight: bold" id="titlefotolok">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
+
+                                <div class="input-group mb-3">
+                                    <input required type="file" class="form-control" id="foto_lokasi" name="foto_lokasi" accept="image/*" capture="camera">
+                                    <div class="input-group-append bg-primary">
+                                        <a class="btn btn-primary" id="btnchangecapture" onclick="inputfromgalery()">From File</a>
+                                    </div>
+                                  </div>
+
                             </div>
                         </div>
+                        <script>
+                            $(document).ready(function(){
+                                if(detectMob())
+                                {
+                                    inputfromkamera()
+                                }
+                                else
+                                {
+                                    inputfromgalery()
+                                }
+                            })
+
+                            function inputfromkamera()
+                            {
+                                $('#titlefotolok').html('Foto Lokasi Dari Kamera')
+                                $('#btnchangecapture').html('From File')
+                                $('#foto_lokasi').attr('capture', 'camera')
+                                $('#btnchangecapture').attr('onclick', 'inputfromgalery()')
+                            }
+
+                            function inputfromgalery()
+                            {
+                                $('#titlefotolok').html('Foto Lokasi Dari File')
+                                $('#btnchangecapture').html('From Cam')
+                                $('#foto_lokasi').attr('capture', 'filesystem')
+                                $('#btnchangecapture').attr('onclick', 'inputfromkamera()')
+                            }
+
+                            function detectMob() {
+                                const toMatch = [
+                                    /Android/i,
+                                    /webOS/i,
+                                    /iPhone/i,
+                                    /iPad/i,
+                                    /iPod/i,
+                                    /BlackBerry/i,
+                                    /Windows Phone/i
+                                ];
+                                return toMatch.some((toMatchItem) => {
+                                    return navigator.userAgent.match(toMatchItem);
+                                });
+                            }
+                        </script>
                     <hr>
-                    {{-- <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Provinsi<span class="text-danger">*</span></label>
-                            <select required name="provinsi" id="provinsi" class="form-select {{ $errors->has('provinsi') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Provinsi--</option>
-                                @foreach($Provinsi as $c)
-                                <option value="{{ $c->id_provinsi }}_{{ $c->nama_provinsi }}" {{ old('provinsi') == $c->id_provinsi ? 'selected' : '' }}>{{ $c->nama_provinsi }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('provinsi'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kabupaten/Kota<span class="text-danger">*</span></label>
-                            <select required name="kota" id="kota" class="form-select {{ $errors->has('kota') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kabupaten/Kota--</option>
-                            </select>
-                            @if($errors->has('kota'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kecamatan<span class="text-danger">*</span></label>
-                            <select required name="kecamatan" id="kecamatan" class="form-select {{ $errors->has('kecamatan') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kecamatan--</option>
-                            </select>
-                            @if($errors->has('kecamatan'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Desa<span class="text-danger">*</span></label>
-                            <select required name="desa" id="desa" class="form-select {{ $errors->has('desa') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Desa--</option>
-                            </select>
-                            @if($errors->has('desa'))
-                            <div class="small text-danger">{{ $errors->first('desa') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-3 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Kode Pos<span class="text-danger">*</span></label>
-                            <select required name="kodepos" id="kodepos" class="form-select {{ $errors->has('kodepos') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih Kode Pos--</option>
-                            </select>
-                            @if($errors->has('provinsi'))
-                            <div class="small text-danger">{{ $errors->first('sektor') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <label class="mb-2"  style="font-weight: bold">Detail Alamat</label>
-                            <textarea placeholder="RT/RW, Jalan, Nomor Rumah" name="detail_alamat" id="detail_alamat" class="form-control {{ $errors->has('detail_alamat') ? 'border-danger' : '' }}" value="{{ old('detail_alamat') }}" autofocus></textarea>
-                            @if($errors->has('detail_alamat'))
-                                <div class="small text-danger">{{ $errors->first('detail_alamat') }}</div>
-                            @endif
-                        </div>
-                    </div> --}}
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
                             <a class="btn btn-primary btn-block" onclick="GetLocation()">Ambil Data lokasi</a>
                         </div>
+
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Latitude</label>
                             <input readonly placeholder="Latitude" type="text" name="latitude" id="latitude" class="form-control {{ $errors->has('latitude') ? 'border-danger' : '' }}" value="{{ old('latitude') }}" autofocus>
@@ -226,6 +216,7 @@
                             @endif
                         </div>
                     </div>
+
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
@@ -238,10 +229,10 @@
         </div>
 	</div>
 </div>
-<script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="{{asset('/')}}ajaxlib.js"></script>
+
 <script>
-    datadebitur = @json($data);
+    var DataLat     = '';
+    var DataLong    = '';
 
     $(document).ready(function(){
 
@@ -260,37 +251,6 @@
                 $('#dataleads').val('')
             }
         })
-
-        $('#nama_debitur').val(datadebitur.nama_debitur)
-        $('#latitude ').val(datadebitur.latitude)
-        $('#longitude').val(datadebitur.longitude)
-        $('#provinsi').val(datadebitur.provinsi)
-        $('#kota').val(datadebitur.kota)
-        $('#kecamatan').val(datadebitur.kecamatan)
-        $('#desa').val(datadebitur.desa)
-        $('#kodepos').val(datadebitur.kodepos)
-        $('#detail_alamat').val(datadebitur.detail_alamat)
-        $('#sektor').val(datadebitur.sektor)
-        $('#bidang_usaha').val(datadebitur.bidang_usaha)
-        $('#kategori').val(datadebitur.kategori)
-        $('#orientasiekspor').val(datadebitur.orientasiekspor)
-        $('#indikasi_kebutuhan_produk').val(datadebitur.indikasi_kebutuhan_produk)
-        $('#sumber').val(datadebitur.sumber)
-        $('#dataleads').val(datadebitur.dataleads)
-        if(datadebitur.sumber == 'Data Leads')
-        {
-            $('.reqdataleads').css('display', 'inline-block')
-            $('#dataleads').attr('readonly', false)
-            $('#dataleads').attr('required', true)
-        }
-        else
-        {
-            $('.reqdataleads').css('display', 'none')
-            $('#dataleads').attr('readonly', true)
-            $('#dataleads').attr('required', false)
-            $('#dataleads').val('')
-        }
-
     })
 
     function GetLocation()
@@ -327,10 +287,11 @@
 
     function GetLatlong(data)
     {
-        // DataLat     = data.coords.latitude;
-        // DataLong    = data.coords.longitude;
-        DataLat     = -7.514271;
-        DataLong    = 110.516980;
+        DataLat     = data.coords.latitude;
+        DataLong    = data.coords.longitude;
+
+        // DataLat     = -7.514271;
+        // DataLong    = 110.516980;
 
         $('#latitude ').val(DataLat)
         $('#longitude').val(DataLong)
@@ -412,6 +373,5 @@
             $('#'+data.finddata).val(data[data.finddata])
         }
     }
-
 </script>
 @endsection

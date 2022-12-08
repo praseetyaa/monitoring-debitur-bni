@@ -27,15 +27,37 @@ class DashboardController extends Controller
     {
         $verifsolicit       = DataDebitur::with('statusdebitur')->where('status_debitur','=',1)->get();
         $appsolicit         = DataDebitur::with('statusdebitur')->where('status_debitur','=',2)->get();
-        $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->get();
+        $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->where('id_input','=',Auth::user()->id)->get();
+        $needpipeline       = DataDebitur::with('statusdebitur')->where('status_debitur','=',4)->where('id_input','=',Auth::user()->id)->get();
         $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
         $pengumuman         = Pengumuman::whereDate('expired', '>=' ,date('Y-m-d'))->orderBy("tanggal_pebuatan", "desc")->paginate(2);
+
+
+        if(Auth::user()->role_id == 4)
+        {
+            $jumlahsolicit      = DataDebitur::with('statusdebitur')->where('status_debitur','>=',1)->where('status_debitur','<=',2)->where('id_input','=',Auth::user()->id)->get();
+            $jumlahprospek      = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->where('id_input','=',Auth::user()->id)->get();
+            $jumlahpipeline     = DataDebitur::with('statusdebitur')->where('status_debitur','=',4)->where('id_input','=',Auth::user()->id)->get();
+        }
+        else
+        {
+            $jumlahsolicit      = DataDebitur::with('statusdebitur')->where('status_debitur','>=',1)->where('status_debitur','<=',2)->get();
+            $jumlahprospek      = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->get();
+            $jumlahpipeline     = DataDebitur::with('statusdebitur')->where('status_debitur','=',4)->get();
+        }
+
         return view('admin/dashboard/index', [
             'user'              => $user,
             'verifsolicit'      => $verifsolicit,
             'appsolicit'        => $appsolicit,
             'needprospek'       => $needprospek,
-            'pengumuman'        => $pengumuman
+            'needpipeline'      => $needpipeline,
+            'pengumuman'        => $pengumuman,
+
+            'jumlahsolicit'     => $jumlahsolicit,
+            'jumlahprospek'     => $jumlahprospek,
+            'jumlahpipeline'    => $jumlahpipeline,
+
         ]);
     }
 }

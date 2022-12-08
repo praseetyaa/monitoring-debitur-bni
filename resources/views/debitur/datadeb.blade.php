@@ -167,7 +167,7 @@
                                 @else
                                     <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
                                 @endif
-                                <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{date('d M Y H:i:s', strtotime($a->created_at))}}</td>
+                                <td class="pointer text-center" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{date('d M Y', strtotime($a->created_at))}}</td>
                                 @if(Auth::user()->role_id != role('inputer'))
                                     <td class="pointer" onclick="OpenURL('datadebdetail/{{ $a->id }}')">{{ $a->nama_debitur }}</td>
                                 @endif
@@ -234,21 +234,92 @@
     <input type="hidden" name="id" id="id_deleteall">
     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
-<form class="d-none" id="solicitdenyall" method="post" action="{{ route('solicitdenyall') }}">
+{{-- <form class="d-none" id="solicitdenyall" method="post" action="{{ route('solicitdenyall') }}">
     @csrf
     <input type="hidden" name="id" id="id_denyall">
     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
-</form>
-<form class="d-none" id="solicitverifall" method="post" action="{{ route('solicitverifall') }}">
+</form> --}}
+{{-- <form class="d-none" id="solicitverifall" method="post" action="{{ route('solicitverifall') }}">
     @csrf
     <input type="hidden" name="id" id="id_verifall">
     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
-</form>
+</form> --}}
 <form class="d-none" id="solicitappall" method="post" action="{{ route('solicitappall') }}">
     @csrf
     <input type="hidden" name="id" id="id_appall">
     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
+
+<div class="modal fade" id="mdldenydataall" tabindex="-1" aria-labelledby="mdldenydataall" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Tolak Data</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="solicitdenyall" method="post" action="{{ route('solicitdenyall') }}">
+                    @csrf
+                    <input type="hidden" name="id" id="id_denyall">
+                    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2 text-center">
+                            Apakah anda yakin ingin menolak data ini?
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label style="font-weight:bold">Alasan Penolakan</label>
+                            <textarea class="form-control" required name="alasantolak" placeholder="Alasan Penolakan" rows="5"></textarea>
+                        </div>
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Ya, Tolak Data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlverifikasiall" tabindex="-1" aria-labelledby="mdlverifikasiall" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ModalShowListLabel">Verifikasi Data</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="solicitverifall" action="{{ route('solicitverifall') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" id="id_verifall">
+                    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2 text-center">
+                            Apakah anda yakin ingin memverifikasi data ini?
+                        </div>
+                        <div class="col-4 mb-2">
+                        </div>
+                        <div class="col-8 mb-2">
+                            <input required type="checkbox" name="pre_screen" value="1">
+                            <label for="pre_screen" style="font-weight: bold"> Pre Screen</label><br>
+                            <input required type="checkbox" name="ots_penyelia" value="1">
+                            <label for="ots_penyelia" style="font-weight: bold"> OTS Penyelia</label><br>
+                            <input required type="checkbox" name="ots_pemimpin" value="1">
+                            <label for="ots_pemimpin" style="font-weight: bold"> OTS Pemimpin</label><br>
+                        </div>
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Ya, Verifikasi Data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function(){
         $('.checkvalueall').on('change', function(){
@@ -300,46 +371,43 @@
         }
         else
         {
-            Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
-                var nrs     = (type == 'delete' ? ' menghapus ' : type == 'verif' ? ' memverifikasi ' : type == 'deny' ? ' menolak ' : ' mengapprove ');
-                var btnrs   = (type == 'delete' ? ' Hapus ' : type == 'verif' ? ' Verifikasi ' : type == 'deny' ? ' Tolak ' : ' Approve ');
-                var htmlxx    =  `  <div class="row">
-                                        <div class="col-md-12 text-center" >
-                                            Apakah anda yakin ingin `+nrs+` `+arr.length+` data terpilih?
-                                        </div>
-                                    </div>`;
-                if(type == 'verif')
-                {
-                    htmlxx = `  <div class="row">
-                                    <div class="col-md-12 text-center" >
-                                        Apakah anda yakin ingin `+nrs+` `+arr.length+` data terpilih?
-                                    </div>
-                                    <div class="col-md-12 text-left">
-                                        <input disabled type="checkbox" checked name="pre_screen" value="1">
-                                        <label for="pre_screen" style="font-weight: bold"> Pre Screen</label><br>
-                                        <input disabled type="checkbox" checked name="ots_penyelia" value="1">
-                                        <label for="ots_penyelia" style="font-weight: bold"> OTS Penyelia</label><br>
-                                        <input disabled type="checkbox" checked name="ots_pemimpin" value="1">
-                                        <label for="ots_pemimpin" style="font-weight: bold"> OTS Pemimpin</label><br>
-                                    </div>
-                                </div>`;
-                }
+            if(type == 'deny')
+            {
+                $('#id_'+type+'all').val(arr.join(","))
+                $('#mdldenydataall').modal('show')
+            }
+            else if(type == 'verif')
+            {
+                $('#id_'+type+'all').val(arr.join(","))
+                $('#mdlverifikasiall').modal('show')
+            }
+            else
+            {
+                Spandiv.LoadResources(Spandiv.Resources.sweetalert2, function() {
+                    var nrs     = (type == 'delete' ? ' menghapus ' : ' mengapprove ');
+                    var btnrs   = (type == 'delete' ? ' Hapus ' : ' Approve ');
+                    var htmlxx    =  `  <div class="row">
+                                            <div class="col-md-12 text-center" >
+                                                Apakah anda yakin ingin `+nrs+` `+arr.length+` data terpilih?
+                                            </div>
+                                        </div>`;
 
-                Swal.fire({
-                    title: 'Perhatian',
-                    icon: "warning",
-                    confirmButtonText: "Ya"+btnrs,
-                    confirmButtonColor: "#3085d6",
-                    showCancelButton: true,
-                    cancelButtonText:'Batal',
-                    html: htmlxx,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#id_'+type+'all').val(arr.join(","))
-                        $("#solicit"+type+"all").submit();
-                    }
+                    Swal.fire({
+                        title: 'Perhatian',
+                        icon: "warning",
+                        confirmButtonText: "Ya"+btnrs,
+                        confirmButtonColor: "#3085d6",
+                        showCancelButton: true,
+                        cancelButtonText:'Batal',
+                        html: htmlxx,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#id_'+type+'all').val(arr.join(","))
+                            $("#solicit"+type+"all").submit();
+                        }
+                    });
                 });
-            });
+            }
         }
     }
 </script>

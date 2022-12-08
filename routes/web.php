@@ -145,43 +145,47 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
     });
     Route::prefix('daftarmonitoring')->group(function(){
-        Route::get('/{id_user?}/{status?}', 'SolicitController@daftarmonitoring')->name('daftarmonitoring');
+        Route::get('/{id_user?}/{status?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
     });
 
     Route::prefix('DataSol')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@index')->name('DataSol');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@index')->name('DataSol');
     });
 
     Route::prefix('DataPros')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'SolicitController@DataPros')->name('DataPros');
-        Route::post('/prospekdata', 'SolicitController@prospekdata')->name('prospekdata');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPros')->name('DataPros');
+        Route::post('/prospekdata', 'DataDebiturController@prospekdata')->name('prospekdata');
     });
+
+    Route::prefix('DataPipe')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPipe')->name('DataPipe');
+    });
+
     Route::prefix('solicit')->group(function(){
-        Route::post('/GetDataByCodePos', 'SolicitController@GetDataByCodePos');
+        Route::post('/GetDataByCodePos', 'DataDebiturController@GetDataByCodePos');
 
-        Route::post('/solicitdelete', 'SolicitController@delete')->name('solicitdelete');
-        Route::post('/solicitdeleteall', 'SolicitController@solicitdeleteall')->name('solicitdeleteall');
-        Route::post('/solicitdenyall', 'SolicitController@solicitdenyall')->name('solicitdenyall');
-        Route::post('/solicitdeny', 'SolicitController@solicitdeny')->name('solicitdeny');
+        Route::post('/solicitdelete', 'DataDebiturController@delete')->name('solicitdelete');
+        Route::post('/solicitdeleteall', 'DataDebiturController@solicitdeleteall')->name('solicitdeleteall');
+        Route::post('/solicitdenyall', 'DataDebiturController@solicitdenyall')->name('solicitdenyall');
+        Route::post('/solicitdeny', 'DataDebiturController@solicitdeny')->name('solicitdeny');
 
+        Route::get('/solicitcreate', 'DataDebiturController@create')->name('solicitcreate');
+        Route::post('/solicitstore', 'DataDebiturController@store')->name('solicitstore');
+        Route::get('/solicitedit/{id?}', 'DataDebiturController@edit')->name('solicitedit');
+        Route::post('/solicitupdate', 'DataDebiturController@update')->name('solicitupdate');
+        Route::post('/verifisolicit', 'DataDebiturController@verifisolicit')->name('verifisolicit');
+        Route::post('/solicitverifall', 'DataDebiturController@solicitverifall')->name('solicitverifall');
 
-        Route::get('/solicitcreate', 'SolicitController@create')->name('solicitcreate');
-        Route::post('/solicitstore', 'SolicitController@store')->name('solicitstore');
-        Route::get('/solicitedit/{id?}', 'SolicitController@edit')->name('solicitedit');
-        Route::post('/solicitupdate', 'SolicitController@update')->name('solicitupdate');
-        Route::post('/verifisolicit', 'SolicitController@verifisolicit')->name('verifisolicit');
-        Route::post('/solicitverifall', 'SolicitController@solicitverifall')->name('solicitverifall');
-
-        Route::post('/appsolicit', 'SolicitController@appsolicit')->name('appsolicit');
-        Route::post('/solicitappall', 'SolicitController@solicitappall')->name('solicitappall');
+        Route::post('/appsolicit', 'DataDebiturController@appsolicit')->name('appsolicit');
+        Route::post('/solicitappall', 'DataDebiturController@solicitappall')->name('solicitappall');
 
     });
 
     Route::prefix('datadebdetail')->group(function(){
-        Route::get('/{id?}', 'SolicitController@detail')->name('datadebdetail');
+        Route::get('/{id?}', 'DataDebiturController@detail')->name('datadebdetail');
     });
 
-    Route::get('/openfile/{path?}/{name?}', 'SolicitController@openfile')->name('openfile');
+    Route::get('/openfile/{path?}/{name?}', 'DataDebiturController@openfile')->name('openfile');
 
     Route::prefix('master')->group(function(){
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');

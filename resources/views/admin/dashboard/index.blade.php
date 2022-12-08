@@ -3,15 +3,30 @@
 @section('title', 'Dashboard')
 
 @section('content')
-
 <link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}">
+<style>
+    .carddash
+    {
+        border-radius: 0.8rem;
+        box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75)!important;
+        -webkit-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75)!important;
+        -moz-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75)!important;
+    }
+    .notifshadow
+    {
+        border-radius: 0.8rem;
+        box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
+    }
+</style>
 
 <div class="alert alert-success" role="alert">
     <div class="alert-message d-flex align-items-center">
         @if(Auth::user()->avatar != '' && File::exists(public_path('assets/images/users/'.Auth::user()->avatar)))
             <img src="{{ asset('assets/images/users/'.Auth::user()->avatar) }}" class="img-fluid bg-white me-3 rounded-circle me-1" alt="{{ Auth::user()->name }}" width="70">
         @else
-            <div class="avatar-letter rounded-circle me-3 bg-dark d-flex align-items-center justify-content-center" style="height:70px; width:70px">
+            <div class="avatar-letter rounded-circle me-3 bg-dark d-flex align-items-center justify-content-center" style="width:4rem; height:4rem">
                 <h2 class="text-white mb-0">{{ strtoupper(substr(Auth::user()->name,0,1)) }}</h2>
             </div>
         @endif
@@ -28,36 +43,49 @@
         @if(Auth::user()->role_id == 6)
             @if(count($verifsolicit)>0)
                 <a onclick="verifisolicit()">
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success notifshadow" role="alert">
                         <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i> {{count($verifsolicit)}} Solicit Memerlukan verifikasi dari anda, klik disini untuk melihat
+                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($verifsolicit)}} Solicit Memerlukan verifikasi dari anda
                         </div>
                     </div>
                 </a>
             @endif
         @endif
 
+        @if(Auth::user()->role_id == 4)
+            @if(count($needprospek)>0)
+                <a onclick="needprospek()">
+                    <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert-message d-flex align-items-center">
+                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needprospek)}} Prospek memerlukan tindak lanjut dari anda
+                        </div>
+                    </div>
+                </a>
+            @endif
+
+            @if(count($needpipeline)>0)
+                <a onclick="needpipeline()">
+                    <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert-message d-flex align-items-center">
+                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needpipeline)}} Pipeline memerlukan tindak lanjut dari anda
+                        </div>
+                    </div>
+                </a>
+            @endif
+        @endif
 
         @if(Auth::user()->role_id == 3)
             @if(count($appsolicit)>0)
                 <a onclick="appisolicit()">
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success notifshadow" role="alert">
                         <div class="alert-message d-flex align-items-center">
-                            <i class="bi bi-bell-fill"></i> {{count($appsolicit)}} Solicit Memerlukan approval dari anda, klik disini untuk melihat
+                            <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($appsolicit)}} Solicit Memerlukan approval dari anda
                         </div>
                     </div>
                 </a>
             @endif
 
-            @if(count($needprospek)>0)
-                <a onclick="needprospek()">
-                    <div class="alert alert-success" role="alert">
-                        <div class="alert-message d-flex align-items-center">
-                            {{count($needprospek)}} Data Prospek memerlukan tindak lanjut dari anda, klik disini untuk melihat
-                        </div>
-                    </div>
-                </a>
-            @endif
+
         @endif
     </div>
 </div>
@@ -138,6 +166,24 @@
         $('#ModalShowList').modal('show');
     }
 
+    function needpipeline()
+    {
+        $('#ModalShowListLabel').html('Daftar Pipeline')
+        var needpipeline= @json($needpipeline);
+        var bodytable       = '';
+        needpipeline.forEach(function(val, i){
+            bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                <td class='text-center'>`+(i+1)+`</td>
+                                <td>`+val['nama_debitur']+`</td>
+                                <td>`+val['sektor']+`</td>
+                            </tr>`
+        });
+        $('#BodyModalShowList').html(bodytable);
+        $('#ModalShowList').modal('show');
+    }
+
+
+
     function OpenURL(url)
     {
         var NewUrl = "<?= URL::to('"+url+"') ?>"
@@ -148,35 +194,35 @@
 <div class="counter-task">
     <div class="row">
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="DataSol">
-                <div class="card bg-primary rounded">
+            <a class="text-decoration-none" href="{{route('DataSol')}}">
+                <div class="card bg-primary carddash">
                     <div class="card-body">
-                        <h5 class="fw-bold text-white">Solicit</h5>
-                        <h1 class="fw-bold text-white">20</h1>
+                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
+                        <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
+                        <small class="text-white">Solicit Perlu Tindak Lanjut</small>
                     </div>
-                    <div class="card-footer">Lihat Detail <i class="bi bi-arrow-right-short"></i></div>
                 </div>
             </a>
         </div>
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="DataPros">
-                <div class="card bg-warning rounded">
+            <a class="text-decoration-none" href="{{route('DataPros')}}">
+                <div class="card carddash" style="background-color: #F2AF22">
                     <div class="card-body">
-                        <h5 class="fw-bold text-white">Prospect</h5>
-                        <h1 class="fw-bold text-white">7</h1>
+                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
+                        <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
+                        <small class="text-white">Prospect Perlu Tindak Lanjut</small>
                     </div>
-                    <div class="card-footer">Lihat Detail <i class="bi bi-arrow-right-short"></i></div>
                 </div>
             </a>
         </div>
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="#">
-                <div class="card bg-success rounded">
+            <a class="text-decoration-none" href="{{route('DataPipe')}}">
+                <div class="card bg-success carddash">
                     <div class="card-body">
-                        <h5 class="fw-bold text-white">Pipeline</h5>
-                        <h1 class="fw-bold text-white">3</h1>
+                        <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
+                        <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
+                        <small class="text-white">Pipeline Perlu Tindak Lanjut</small>
                     </div>
-                    <div class="card-footer">Lihat Detail <i class="bi bi-arrow-right-short"></i></div>
                 </div>
             </a>
         </div>
@@ -246,7 +292,6 @@
             $('#modal_judul_pengumuman').html(atob(judul))
             $('#body_show_pengumuman').html(atob(data));
             $('#modal_show_pengumuman').modal('show');
-            // $('.img-responsive').css('width', '100%');
         }
     </script>
 @endif
