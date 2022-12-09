@@ -16,6 +16,10 @@
     {
         white-space: nowrap!important;
     }
+    .form-check-input
+    {
+        margin-left: 0!important;
+    }
 </style>
 
 <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/>
@@ -117,13 +121,15 @@
                     @if(in_array(Auth::user()->role_id, array(3,6)))
                         <div class="row mb-2" id="btnactionall" style="display: none">
                             <div class="col-md-12 text-center">
-                                @if(in_array(Auth::user()->role_id, array(6)))
+                                @if(in_array(Auth::user()->role_id, array(6)) && Request::route()->getName() == 'DataSol')
                                     <a onclick="action_all('verif')" class="btn btn-sm btn-primary">Verif Data Terpilih</a>
+                                    <a onclick="action_all('deny')" class="btn btn-sm btn-warning">Tolak Data Terpilih</a>
+                                    <a onclick="action_all('delete')" class="btn btn-sm btn-danger mr-2">Hapus Data Terpilih</a>
                                 @elseif(in_array(Auth::user()->role_id, array(3)) && Request::route()->getName() == 'DataSol')
                                     <a onclick="action_all('app')" class="btn btn-sm btn-primary">Approve Data Terpilih</a>
+                                    <a onclick="action_all('deny')" class="btn btn-sm btn-warning">Tolak Data Terpilih</a>
+                                    <a onclick="action_all('delete')" class="btn btn-sm btn-danger mr-2">Hapus Data Terpilih</a>
                                 @endif
-                                <a onclick="action_all('deny')" class="btn btn-sm btn-warning">Tolak Data Terpilih</a>
-                                <a onclick="action_all('delete')" class="btn btn-sm btn-danger mr-2">Hapus Data Terpilih</a>
                             </div>
                         </div>
                     @endif
@@ -133,8 +139,10 @@
                     <table class="table table-sm table-hover w-100 table-bordered" id="datatablexxx">
                         <thead class="bg-light">
                             <tr class="text-center">
-                                @if(in_array(Auth::user()->role_id, array(3,6)))
-                                    <th class="text-center" rowspan="2"><input type="checkbox" class="form-check-input checkbox-all checkvalueall"></th>
+                                @if(in_array(Auth::user()->role_id, array(3,6)) && Request::route()->getName() == 'DataSol')
+                                    <th class="text-center" rowspan="2" style="width: 1px; white-space:nowrap">
+                                        <input type="checkbox" class="form-check-input checkbox-all checkvalueall">
+                                    </th>
                                 @endif
                                 <th rowspan="2" style="width: 1px;white-space:nowrap">No</th>
                                 @if(Auth::user()->role_id != role('inputer'))
@@ -172,13 +180,12 @@
                         <tbody>
                             @foreach($data as $index=>$a)
                             <tr>
-
-                                @if(in_array(Auth::user()->role_id, array(3,6)))
-                                    <td class="text-center">
+                                @if(in_array(Auth::user()->role_id, array(3,6)) && Request::route()->getName() == 'DataSol')
+                                    <td class="text-center" style="width: 1px; white-space:nowrap">
                                         @if(Auth::user()->role_id == 6 && $a->status_debitur == 1)
-                                            <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
+                                            <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">x
                                         @elseif(Auth::user()->role_id == 3 && ($a->status_debitur == 2 || $a->status_debitur == 3))
-                                            <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
+                                            <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">y
                                         @endif
                                     </td>
                                 @endif
@@ -331,7 +338,8 @@
                     <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
-                            Apakah anda yakin ingin memverifikasi data ini?
+                            Apakah anda yakin ingin memverifikasi data ini? <br>
+                            Pastikan Semua Data Sudah benar!
                         </div>
                         <div class="col-4 mb-2">
                         </div>
@@ -376,6 +384,9 @@
             bInfo: true,
             dom: 'Blfrtip',
             responsive: true,
+            // columnDefs: [
+            //     { "orderable": false, "targets": 0 }
+            // ],
             buttons: [
                 {
                     extend: 'excel',
@@ -393,6 +404,7 @@
             ]
         });
 
+        $('.dataTables_sizing .checkvalueall').remove()
         $('.checkvalueall').on('change', function(){
             var arr = [];
             $('input.checkvalue:checkbox:checked').each(function () {
@@ -406,6 +418,7 @@
             {
                 $('#btnactionall').css('display','')
             }
+            $('.dataTables_sizing .checkvalueall').remove()
         })
 
         $('.checkvalue').on('change', function(){
@@ -421,6 +434,7 @@
             {
                 $('#btnactionall').css('display','')
             }
+            $('.dataTables_sizing .checkvalueall').remove()
         })
     })
     function action_all(type)
@@ -502,6 +516,7 @@
     <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script>
 
     <script type="text/javascript">
+        Spandiv.DataTable("#datatable");
         Spandiv.ButtonDelete(".btn-delete", ".form-delete");
 
         function OpenURL(url)

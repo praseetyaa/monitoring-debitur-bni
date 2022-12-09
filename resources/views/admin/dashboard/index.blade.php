@@ -25,6 +25,13 @@
         -webkit-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
         -moz-box-shadow: 10px 10px 22px -11px rgba(0,0,0,0.75);
     }
+    .pengumumanshadow
+    {
+        border-radius: 0.5rem;
+        box-shadow: 10px 10px 11px -11px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 10px 10px 11px -11px rgba(0,0,0,0.75);
+        -moz-box-shadow: 10px 10px 11px -11px rgba(0,0,0,0.75);
+    }
     .table-borderless > tbody > tr > td,
     .table-borderless > tbody > tr > th,
     .table-borderless > tfoot > tr > td,
@@ -246,9 +253,17 @@
 
 {{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
     @if(count($pengumuman)>0)
-        <h3><i class="bi bi-megaphone"></i> Pengumuman</h3>
-        <div class="row">
-            <div class="col-12">
+        <div class="card">
+            <div class="card-header" style="padding-bottom: 0!important">
+                <h3 style="font-weight:bold"><i class="bi bi-megaphone"></i> Pengumuman</h3>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " placeholder="Cari Pengumuman" id="search_pengumuman" >
+                    <div class="input-group-append ">
+                        <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+                    </div>
+                </div>
                 <table class="table table-sm table-borderless" id="datatablexxx" style="table-layout:fixed;">
                     <thead class="d-none">
                         <tr>
@@ -263,25 +278,25 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <div class="container_anc div notifshadow" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
-                                        <article class="card_anc curve_anc shadow_anc">
-                                        <div class="text-center">
-                                            @if ($item->thumbnail == null && $item->thumbnail == '')
-                                                <i class="bi bi-card-image"></i>
-                                            @else
-                                                <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
-                                            @endif
-                                        </div>
-                                        <div style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;">
-                                            <h5 class="fw-bold">{{$item->judul}}</h5>
-                                            <div class="" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap; width:100%">
-                                                {{ strip_tags($item->isi) }}
+                                    <div class="container_anc div pengumumanshadow" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
+                                        <article class="card_anc curve_anc shadow_anc" style="border:1px solid rgb(188, 188, 188)">
+                                            <div class="text-center">
+                                                @if ($item->thumbnail == null && $item->thumbnail == '')
+                                                    <i class="bi bi-card-image"></i>
+                                                @else
+                                                    <img src="{{ URL::asset('storage/'.$item->thumbnail) }}" alt="image">
+                                                @endif
                                             </div>
-                                            <span style="font-size: 11px">
-                                                <i class="bi bi-person"></i>
-                                                {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
-                                            </span>
-                                        </div>
+                                            <div style="text-overflow: ellipsis;overflow: hidden; white-space: nowrap;">
+                                                <h5 class="fw-bold" style="padding-bottom: 0!important">{{$item->judul}}</h5>
+                                                <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width:100%; font-size: 12px">
+                                                    {{ strip_tags($item->isi) }}
+                                                </div>
+                                                <span style="font-size: 11px">
+                                                    <i class="bi bi-person"></i>
+                                                    {{$item->nama_pembuat}} - <time>{{ date('d M Y, H:i:s', strtotime($item->tanggal_pebuatan))}}</time>
+                                                </span>
+                                            </div>
                                         </article>
                                     </div>
                                 </td>
@@ -299,7 +314,7 @@
                         paging: true,
                         bFilter: true,
                         bInfo: false,
-                        dom: 'frtip',
+                        dom: 'rtip',
                         pageLength : 3,
                         lengthMenu: [[3, 6, 9, -1], [3, 6, 9, 'Todos']],
                         responsive: true,
@@ -319,6 +334,9 @@
 
                     ]
                 });
+                $('#search_pengumuman').keyup(function(){
+                    table.search($(this).val()).draw() ;
+                })
             })
         </script>
         {{-- <main>

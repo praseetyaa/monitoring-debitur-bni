@@ -234,7 +234,8 @@
                     <input type="hidden" name="id" value="{{ $data->id }}">
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
-                            Apakah anda yakin ingin memverifikasi data ini?
+                            Apakah anda yakin ingin memverifikasi data ini? <br>
+                            Pastikan Semua Data Sudah benar!
                         </div>
                         <div class="col-4 mb-2">
                         </div>
