@@ -64,7 +64,7 @@
             @if(Auth::user()->role_id == 6)
                 @if(count($verifsolicit)>0)
                     <a onclick="verifisolicit()">
-                        <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert alert-success shadow" role="alert">
                             <div class="alert-message d-flex align-items-center">
                                 <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($verifsolicit)}} Solicit Memerlukan verifikasi dari anda
                             </div>
@@ -76,7 +76,7 @@
             @if(Auth::user()->role_id == 4)
                 @if(count($needprospek)>0)
                     <a onclick="needprospek()">
-                        <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert alert-success shadow" role="alert">
                             <div class="alert-message d-flex align-items-center">
                                 <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needprospek)}} Prospek memerlukan tindak lanjut dari anda
                             </div>
@@ -86,7 +86,7 @@
 
                 @if(count($needpipeline)>0)
                     <a onclick="needpipeline()">
-                        <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert alert-success shadow" role="alert">
                             <div class="alert-message d-flex align-items-center">
                                 <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($needpipeline)}} Pipeline memerlukan tindak lanjut dari anda
                             </div>
@@ -98,7 +98,7 @@
             @if(Auth::user()->role_id == 3)
                 @if(count($appsolicit)>0)
                     <a onclick="appisolicit()">
-                        <div class="alert alert-success notifshadow" role="alert">
+                        <div class="alert alert-success shadow" role="alert">
                             <div class="alert-message d-flex align-items-center">
                                 <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($appsolicit)}} Solicit Memerlukan approval dari anda
                             </div>
@@ -216,7 +216,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <a class="text-decoration-none" href="{{route('DataSol')}}">
-                    <div class="card bg-primary carddash">
+                    <div class="card bg-primary">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
@@ -227,7 +227,7 @@
             </div>
             <div class="col-lg-4">
                 <a class="text-decoration-none" href="{{route('DataPros')}}">
-                    <div class="card carddash" style="background-color: #F2AF22">
+                    <div class="card" style="background-color: #F2AF22">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
@@ -238,7 +238,7 @@
             </div>
             <div class="col-lg-4">
                 <a class="text-decoration-none" href="{{route('DataPipe')}}">
-                    <div class="card bg-success carddash">
+                    <div class="card bg-success">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
@@ -278,8 +278,8 @@
                             @endphp
                             <tr>
                                 <td>
-                                    <div class="container_anc div pengumumanshadow" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
-                                        <article class="card_anc curve_anc shadow_anc" style="border:1px solid rgb(188, 188, 188)">
+                                    <div class="container_anc div shadow" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
+                                        <article class="card_anc curve_anc">
                                             <div class="text-center">
                                                 @if ($item->thumbnail == null && $item->thumbnail == '')
                                                     <i class="bi bi-card-image"></i>
@@ -346,7 +346,7 @@
                     $juduls     = base64_encode($item->judul);
                 @endphp
                 <div class="container_anc div" style="cursor: pointer" onclick="show_pengumuman('{{ $datas }}', '{{$juduls}}')">
-                    <article class="card_anc curve_anc shadow_anc">
+                    <article class="card_anc curve_anc shadow">
                     <div class="text-center col-1">
                         @if ($item->thumbnail == null && $item->thumbnail == '')
                             <i class="bi bi-card-image"></i>
