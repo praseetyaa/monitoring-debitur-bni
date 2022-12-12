@@ -25,7 +25,7 @@ class DataDebiturController extends Controller
     public function index($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
         $DCabang        = Cabang::get();
-        $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>', 1)->get();
+        $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>=', 1)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
@@ -45,24 +45,27 @@ class DataDebiturController extends Controller
                 ->where('status_debitur', '<', 3)
                 ->get();
         return view('debitur/datadeb',[
-            'data'  => $data,
-            'startd'    =>$startd,
-            'endd'    =>$endd,
-            'status'    =>$status_deb,
-            'cabang'     => $cabang,
-            'StatusDebitur' => $StatusDebitur,
-            'DCabang'        => $DCabang,
-            'title'     => 'Data Solicit'
+            'data'              => $data,
+            'startd'            => $startd,
+            'endd'              => $endd,
+            'status'            => $status_deb,
+            'cabang'            => $cabang,
+            'StatusDebitur'     => $StatusDebitur,
+            'DCabang'           => $DCabang,
+            'title'             => 'Data Solicit'
         ]);
     }
 
-    public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '')
+    public function MasterData($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
-        $DCabang = Cabang::get();
-        $StatusDebitur = StatusDebitur::get();
+        $DCabang        = Cabang::get();
+        $StatusDebitur  = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
+                })
+                ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
+                    $query->where('status_debitur', $status_deb);
                 })
                 ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
                     $query->whereDate('created_at', '>=' ,$startd);
@@ -73,17 +76,51 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->where('status_debitur', 3)
                 ->get();
         return view('debitur/datadeb',[
-            'data'  => $data,
-            'startd'    =>$startd,
-            'endd'    =>$endd,
-            'status'    =>3,
-            'cabang'     => $cabang,
+            'data'              => $data,
+            'startd'            => $startd,
+            'endd'              => $endd,
+            'status'            => $status_deb,
+            'cabang'            => $cabang,
+            'StatusDebitur'     => $StatusDebitur,
+            'DCabang'           => $DCabang,
+            'title'             => 'Semua Data'
+        ]);
+    }
+
+    public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '')
+    {
+        $DCabang = Cabang::get();
+        $StatusDebitur  = StatusDebitur::where('status_debitur', 3)->orwhere('status_debitur', 4)->get();
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
+                ->when(Auth::user()->role_id == 4, function($query){
+                    $query->where('id_input', Auth::user()->id);
+                })
+                ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
+                    $query->where('status_debitur', $status_deb);
+                })
+                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
+                    $query->whereDate('created_at', '>=' ,$startd);
+                })
+                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
+                    $query->whereDate('created_at', '<=' ,$endd);
+                })
+                ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
+                    $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
+                })
+                ->where('status_debitur', '>=', 3)
+                ->where('status_debitur', '<=', 4)
+                ->get();
+        return view('debitur/datadeb',[
+            'data'          => $data,
+            'startd'        => $startd,
+            'endd'          => $endd,
+            'status'        => $status_deb,
+            'cabang'        => $cabang,
             'StatusDebitur' => $StatusDebitur,
-            'DCabang'        => $DCabang,
-            'title'     => 'Data Prospek'
+            'DCabang'       => $DCabang,
+            'title'         => 'Data Prospek'
         ]);
     }
 
@@ -104,7 +141,7 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->where('status_debitur', 4)
+                ->where('status_debitur', 5)
                 ->get();
         return view('debitur/datadeb',[
             'data'              => $data,
@@ -135,7 +172,7 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->where('status_debitur', 5)
+                ->where('status_debitur', 6)
                 ->get();
         return view('debitur/datadeb',[
             'data'              => $data,
@@ -195,6 +232,12 @@ class DataDebiturController extends Controller
                     })
                     ->when($status == '3', function($query) use ($id_user){
                         $query->where('id_approve', $id_user);
+                    })
+                    ->when($status == '4', function($query) use ($id_user){
+                        $query->where('id_app_prospek', $id_user);
+                    })
+                    ->when($status == '5', function($query) use ($id_user){
+                        $query->where('id_update_pipeline', $id_user);
                     })
                     ->get();
             return view('debitur/datadeb',[
@@ -534,6 +577,44 @@ class DataDebiturController extends Controller
         return redirect()->route('DataPros')->with(['message' => 'Berhasil mengupdate data.']);
     }
 
+    public function prospectappall(Request $request)
+    {
+        $data_id = explode(',',$request->id);
+        if(count($data_id)>0)
+        {
+            $user                     = User::with('attribute')->where('id', Auth::user()->id)->first();
+            foreach($data_id as $id)
+            {
+                if($id != '')
+                {
+                    $data                     = DataDebitur::find($id);
+                    $data->id_app_prospek        = $user->id;
+                    $data->nama_app_prospek      = $user->name;
+                    $data->npp_app_prospek       = $user->attribute->npp;
+                    $data->status_debitur        = 5;
+                    $data->tanggal_app_prospek   = date('Y-m-d H:i:s');
+                    $data->save();
+                }
+            }
+        }
+        return redirect()->route($request->routename, ['id'=>$request->id])->with(['message' => 'Berhasil Menyetujui Data']);
+    }
+
+    public function appprospek(Request $request)
+    {
+        $user              = User::with('attribute')->where('id', Auth::user()->id)->first();
+        $data              = DataDebitur::find($request->id);
+
+        $data->id_app_prospek        = $user->id;
+        $data->nama_app_prospek      = $user->name;
+        $data->npp_app_prospek       = $user->attribute->npp;
+        $data->status_debitur        = 5;
+        $data->tanggal_app_prospek   = date('Y-m-d H:i:s');
+        $data->save();
+        return redirect()->route('DataPros')->with(['message' => 'Berhasil mengupdate data.']);
+    }
+
+
     public function pipelinedata(Request $request)
     {
         $user              = User::with('attribute')->where('id', Auth::user()->id)->first();
@@ -547,7 +628,7 @@ class DataDebiturController extends Controller
         $data->id_update_pipeline        = $user->id;
         $data->nama_update_pipeline      = $user->name;
         $data->npp_update_pipeline       = $user->attribute->npp;
-        $data->status_debitur            = 5;
+        $data->status_debitur            = 6;
         $data->tanggal_update_pipeline   = date('Y-m-d H:i:s');
         $data->save();
         return redirect()->route('DataPipe')->with(['message' => 'Berhasil mengupdate data.']);

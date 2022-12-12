@@ -22,26 +22,31 @@
                         <div class="col-md-12 mb-2">
                             <div class="row">
                                 <div class="col-lg-3 mb-3">
-                                    <div><span class="fw-bold">Solicit Dibuat Oleh</span><br>{{$data->nama_input}}<br>{{date('d M Y H:i:s', strtotime($data->created_at))}}</div>
+                                    <div><span class="fw-bold">Solicit Dibuat Oleh</span><br>{{$data->nama_input}}<br>{{date('d M Y', strtotime($data->created_at))}}</div>
                                 </div>
                                 @if($data->status_debitur > 1)
                                     <div class="col-lg-3 mb-3">
-                                        <div><span class="fw-bold">Solicit Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_verif))}}</div>
+                                        <div><span class="fw-bold">Solicit Diverifikasi Oleh</span><br>{{$data->nama_verif}}<br>{{date('d M Y', strtotime($data->tanggal_verif))}}</div>
                                     </div>
                                 @endif
                                 @if($data->status_debitur > 2)
                                     <div class="col-lg-3 mb-3">
-                                        <div><span class="fw-bold">Solicit DiApprove Oleh</span><br>{{$data->nama_approve}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_approve))}}</div>
+                                        <div><span class="fw-bold">Solicit Disetujui Oleh</span><br>{{$data->nama_approve}}<br>{{date('d M Y', strtotime($data->tanggal_approve))}}</div>
                                     </div>
                                 @endif
                                 @if($data->status_debitur > 3)
                                     <div class="col-lg-3 mb-3">
-                                        <div><span class="fw-bold">Prospek Diupdate Oleh</span><br>{{$data->nama_update_prospek}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_update_prospek))}}</div>
+                                        <div><span class="fw-bold">Prospek Diupdate Oleh</span><br>{{$data->nama_update_prospek}}<br>{{date('d M Y', strtotime($data->tanggal_update_prospek))}}</div>
+                                    </div>
+                                @endif
+                                @if($data->status_debitur > 4)
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Prospek Disetujui Oleh</span><br>{{$data->nama_app_prospek}}<br>{{date('d M Y', strtotime($data->tanggal_app_prospek))}}</div>
                                     </div>
                                 @endif
                                 @if($data->status_debitur < 1)
                                     <div class="col-lg-3 mb-3">
-                                        <div><span class="fw-bold">Ditolak Oleh</span><br>{{$data->nama_penolak}}<br>{{date('d M Y H:i:s', strtotime($data->tanggal_penolakan))}}</div>
+                                        <div><span class="fw-bold">Ditolak Oleh</span><br>{{$data->nama_penolak}}<br>{{date('d M Y', strtotime($data->tanggal_penolakan))}}</div>
                                     </div>
                                 @endif
                                 @if(Auth::user()->role_id == 6 || Auth::user()->role_id == 3)
@@ -198,7 +203,12 @@
                             @if(Auth::user()->role_id == 3)
                                 @if($data->status_debitur == 2)
                                     <a onclick="deny()" class="btn btn-warning">Tolak Solicit</a>
-                                    <a class="btn btn-primary" onclick="openmodal('mdlappsolicit')">Approval Solicit</a>
+                                    <a class="btn btn-primary" onclick="openmodal('mdlappsolicit')">Approv Solicit</a>
+                                @endif
+
+                                @if($data->status_debitur == 4)
+                                    <a onclick="deny()" class="btn btn-warning">Tolak Prospek</a>
+                                    <a class="btn btn-primary" onclick="openmodal('mdlappprospek')">Approv Prospek</a>
                                 @endif
                             @endif
 
@@ -207,7 +217,7 @@
                                     <a class="btn btn-primary" onclick="openmodal('mdlprospekdata')">Prospek Data</a>
                                 @endif
 
-                                @if($data->status_debitur == 4)
+                                @if($data->status_debitur == 5)
                                 <a class="btn btn-primary" onclick="openmodal('mdlpipelinedata')">Tindak Lanjut Pipeline</a>
                             @endif
                             @endif
@@ -285,6 +295,36 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="mdlappprospek" tabindex="-1" aria-labelledby="mdlappprospek" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="ModalShowListLabel">Approval Data</h5>
+                <button type="button" class="btn btn-sm btn-primary" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-2 text-center">
+                        Apakah anda yakin ingin menyetujui prospek ini?
+                    </div>
+                </div>
+                <form method="post" action="{{ route('appprospek') }}" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{ $data->id }}">
+                    <div class="row">
+                        <div class="col-md-12 mb-2 mt-2 text-center">
+                            <button type="submit" class="btn btn-primary">Ya, Setujui</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="mdlprospekdata" tabindex="-1" aria-labelledby="mdlprospekdata" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

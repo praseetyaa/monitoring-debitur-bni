@@ -19,6 +19,8 @@ class MonitoringController extends Controller
                 ->withCount('datainput')
                 ->withCount('dataverif')
                 ->withCount('dataapp')
+                ->withCount('dataapppros')
+                ->withCount('totalpipeline')
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('attribute.cabang', 'id' ,$cabang);
                 })
@@ -26,6 +28,7 @@ class MonitoringController extends Controller
                     $query->where('role_id' ,$role);
                 })
                 ->get();
+                // dd($user);
         return view('monitoring/monitoring',[
             'user'      => $user,
             'DCabang'   => $DCabang,

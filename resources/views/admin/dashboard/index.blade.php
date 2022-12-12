@@ -106,6 +106,16 @@
                     </a>
                 @endif
 
+                @if(count($appprospek)>0)
+                    <a onclick="appiprospek()">
+                        <div class="alert alert-success shadow" role="alert">
+                            <div class="alert-message d-flex align-items-center">
+                                <i class="bi bi-bell-fill"></i>&nbsp;&nbsp;{{count($appprospek)}} Prospek Memerlukan approval dari anda
+                            </div>
+                        </div>
+                    </a>
+                @endif
+
 
             @endif
         </div>
@@ -124,6 +134,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
+                                        <th class="nowrap hiddennotif" style="display: none;">Nama Input</th>
+                                        <th class="nowrap hiddennotif" style="display: none;">Npp</th>
                                         <th class="nowrap">Nama Debitur</th>
                                         <th class="nowrap">sektor</th>
                                     </tr>
@@ -142,11 +154,14 @@
         function verifisolicit()
         {
             $('#ModalShowListLabel').html('Daftar Solicit Perlu Verifikasi')
+            $('.hiddennotif').css('display', '')
             var verifsolicit= @json($verifsolicit);
             var bodytable       = '';
             verifsolicit.forEach(function(val, i){
                 bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
                                     <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_input']+`</td>
+                                    <td>`+val['npp_input']+`</td>
                                     <td>`+val['nama_debitur']+`</td>
                                     <td>`+val['sektor']+`</td>
                                 </tr>`
@@ -158,11 +173,14 @@
         function appisolicit()
         {
             $('#ModalShowListLabel').html('Daftar Solicit Perlu Approval')
+            $('.hiddennotif').css('display', '')
             var appsolicit= @json($appsolicit);
             var bodytable       = '';
             appsolicit.forEach(function(val, i){
                 bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
                                     <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_input']+`</td>
+                                    <td>`+val['npp_input']+`</td>
                                     <td>`+val['nama_debitur']+`</td>
                                     <td>`+val['sektor']+`</td>
                                 </tr>`
@@ -171,6 +189,25 @@
             $('#ModalShowList').modal('show');
         }
 
+
+        function appiprospek()
+        {
+            $('#ModalShowListLabel').html('Daftar Prospek Perlu Approval')
+            $('.hiddennotif').css('display', '')
+            var appprospek= @json($appprospek);
+            var bodytable       = '';
+            appprospek.forEach(function(val, i){
+                bodytable +=    `<tr style="cursor:pointer" onclick="OpenURL('datadebdetail/`+val['id']+`')">
+                                    <td class='text-center'>`+(i+1)+`</td>
+                                    <td>`+val['nama_input']+`</td>
+                                    <td>`+val['npp_input']+`</td>
+                                    <td>`+val['nama_debitur']+`</td>
+                                    <td>`+val['sektor']+`</td>
+                                </tr>`
+            });
+            $('#BodyModalShowList').html(bodytable);
+            $('#ModalShowList').modal('show');
+        }
         function needprospek()
         {
             $('#ModalShowListLabel').html('Daftar Prospek')
@@ -211,12 +248,17 @@
             window.location.href = NewUrl
         }
     </script>
-
+    <style>
+        .flex-even {
+            flex: 1;
+            height: 100%!important:
+        }
+    </style>
     <div class="counter-task">
-        <div class="row">
-            <div class="col-lg-4">
+        <div class="d-flex flex-sm-row flex-column">
+            <div class="p-1 flex-even">
                 <a class="text-decoration-none" href="{{route('DataSol')}}">
-                    <div class="card bg-primary">
+                    <div class="card" style="background-color: #ebb501">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
@@ -225,9 +267,9 @@
                     </div>
                 </a>
             </div>
-            <div class="col-lg-4">
+            <div class="p-1 flex-even">
                 <a class="text-decoration-none" href="{{route('DataPros')}}">
-                    <div class="card" style="background-color: #F2AF22">
+                    <div class="card" style="background-color: #ff5733">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
@@ -236,13 +278,35 @@
                     </div>
                 </a>
             </div>
-            <div class="col-lg-4">
+            <div class="p-1 flex-even">
                 <a class="text-decoration-none" href="{{route('DataPipe')}}">
-                    <div class="card bg-success">
+                    <div class="card" style="background-color: #c70039">
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
                             <small class="text-white">Pipeline Perlu Tindak Lanjut</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="p-1 flex-even">
+                <a class="text-decoration-none" href="{{route('CloseDeb')}}">
+                    <div class="card" style="background-color: #900c3e">
+                        <div class="card-body">
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Close</h5>
+                            <h1 class="fw-bold text-white">{{count($jumlahclose)}}</h1>
+                            <small class="text-white">Jumlah Data Sudah Close</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="p-1 flex-even">
+                <a class="text-decoration-none" href="{{route('RejectDeb')}}">
+                    <div class="card" style="background-color: #571845">
+                        <div class="card-body">
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Reject</h5>
+                            <h1 class="fw-bold text-white">{{count($jumlahreject)}}</h1>
+                            <small class="text-white">Jumlah Data Yang Ditolak</small>
                         </div>
                     </div>
                 </a>

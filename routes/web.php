@@ -67,6 +67,12 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::prefix('DataPros')->group(function(){
         Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPros')->name('DataPros');
         Route::post('/prospekdata', 'DataDebiturController@prospekdata')->name('prospekdata');
+        Route::post('/appprospek', 'DataDebiturController@appprospek')->name('appprospek');
+        Route::post('/prospectappall', 'DataDebiturController@prospectappall')->name('prospectappall');
+    });
+
+    Route::prefix('MasterData')->group(function(){
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@MasterData')->name('MasterData');
     });
 
     Route::prefix('DataPipe')->group(function(){
