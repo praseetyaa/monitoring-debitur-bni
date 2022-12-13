@@ -425,6 +425,7 @@
                     {
                         extend: 'excel',
                         className: 'exportbtn',
+                        title: titleee
                     },
                     {
                         extend: 'pdf',
@@ -435,6 +436,7 @@
                     {
                         extend: 'print',
                         className: 'exportbtn',
+                        title: titleee
                     }
 
                 ]
