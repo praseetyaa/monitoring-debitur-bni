@@ -381,6 +381,32 @@
         {
             fixed = 1;
         }
+
+        if("{{Request::route()->getName() == 'DataSol'}}")
+        {
+            var titleee = 'Data Solicit';
+        }
+        else if("{{Request::route()->getName() == 'DataPros'}}")
+        {
+            var titleee = 'Data Prospek';
+        }
+        else if("{{Request::route()->getName() == 'DataPipe'}}")
+        {
+            var titleee = 'Data Prospek';
+        }
+        else if("{{Request::route()->getName() == 'CloseDeb'}}")
+        {
+            var titleee = 'Data Close';
+        }
+        else if("{{Request::route()->getName() == 'RejectDeb'}}")
+        {
+            var titleee = 'Data Reject';
+        }
+        else
+        {
+            var titleee = 'Data Debitur' ;
+        }
+
         setTimeout(function() {
             table = new DataTable('#datatablexxx', {
                 scrollX: true,
@@ -402,7 +428,9 @@
                     },
                     {
                         extend: 'pdf',
+                        orientation: 'landscape',
                         className: 'exportbtn',
+                        title: titleee
                     },
                     {
                         extend: 'print',
