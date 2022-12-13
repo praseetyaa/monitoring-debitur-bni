@@ -466,6 +466,208 @@
         </script>
     @endif
 
+
+{{-- //////////////////////////////////////////// TAHUN //////////////////////////////////////////// --}}
+    <div class="row mb-2">
+        <div class="col-md-12 mb-2">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon2" style="width:100px">Tahun Data</span>
+                </div>
+                <select required class="form-control" id="tahun">
+                    <?php
+                        $years = range(date('Y'), 2021);
+                        foreach($years as $dt)
+                        {
+                    ?>
+                            <option value="<?= $dt ?>"><?= $dt ?></option>
+                    <?php
+                        }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('#tahun').val('{{$tahun}}')
+            $('#tahun').on('change', function(){
+                var NewUrl = "<?= URL::to('/dashboard/"+this.value+"') ?>"
+                window.location.href = NewUrl
+            })
+        })
+    </script>
+{{-- //////////////////////////////////////////// MONITORING PENCAIRAN //////////////////////////////////////////// --}}
+
+    <div class="card card-custom mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="Pencairan" style="height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            Highcharts.chart('Pencairan', {
+                title: {
+                    text: "Monitoring Pencairan Dana Tahun {{$tahun}}"
+                },
+                subtitle: {
+                    text: 'Jumlah dana yang dicairkan setiap bulannya berdasarkan tanggal pencairan pada tahap pipeline'
+                },
+                xAxis: {
+                    categories: [
+                                'Jan',
+                                'Feb',
+                                'Mar',
+                                'Apr',
+                                'May',
+                                'Jun',
+                                'Jul',
+                                'Aug',
+                                'Sep',
+                                'Oct',
+                                'Nov',
+                                'Dec'
+                                ],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Jumlah'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{
+                    name  : 'Dana Cair',
+                    data  : @json($danacair),
+                    color :'#99B898'
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+
+
+
+            });
+        })
+    </script>
+
+{{-- //////////////////////////////////////////// MONITORING DATA //////////////////////////////////////////// --}}
+
+    <div class="card card-custom mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="Datadeb" style="height: 400px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            Highcharts.chart('Datadeb', {
+                title: {
+                    text: "Monitoring Data Debitur Tahun {{$tahun}}"
+                },
+                subtitle: {
+                    text: 'monitoring data debitur yang masuk setiap bulannya'
+                },
+                xAxis: {
+                    categories: [
+                                'Jan',
+                                'Feb',
+                                'Mar',
+                                'Apr',
+                                'May',
+                                'Jun',
+                                'Jul',
+                                'Aug',
+                                'Sep',
+                                'Oct',
+                                'Nov',
+                                'Dec'
+                                ],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Jumlah'
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{
+                    name  : 'Input Solicit',
+                    data  : @json($dtsolicit),
+                    color : '#ebb501',
+                },{
+                    name  : 'Solicit App',
+                    data  : @json($dtsolicitapp),
+                    color : '#ff5733',
+                },{
+                    name  : 'Prospek App',
+                    data  : @json($dtprospect),
+                    color : '#c70039',
+                },{
+                    name  : 'Data Close',
+                    data  : @json($dtclose),
+                    color : '#900c3e',
+                },{
+                    name  : 'Data Reject',
+                    data  : @json($dtreject),
+                    color : '#571845',
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                }
+
+
+
+
+            });
+        })
+    </script>
 @endsection
 
 
@@ -475,5 +677,8 @@
     <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script>
-
+	<script type="text/javascript" src="{{asset('/')}}hc/code/highcharts.js"></script>
+	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/timeline.js"></script>
+	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/exporting.js"></script>
+	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/export-data.js"></script>
 @endsection
