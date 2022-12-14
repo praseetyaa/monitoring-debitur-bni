@@ -167,13 +167,10 @@
                                     <th class="text-center nowrap" rowspan="2">Orientasi Ekspor</th>
                                     <th class="text-center nowrap" rowspan="2">Indikasi Kebutuhan</th>
                                     <th class="text-center nowrap" rowspan="2">Sumber</th>
-                                @if(Request::route()->getName() == 'DataSol')
-                                    <th class="text-center nowrap" rowspan="2">Opsi</th>
-                                @else
                                     <th class="text-center nowrap" rowspan="2">Nominal Usulan</th>
                                     <th class="text-center nowrap" rowspan="2">Nominal Putusan</th>
                                     <th class="text-center nowrap" rowspan="2">Nominal Cair</th>
-                                @endif
+                                    <th class="text-center nowrap" rowspan="2">Opsi</th>
                             </tr>
                             <tr>
                                 <th class="text-center nowrap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alamat Detail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -250,18 +247,17 @@
                                 <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->indikasi_kebutuhan_produk }}</td>
                                 <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->sumber }}</td>
 
-                                @if(Request::route()->getName() == 'DataSol')
-                                    <td class="text-center" style="white-space: nowrap">
-                                        @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1 && Request::route()->getName() == 'DataSol')
-                                            <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
-                                            <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
-                                        @endif
-                                    </td>
-                                @else
-                                    <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_usulan }}</td>
-                                    <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_keputusan }}</td>
-                                    <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_cair }}</td>
-                                @endif
+                                <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_usulan }}</td>
+                                <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_keputusan }}</td>
+                                <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->nominal_cair }}</td>
+
+                                <td class="text-center" style="white-space: nowrap">
+                                    @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1)
+                                        <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
+                                    @endif
+                                        <a target="_blank" href="{{ route('printdata', ['id' => $a->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Print"><i class="bi bi-filetype-pdf"></i></a>
+                                </td>
                             </tr>
                             <script>
                                 $(document).ready(function(){
@@ -279,6 +275,7 @@
 
 <form class="form-delete d-none" method="post" action="{{ route('solicitdelete') }}">
     @csrf
+    <input type="hidden" name="routename" value="{{ Request::route()->getName() }}">
     <input type="hidden" name="id">
 </form>
 
@@ -375,7 +372,7 @@
 <script>
 
     $(document).ready(function(){
-        fixed       = 0;
+        fixed       = 1;
         let table   = '';
         if("{{Request::route()->getName() == 'DataSol'}}")
         {
@@ -436,6 +433,7 @@
                     {
                         extend: 'print',
                         className: 'exportbtn',
+                        orientation: 'landscape',
                         title: titleee
                     }
 

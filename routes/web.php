@@ -53,6 +53,8 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     // Dashboard
     Route::get('/dashboard/{tahun?}', 'DashboardController@index')->name('admin.dashboard');
 
+    Route::get('/printdata/{id?}', 'DataDebiturController@printdata')->name('printdata');
+
     Route::prefix('monitoring')->group(function(){
         Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
     });

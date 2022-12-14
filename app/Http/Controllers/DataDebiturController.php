@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class DataDebiturController extends Controller
 {
@@ -347,6 +349,17 @@ class DataDebiturController extends Controller
         ]);
     }
 
+    public function printdata($id)
+    {
+        $data                   = DataDebitur::with('statusdebitur', 'picinputer.attribute')->findOrFail($id);
+        pdf::setOption("isPhpEnabled", true);
+
+        $pdf = Pdf::loadView('debitur.printdata', array('data' => $data))->setOptions(['defaultFont' => 'sans-serif']);
+        $pdf->set_option("isPhpEnabled", true);
+        return $pdf->stream('Data Debitur.pdf');
+    }
+
+
     public function edit($id)
     {
         $data       = DataDebitur::findOrFail($id);
@@ -398,7 +411,15 @@ class DataDebiturController extends Controller
         $data->tanggal_update               = date('Y-m-d H:i:s');
 
         $data->save();
-        return redirect()->route('DataSol')->with(['message' => 'Berhasil mengupdate data.']);
+
+        if(Auth::user()->role_id == 5)
+        {
+            return redirect()->route('MasterData')->with(['message' => 'Berhasil mengupdate data.']);
+        }
+        else
+        {
+            return redirect()->route('DataSol')->with(['message' => 'Berhasil mengupdate data.']);
+        }
     }
 
     public function verifisolicit(Request $request)
@@ -456,7 +477,7 @@ class DataDebiturController extends Controller
 
         $data = DataDebitur::find($request->id);
         $data->delete();
-        return redirect()->route('DataSol')->with(['message' => 'Berhasil menghapus data.']);
+        return redirect()->route($request->routename)->with(['message' => 'Berhasil menghapus data.']);
     }
 
     public function solicitappall(Request $request)

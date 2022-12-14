@@ -262,7 +262,7 @@
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Solicit</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahsolicit)}}</h1>
-                            <small class="text-white">Solicit Perlu Tindak Lanjut</small>
+                            <small class="text-white">Tindak Lanjut Solicit</small>
                         </div>
                     </div>
                 </a>
@@ -273,7 +273,7 @@
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Prospect</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahprospek)}}</h1>
-                            <small class="text-white">Prospect Perlu Tindak Lanjut</small>
+                            <small class="text-white">Tindak Lanjut Prospect</small>
                         </div>
                     </div>
                 </a>
@@ -284,7 +284,7 @@
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Pipeline</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahpipeline)}}</h1>
-                            <small class="text-white">Pipeline Perlu Tindak Lanjut</small>
+                            <small class="text-white">Tindak Lanjut Pipeline </small>
                         </div>
                     </div>
                 </a>
@@ -295,7 +295,7 @@
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Close</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahclose)}}</h1>
-                            <small class="text-white">Jumlah Data Sudah Close</small>
+                            <small class="text-white">Jumlah Data Close</small>
                         </div>
                     </div>
                 </a>
@@ -306,7 +306,7 @@
                         <div class="card-body">
                             <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Reject</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahreject)}}</h1>
-                            <small class="text-white">Jumlah Data Yang Ditolak</small>
+                            <small class="text-white">Jumlah Data Ditolak</small>
                         </div>
                     </div>
                 </a>
@@ -314,7 +314,7 @@
         </div>
     </div>
 
-    
+
 {{-- //////////////////////////////////////////// TAHUN //////////////////////////////////////////// --}}
 <div class="row mb-2">
     <div class="col-md-12 mb-2">
@@ -360,6 +360,9 @@
         <script>
             $(document).ready(function(){
                 Highcharts.chart('Pencairan', {
+                    chart: {
+                        type: 'column'
+                    },
                     title: {
                         text: "Monitoring Pencairan Dana Tahun {{$tahun}}"
                     },
@@ -388,6 +391,7 @@
                         title: {
                             text: 'Jumlah'
                         }
+
                     },
                     plotOptions: {
                         line: {

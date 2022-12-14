@@ -44,6 +44,11 @@
                                         <div><span class="fw-bold">Prospek Disetujui Oleh</span><br>{{$data->nama_app_prospek}}<br>{{date('d M Y', strtotime($data->tanggal_app_prospek))}}</div>
                                     </div>
                                 @endif
+                                @if($data->status_debitur > 5)
+                                    <div class="col-lg-3 mb-3">
+                                        <div><span class="fw-bold">Pipeline Diupdate Oleh</span><br>{{$data->nama_update_pipeline}}<br>{{date('d M Y', strtotime($data->tanggal_update_pipeline))}}</div>
+                                    </div>
+                                @endif
                                 @if($data->status_debitur < 1)
                                     <div class="col-lg-3 mb-3">
                                         <div><span class="fw-bold">Ditolak Oleh</span><br>{{$data->nama_penolak}}<br>{{date('d M Y', strtotime($data->tanggal_penolakan))}}</div>
@@ -187,6 +192,26 @@
                                 <div class="col-md-6 mb-2">
                                     <label class="mb-2"  style="font-weight: bold">Tanggal Komite</label>
                                     <input disabled placeholder="Tanggal Komite" type="text" class="form-control" value="{{date('d M Y', strtotime($data->tanggal_komite))}}" autofocus>
+                                </div>
+                            </div>
+                        @endif
+                        @if($data->status_debitur > 5)
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2" style="font-weight: bold">Nominal Keputusan</label>
+                                    <input disabled placeholder="Nominal Keputusan" type="text" class="form-control" value="{{$data->nominal_keputusan}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Tanggal Tanda Tangan PK</label>
+                                    <input disabled placeholder="Tanggal Tanda Tangan PK" type="text" class="form-control" value="{{date('d M Y', strtotime($data->tanggal_tanda_tangan_pk))}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Tanggal Pencairan</label>
+                                    <input disabled placeholder="Tanggal Pencairan" type="text" class="form-control" value="{{date('d M Y', strtotime($data->tanggal_pencairan))}}" autofocus>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="mb-2"  style="font-weight: bold">Nominal Cair</label>
+                                    <input disabled placeholder="Nominal Cair" type="text" class="form-control" value="{{$data->nominal_cair}}" autofocus>
                                 </div>
                             </div>
                         @endif
