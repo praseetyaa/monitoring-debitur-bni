@@ -119,7 +119,7 @@
                         }
                     </script>
                     <hr>
-                    @if(in_array(Auth::user()->role_id, array(3,6)))
+                    @if(in_array(Auth::user()->role_id, array(1,3,4,5,6)))
                         <div class="row mb-2" id="btnactionall" style="display: none">
                             <div class="col-md-12 text-center">
                                 @if(in_array(Auth::user()->role_id, array(6)) && Request::route()->getName() == 'DataSol')
@@ -133,6 +133,8 @@
                                 @elseif(in_array(Auth::user()->role_id, array(3)) && Request::route()->getName() == 'DataPros')
                                     <a onclick="action_all('apppros')" class="btn btn-sm btn-primary">Approve Prospek Terpilih</a>
                                     <a onclick="action_all('deny')" class="btn btn-sm btn-warning">Tolak Prospek Terpilih</a>
+                                @elseif(in_array(Auth::user()->role_id, array(4, 5, 1)))
+                                    <a onclick="action_all('delete')" class="btn btn-sm btn-danger mr-2">Hapus Solicit Terpilih</a>
                                 @endif
                             </div>
                         </div>
@@ -143,7 +145,7 @@
                     <table class="table table-sm table-hover w-100 table-bordered" id="datatablexxx">
                         <thead class="bg-light">
                             <tr class="text-center">
-                                @if(in_array(Auth::user()->role_id, array(3,6)) && (Request::route()->getName() == 'DataSol' || Request::route()->getName() == 'DataPros'))
+                                @if(in_array(Auth::user()->role_id, array(1,3,4,5,6)) && ( in_array(Request::route()->getName(), array('DataSol', 'DataPros', 'CloseDeb', 'RejectDeb', 'MasterData'))))
                                     <th class="text-center" rowspan="2" id="checkallth">
                                         <input type="checkbox" class="form-check-input checkbox-all checkvalueall">
                                     </th>
@@ -180,9 +182,9 @@
                         <tbody>
                             @foreach($data as $index=>$a)
                             <tr>
-                                @if(in_array(Auth::user()->role_id, array(3,6)) && (Request::route()->getName() == 'DataSol' || Request::route()->getName() == 'DataPros'))
+                                @if(in_array(Auth::user()->role_id, array(1,3,4,5,6)) && ( in_array(Request::route()->getName(), array('DataSol', 'DataPros', 'CloseDeb', 'RejectDeb', 'MasterData'))))
                                     <td class="text-center">
-                                        @if(Auth::user()->role_id == 6 && $a->status_debitur == 1)
+                                        @if(in_array(Auth::user()->role_id, array(1,4,5,6)) && ($a->status_debitur == 1 || $a->status_debitur < 1 || $a->status_debitur == 6))
                                             <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
                                         @elseif(Auth::user()->role_id == 3 && ($a->status_debitur == 2 || $a->status_debitur == 4))
                                             <input type="checkbox" value="{{ $a->id }}" class="form-check-input checkbox-one checkvalue">
@@ -254,6 +256,8 @@
                                 <td class="text-center" style="white-space: nowrap">
                                     @if(in_array(Auth::user()->role_id, array(1,4,5)) && $a->status_debitur == 1)
                                         <a href="{{ route('solicitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                    @endif
+                                    @if(in_array(Auth::user()->role_id, array(1,4,5)) && ($a->status_debitur == 1 || $a->status_debitur < 1 || $a->status_debitur == 6))
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     @endif
                                         <a target="_blank" href="{{ route('printdata', ['id' => $a->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Print"><i class="bi bi-filetype-pdf"></i></a>

@@ -44,6 +44,7 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
+                ->where('status_debitur', '>=', 1)
                 ->where('status_debitur', '<', 3)
                 ->get();
         return view('debitur/datadeb',[
