@@ -55,10 +55,10 @@ class DashboardController extends Controller
             $jumlahclose        = DataDebitur::with('statusdebitur')->where('status_debitur','=',6)->where('id_input','=',Auth::user()->id)->get();
             $jumlahreject       = DataDebitur::with('statusdebitur')->where('status_debitur','<',1)->where('id_input','=',Auth::user()->id)->get();
 
-            $jumlahsektor       = Sektor::whereRaw('extract(year from created_at) = ?', [$tahun])->select('sektor', Sektor::raw('count(*) as total'))
+            $jumlahsektor       = DataDebitur::whereRaw('extract(year from created_at) = ?', [$tahun])->where('id_input','=',Auth::user()->id)->select('sektor', DataDebitur::raw('count(*) as total'))
                                     ->groupBy('sektor')
                                     ->pluck('total','sektor')
-                                    ->where('id_input','=',Auth::user()->id);
+                                    ;
 
             for($month=1; $month<=12; $month++)
             {
