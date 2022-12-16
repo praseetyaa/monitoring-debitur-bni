@@ -23,7 +23,7 @@ class PengumumanController extends Controller
                 ->when($status !== '' && $status !== 'null' && $status !== 'Exp', function($query){
                     $query->whereDate('expired', '>=' ,date('Y-m-d'));
                 })
-                ->get();
+                ->orderBy("tanggal_pebuatan","desc")->get();
         return view('master/pengumuman/pengumuman',[
             'data'  => $data,
             'status' => $status

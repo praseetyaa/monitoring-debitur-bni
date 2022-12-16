@@ -496,6 +496,9 @@
             <script>
                 $(document).ready(function(){
                     Highcharts.chart('Datadeb', {
+                        chart: {
+                            type: 'column'
+                        },
                         title: {
                             text: "Monitoring Data Debitur Tahun {{$tahun}}"
                         },
@@ -527,16 +530,11 @@
                         },
                         plotOptions: {
                             column: {
-                                pointPadding: 0,
-                                borderWidth: 0,
-                                groupPadding: 0,
-                                shadow: false
-                            },
-                            line: {
+                                shadow: false,
                                 dataLabels: {
                                     enabled: true
                                 }
-                            }
+                            },
                         },
                         series: [{
                             name  : 'Input Solicit',
@@ -647,6 +645,7 @@
                         paging: true,
                         bFilter: true,
                         bInfo: false,
+						aaSorting: [],
                         dom: 'rtip',
                         pageLength : 3,
                         lengthMenu: [[3, 6, 9, -1], [3, 6, 9, 'Todos']],
