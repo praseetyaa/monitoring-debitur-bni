@@ -13,6 +13,7 @@ use App\Models\DataDebitur;
 use App\Models\Kategori;
 use App\Models\MonitoringDetail;
 use App\Models\Pengumuman;
+use App\Models\Sektor;
 use App\Models\User;
 
 class DashboardController extends Controller
@@ -54,6 +55,10 @@ class DashboardController extends Controller
             $jumlahclose        = DataDebitur::with('statusdebitur')->where('status_debitur','=',6)->where('id_input','=',Auth::user()->id)->get();
             $jumlahreject       = DataDebitur::with('statusdebitur')->where('status_debitur','<',1)->where('id_input','=',Auth::user()->id)->get();
 
+            $jumlahsektor       = Sektor::whereRaw('extract(year from created_at) = ?', [$tahun])->select('sektor', Sektor::raw('count(*) as total'))
+                                    ->groupBy('sektor')
+                                    ->pluck('total','sektor')
+                                    ->where('id_input','=',Auth::user()->id);
 
             for($month=1; $month<=12; $month++)
             {
@@ -88,6 +93,10 @@ class DashboardController extends Controller
             $jumlahclose        = DataDebitur::with('statusdebitur')->where('status_debitur','=',6)->get();
             $jumlahreject       = DataDebitur::with('statusdebitur')->where('status_debitur','<',1)->get();
 
+            $jumlahsektor       = DataDebitur::whereRaw('extract(year from created_at) = ?', [$tahun])->select('sektor', DataDebitur::raw('count(*) as total'))
+                                    ->groupBy('sektor')
+                                    ->pluck('total','sektor');
+
             for($month=1; $month<=12; $month++)
             {
                 $dataclosed     = DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_pencairan) = ? AND extract(year from tanggal_pencairan) = ?', [$month, $tahun])->where('status_debitur','=',6)->get();
@@ -105,7 +114,7 @@ class DashboardController extends Controller
                         $num = (float) str_replace(',', '.', str_replace('.', '', $item->nominal_cair));
                         $nominalcair += $num;
                     }
-                    $danacair[] = $nominalcair;
+                    $danacair[] = (int) $nominalcair;
                 }
                 else
                 {
@@ -114,7 +123,18 @@ class DashboardController extends Controller
             }
         }
 
-
+        $datasektor = array();
+        if(count($jumlahsektor)>0)
+        {
+            foreach($jumlahsektor as $index=>$item)
+            {
+                $datasektor[]=(object) array('name' => $index, 'y' => $item);
+            }
+        }
+        else
+        {
+            $datasektor[]=(object) array('name' => 'Belum Ada Data', 'y' => 0);
+        }
         return view('admin/dashboard/index', [
             'user'              => $user,
             'tahun'             => $tahun,
@@ -135,7 +155,8 @@ class DashboardController extends Controller
             'jumlahprospek'     => $jumlahprospek,
             'jumlahpipeline'    => $jumlahpipeline,
             'jumlahclose'       => $jumlahclose,
-            'jumlahreject'      => $jumlahreject
+            'jumlahreject'      => $jumlahreject,
+            'datasektor'        => $datasektor
         ]);
     }
 }

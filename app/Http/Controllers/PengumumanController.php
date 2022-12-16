@@ -14,10 +14,10 @@ class PengumumanController extends Controller
     public function index($status = '')
     {
         $data = Pengumuman::
-                when(Auth::user()->role_id != 1 || Auth::user()->role_id != 5, function($query){
-                    $query->where('id_pembuat', Auth::user()->id);
-                })
-                ->when($status !== '' && $status !== 'null' && $status !== 'Act', function($query){
+                // when(Auth::user()->role_id != 1 || Auth::user()->role_id != 5, function($query){
+                //     $query->where('id_pembuat', Auth::user()->id);
+                // })
+                when($status !== '' && $status !== 'null' && $status !== 'Act', function($query){
                     $query->whereDate('expired', '<' ,date('Y-m-d'));
                 })
                 ->when($status !== '' && $status !== 'null' && $status !== 'Exp', function($query){

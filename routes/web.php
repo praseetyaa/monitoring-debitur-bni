@@ -118,6 +118,20 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::prefix('master')->group(function(){
         Route::get('/', 'MstUserController@index')->name('master');
 
+        Route::get('/jabatan', 'MstJabatanController@index')->name('jabatan');
+        Route::post('/jabatandelete', 'MstJabatanController@delete')->name('jabatandelete');
+        Route::get('/jabatancreate', 'MstJabatanController@create')->name('jabatancreate');
+        Route::post('/jabatanstore', 'MstJabatanController@store')->name('jabatanstore');
+        Route::get('/jabatanedit/{id?}', 'MstJabatanController@edit')->name('jabatanedit');
+        Route::post('/jabatanupdate', 'MstJabatanController@update')->name('jabatanupdate');
+
+        Route::get('/cabang', 'MstCabangController@index')->name('cabang');
+        Route::post('/cabangdelete', 'MstCabangController@delete')->name('cabangdelete');
+        Route::get('/cabangcreate', 'MstCabangController@create')->name('cabangcreate');
+        Route::post('/cabangstore', 'MstCabangController@store')->name('cabangstore');
+        Route::get('/cabangedit/{id?}', 'MstCabangController@edit')->name('cabangedit');
+        Route::post('/cabangupdate', 'MstCabangController@update')->name('cabangupdate');
+
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
         Route::get('/picapproval', 'MstUserController@index')->name('picapproval');
         Route::get('/picverifikator', 'MstUserController@index')->name('picverifikator');

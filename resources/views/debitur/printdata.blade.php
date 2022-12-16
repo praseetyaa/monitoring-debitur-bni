@@ -10230,16 +10230,16 @@
             <table class="table table-sm w-100 table-borderless">
                 <thead>
                     <tr style="border-bottom:1px solid red;">
-                        <th colspan="1" class="text-left">
-                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/img/bni.png'))) }}" height="44">
-                        </th>
-                        <th colspan="3">
+                        <th colspan="2" class="text-left">
                             <div>
                                 INFORMASI DEBITUR <br>
                                 <small style="margin-top: 0">Sistem Monitoring Debitur</small>
                             </div>
+                            {{-- <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/img/bni.png'))) }}" height="44"> --}}
                         </th>
-
+                        <th colspan="2" class="text-right">
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/img/bni.png'))) }}" height="44">
+                        </th>
                     </tr>
                 </thead>
                 <tbody style="font-size:11px!important;">

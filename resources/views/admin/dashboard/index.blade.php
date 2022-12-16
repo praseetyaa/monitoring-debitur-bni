@@ -346,184 +346,242 @@
     })
 </script>
 <div class="row">
-    <div class="col-lg-6">
-            {{-- //////////////////////////////////////////// MONITORING PENCAIRAN //////////////////////////////////////////// --}}
+    {{-- //////////////////////////////////////////// MONITORING PENCAIRAN //////////////////////////////////////////// --}}
+        <div class="col-lg-6">
             <div class="card card-custom mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="Pencairan" style="height: 400px; margin: 0 auto"></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="Pencairan" style="height: 400px; margin: 0 auto"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script>
-            $(document).ready(function(){
-                Highcharts.chart('Pencairan', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: "Monitoring Pencairan Dana Tahun {{$tahun}}"
-                    },
-                    subtitle: {
-                        text: 'Jumlah dana yang dicairkan setiap bulannya berdasarkan tanggal pencairan pada tahap pipeline'
-                    },
-                    xAxis: {
-                        categories: [
-                                    'Jan',
-                                    'Feb',
-                                    'Mar',
-                                    'Apr',
-                                    'May',
-                                    'Jun',
-                                    'Jul',
-                                    'Aug',
-                                    'Sep',
-                                    'Oct',
-                                    'Nov',
-                                    'Dec'
-                                    ],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
+            <script>
+                $(document).ready(function(){
+                    Highcharts.chart('Pencairan', {
+                        chart: {
+                            type: 'column'
+                        },
                         title: {
-                            text: 'Jumlah'
-                        }
-
-                    },
-                    plotOptions: {
-                        line: {
-                            dataLabels: {
-                                enabled: true
+                            text: "Monitoring Pencairan Dana Tahun {{$tahun}}"
+                        },
+                        subtitle: {
+                            text: 'Jumlah dana yang dicairkan setiap bulannya berdasarkan tanggal pencairan pada tahap pipeline'
+                        },
+                        xAxis: {
+                            categories: [
+                                        'Jan',
+                                        'Feb',
+                                        'Mar',
+                                        'Apr',
+                                        'May',
+                                        'Jun',
+                                        'Jul',
+                                        'Aug',
+                                        'Sep',
+                                        'Oct',
+                                        'Nov',
+                                        'Dec'
+                                        ],
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Jumlah'
                             }
-                        }
-                    },
-                    series: [{
-                        name  : 'Dana Cair',
-                        data  : @json($danacair),
-                        color :'#99B898'
-                    }],
 
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth: 500
-                            },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
+                        },
+                        plotOptions: {
+                            column: {
+                                shadow: false,
+                                dataLabels: {
+                                    enabled: true
                                 }
-                            }
-                        }]
-                    }
+                            },
+                        },
+                        series: [{
+                            name  : 'Dana Cair',
+                            data  : @json($danacair),
+                            color :'#c70039'
+                        }],
+
+                        responsive: {
+                            rules: [{
+                                condition: {
+                                    maxWidth: 500
+                                },
+                                chartOptions: {
+                                    legend: {
+                                        layout: 'horizontal',
+                                        align: 'center',
+                                        verticalAlign: 'bottom'
+                                    }
+                                }
+                            }]
+                        }
 
 
 
 
-                });
-            })
-        </script>
-    </div>
-    <div class="col-lg-6">
-            {{-- //////////////////////////////////////////// MONITORING DATA //////////////////////////////////////////// --}}
-
-        <div class="card card-custom mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="Datadeb" style="height: 400px; margin: 0 auto"></div>
+                    });
+                })
+            </script>
+        </div>
+    {{-- //////////////////////////////////////////// JUMLAH SEKTOR //////////////////////////////////////////// --}}
+        <div class="col-lg-6">
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="sektor" style="height: 400px; margin: 0 auto"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script>
-            $(document).ready(function(){
-                Highcharts.chart('Datadeb', {
-                    title: {
-                        text: "Monitoring Data Debitur Tahun {{$tahun}}"
-                    },
-                    subtitle: {
-                        text: 'monitoring data debitur yang masuk setiap bulannya'
-                    },
-                    xAxis: {
-                        categories: [
-                                    'Jan',
-                                    'Feb',
-                                    'Mar',
-                                    'Apr',
-                                    'May',
-                                    'Jun',
-                                    'Jul',
-                                    'Aug',
-                                    'Sep',
-                                    'Oct',
-                                    'Nov',
-                                    'Dec'
-                                    ],
-                        crosshair: true
-                    },
-                    yAxis: {
-                        min: 0,
+            <script>
+                $(document).ready(function(){
+                    Highcharts.chart('sektor', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        tooltip: {
+                            headerFormat: '',
+                            pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
+                            'Jumlah Debitur: <b>{point.y}</b><br/>'
+                        },
                         title: {
-                            text: 'Jumlah'
-                        }
-                    },
-                    plotOptions: {
-                        column: {
-                            pointPadding: 0,
-                            borderWidth: 0,
-                            groupPadding: 0,
-                            shadow: false
-                        }
-                    },
-                    series: [{
-                        name  : 'Input Solicit',
-                        data  : @json($dtsolicit),
-                        color : '#ebb501',
-                    },{
-                        name  : 'Solicit App',
-                        data  : @json($dtsolicitapp),
-                        color : '#ff5733',
-                    },{
-                        name  : 'Prospek App',
-                        data  : @json($dtprospect),
-                        color : '#c70039',
-                    },{
-                        name  : 'Data Close',
-                        data  : @json($dtclose),
-                        color : '#900c3e',
-                    },{
-                        name  : 'Data Reject',
-                        data  : @json($dtreject),
-                        color : '#571845',
-                    }],
-
-                    responsive: {
-                        rules: [{
-                            condition: {
-                                maxWidth: 500
+                            text: 'Sektor Debitur Tahun {{$tahun}}'
+                        },
+                        subtitle: {
+                            text: 'Akumulasi Jumlah sektor dari para debitur tahun {{$tahun}}'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.y:1f}'
+                                },
+                                showInLegend: true
                             },
-                            chartOptions: {
-                                legend: {
-                                    layout: 'horizontal',
-                                    align: 'center',
-                                    verticalAlign: 'bottom'
+                        },
+                        series: [{
+                            innerSize: '50%',
+                            name: 'Sektor Debitur',
+                            colorByPoint: true,
+                            data: @json($datasektor),
+                        }]
+                    });
+                })
+            </script>
+        </div>
+    {{-- //////////////////////////////////////////// MONITORING DATA //////////////////////////////////////////// --}}
+        <div class="col-lg-12">
+
+            <div class="card card-custom mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="Datadeb" style="height: 400px; margin: 0 auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    Highcharts.chart('Datadeb', {
+                        title: {
+                            text: "Monitoring Data Debitur Tahun {{$tahun}}"
+                        },
+                        subtitle: {
+                            text: 'monitoring data debitur yang masuk setiap bulannya'
+                        },
+                        xAxis: {
+                            categories: [
+                                        'Jan',
+                                        'Feb',
+                                        'Mar',
+                                        'Apr',
+                                        'May',
+                                        'Jun',
+                                        'Jul',
+                                        'Aug',
+                                        'Sep',
+                                        'Oct',
+                                        'Nov',
+                                        'Dec'
+                                        ],
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Jumlah'
+                            }
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0,
+                                borderWidth: 0,
+                                groupPadding: 0,
+                                shadow: false
+                            },
+                            line: {
+                                dataLabels: {
+                                    enabled: true
                                 }
                             }
-                        }]
-                    }
+                        },
+                        series: [{
+                            name  : 'Input Solicit',
+                            data  : @json($dtsolicit),
+                            color : '#ebb501',
+                        },{
+                            name  : 'Solicit App',
+                            data  : @json($dtsolicitapp),
+                            color : '#ff5733',
+                        },{
+                            name  : 'Prospek App',
+                            data  : @json($dtprospect),
+                            color : '#c70039',
+                        },{
+                            name  : 'Data Close',
+                            data  : @json($dtclose),
+                            color : '#900c3e',
+                        },{
+                            name  : 'Data Reject',
+                            data  : @json($dtreject),
+                            color : '#571845',
+                        }],
+
+                        responsive: {
+                            rules: [{
+                                condition: {
+                                    maxWidth: 500
+                                },
+                                chartOptions: {
+                                    legend: {
+                                        layout: 'horizontal',
+                                        align: 'center',
+                                        verticalAlign: 'bottom'
+                                    }
+                                }
+                            }]
+                        }
 
 
 
 
-                });
-            })
-        </script>
-    </div>
+                    });
+                })
+            </script>
+        </div>
 </div>
 
 {{-- //////////////////////////////////////////// PENGUMUMAN //////////////////////////////////////////// --}}
