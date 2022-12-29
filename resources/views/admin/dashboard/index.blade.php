@@ -539,19 +539,19 @@
                             }
                         },
                         series: [{
-                            name  : 'Input Solicit',
+                            name  : 'Total Input',
                             data  : @json($dtsolicit),
                             color : '#ebb501',
                         },{
-                            name  : 'Solicit App',
+                            name  : 'Approve Solicit',
                             data  : @json($dtsolicitapp),
                             color : '#ff5733',
                         },{
-                            name  : 'Prospek App',
+                            name  : 'Approve Prospek',
                             data  : @json($dtprospect),
                             color : '#c70039',
                         },{
-                            name  : 'Data Close',
+                            name  : 'Data Close/Approve Pipeline',
                             data  : @json($dtclose),
                             color : '#900c3e',
                         },{
@@ -647,6 +647,7 @@
                         paging: true,
                         bFilter: true,
                         bInfo: false,
+                        aaSorting: [],
                         dom: 'rtip',
                         pageLength : 3,
                         lengthMenu: [[3, 6, 9, -1], [3, 6, 9, 'Todos']],
