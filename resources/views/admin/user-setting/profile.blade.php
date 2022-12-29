@@ -58,7 +58,7 @@
                             </div>
                             @endforeach
                             @if($errors->has('gender'))
-                            <div class="small text-danger">{{ $errors->first('gender') }}</div>
+                                <div class="small text-danger">{{ $errors->first('gender') }}</div>
                             @endif
                         </div>
                     </div>

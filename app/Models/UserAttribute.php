@@ -12,12 +12,12 @@ class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
      */
     public function cabang()
     {
-        return $this->belongsTo(Cabang::class, 'cabang_id');
+        return $this->belongsTo(Cabang::class, 'cabang_id')->withTrashed();
     }
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+        return $this->belongsTo(Jabatan::class, 'jabatan_id')->withTrashed();
     }
 
     /**

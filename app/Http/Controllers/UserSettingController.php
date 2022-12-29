@@ -67,7 +67,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:200',
             'email' => [
-                'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
+                'required', 'email', Rule::unique('users', 'email')->ignore(Auth::user()->id, 'id')
             ],
             'gender' => 'required',
             'country_code' => 'required',
@@ -90,6 +90,7 @@ class UserSettingController extends \App\Http\Controllers\Controller
             if($user->attribute) {
                 $user->attribute->birthdate = DateTimeExt::change($request->birthdate);
                 $user->attribute->gender = $request->gender;
+                $user->attribute->npp = $request->npp;
                 $user->attribute->country_code = $request->country_code;
                 $user->attribute->dial_code = dial_code($request->country_code);
                 $user->attribute->phone_number = $request->phone_number;
