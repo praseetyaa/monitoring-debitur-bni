@@ -31,6 +31,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/FixedColumns-4.2.1/css/fixedColumns.bootstrap4.min.css"/>
 <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/>
 {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
+<link rel="stylesheet" type="text/css" href="{{asset('/datepicker')}}/datepicker.min.css"/>
 
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
@@ -57,13 +58,13 @@
                     <div class="row mb-4">
                         <div class="col-md-3">
                             <label class="mb-2" style="font-weight: bold">Tanggal Awal</label>
-                            {{-- <input required value="{{$startd != '' && $startd != 'null' ? $startd : ''}}" class="form-control datepicker" id="startd" placeholder="MM/DD/YYYY"> --}}
-                            <input required type="date" value="{{$startd}}" class="form-control" id="startd">
+                            <input required value="{{$startd != '' && $startd != 'null' ? $startd : ''}}" class="form-control datepicker" id="startd" placeholder="DD/MM/YYYY">
+                            {{-- <input required type="date" value="{{$startd}}" class="form-control" id="startd"> --}}
                         </div>
                         <div class="col-md-3">
                             <label class="mb-2" style="font-weight: bold">Tanggal Akhir</label>
-                            {{-- <input required value="{{$endd != '' && $endd != 'null' ? $endd : ''}}" class="form-control datepicker" id="endd" placeholder="MM/DD/YYYY"> --}}
-                            <input required type="date" value="{{$endd}}" class="form-control" id="endd">
+                            <input required value="{{$endd != '' && $endd != 'null' ? $endd : ''}}" class="form-control datepicker" id="endd" placeholder="DD/MM/YYYY">
+                            {{-- <input required type="date" value="{{$endd}}" class="form-control" id="endd"> --}}
                         </div>
 
                         <div class="col-md-3">
@@ -92,9 +93,9 @@
                     </div>
                     <script>
                         $(document).ready(function(){
-                            // $('.datepicker').datepicker({
-                            //     format: 'mm-dd-yyyy',
-                            // });
+                            $('.datepicker').datepicker({
+                                format: 'dd-mm-yyyy',
+                            });
 
                             if("{{Auth::user()->role_id == role('inputer')}}")
                             {
@@ -565,6 +566,7 @@
     <script type="text/javascript" src="{{asset('/dttables')}}/FixedColumns-4.2.1/js/dataTables.fixedColumns.min.js"></script>
     {{-- <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script> --}}
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <script type="text/javascript" src="{{asset('/datepicker')}}/datepicker.min.js"></script>
 
     <script type="text/javascript">
         Spandiv.DataTable("#datatable");

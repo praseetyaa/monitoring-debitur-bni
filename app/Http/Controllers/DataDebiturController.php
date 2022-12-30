@@ -26,6 +26,17 @@ class DataDebiturController extends Controller
 {
     public function index($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
+
         $DCabang        = Cabang::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>=', 1)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -35,11 +46,11 @@ class DataDebiturController extends Controller
                 ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
                     $query->where('status_debitur', $status_deb);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
@@ -61,6 +72,17 @@ class DataDebiturController extends Controller
 
     public function MasterData($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
+
         $DCabang        = Cabang::get();
         $StatusDebitur  = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -70,11 +92,11 @@ class DataDebiturController extends Controller
                 ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
                     $query->where('status_debitur', $status_deb);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
@@ -94,6 +116,17 @@ class DataDebiturController extends Controller
 
     public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
+
         $DCabang = Cabang::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', 3)->orwhere('status_debitur', 4)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -103,11 +136,11 @@ class DataDebiturController extends Controller
                 ->when($status_deb !== '' && $status_deb !== 'null', function($query) use($status_deb){
                     $query->where('status_debitur', $status_deb);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
@@ -129,17 +162,28 @@ class DataDebiturController extends Controller
 
     public function DataPipe($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
+
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
@@ -160,17 +204,27 @@ class DataDebiturController extends Controller
 
     public function CloseDeb($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
@@ -191,17 +245,28 @@ class DataDebiturController extends Controller
 
     public function RejectDeb($startd = '', $endd = '', $status_deb = '', $cabang = '')
     {
+        $startdxx = 'null';
+        $enddxx = 'null';
+        if($startd !== '' && $startd != 'null')
+        {
+            $startdxx = date('Y-m-d', strtotime($startd));
+        }
+        if($endd !== '' && $endd != 'null')
+        {
+            $enddxx = date('Y-m-d', strtotime($endd));
+        }
+
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
-                ->when($startd !== '' && $startd !== 'null', function($query) use($startd){
-                    $query->whereDate('created_at', '>=' ,$startd);
+                ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                    $query->whereDate('created_at', '>=' ,$startdxx);
                 })
-                ->when($endd !== '' && $endd !== 'null', function($query) use($endd){
-                    $query->whereDate('created_at', '<=' ,$endd);
+                ->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
+                    $query->whereDate('created_at', '<=' ,$enddxx);
                 })
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
