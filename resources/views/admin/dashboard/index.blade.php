@@ -134,9 +134,9 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="nowrap hiddennotif" style="display: none;">Nama Input</th>
+                                        <th class="nowrap hiddennotif" style="display: none;">Inputer</th>
                                         <th class="nowrap hiddennotif" style="display: none;">Npp</th>
-                                        <th class="nowrap">Nama Debitur</th>
+                                        <th class="nowrap">Debitur</th>
                                         <th class="nowrap">sektor</th>
                                     </tr>
                                 </thead>
