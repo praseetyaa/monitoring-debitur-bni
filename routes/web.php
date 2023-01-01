@@ -34,7 +34,6 @@ Route::get('/optimize', function () {
 Route::get('/routeclear', function () {
     Artisan::call('route:clear');
 });
-
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });

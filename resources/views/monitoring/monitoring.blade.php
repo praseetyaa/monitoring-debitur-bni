@@ -74,8 +74,8 @@
                                     <th class="nowrap">Jabatan</th>
                                     <th class="nowrap">Total Input</th>
                                     <th class="nowrap">Verif Solicit</th>
-                                    <th class="nowrap">Approve Solicit</th>
-                                    <th class="nowrap">Approve Prospect</th>
+                                    <th class="nowrap">Total Solicit</th>
+                                    <th class="nowrap">Total Prospect</th>
                                     <th class="nowrap">Total Pipeline</th>
                                 </tr>
                             </thead>

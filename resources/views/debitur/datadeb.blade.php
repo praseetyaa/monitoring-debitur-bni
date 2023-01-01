@@ -279,7 +279,7 @@
                                     @if(in_array(Auth::user()->role_id, array(1,4,5)) && ($a->status_debitur == 1 || $a->status_debitur < 1 || $a->status_debitur == 6))
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     @endif
-                                        <a target="_blank" href="{{ route('printdata', ['id' => $a->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Print"><i class="bi bi-filetype-pdf"></i></a>
+                                        <a target="_blank" href="{{ route('printdata', ['id' => $a->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Cetak PDF"><i class="bi bi-filetype-pdf"></i></a>
                                 </td>
                             </tr>
                             <script>

@@ -541,15 +541,15 @@
                             data  : @json($dtsolicit),
                             color : '#ebb501',
                         },{
-                            name  : 'Approve Solicit',
+                            name  : 'Total Solicit',
                             data  : @json($dtsolicitapp),
                             color : '#ff5733',
                         },{
-                            name  : 'Approve Prospek',
+                            name  : 'Total Prospek',
                             data  : @json($dtprospect),
                             color : '#c70039',
                         },{
-                            name  : 'Data Close/Approve Pipeline',
+                            name  : 'Data Close',
                             data  : @json($dtclose),
                             color : '#900c3e',
                         },{
