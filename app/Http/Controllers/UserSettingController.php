@@ -43,9 +43,9 @@ class UserSettingController extends \App\Http\Controllers\Controller
     public function profile()
     {
         // View
-        $cabang = Cabang::orderBy('nama','asc')->get();
-        $jabatan = Jabatan::orderBy('nama','asc')->get();
-        $user = ModelsUser::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
+        $cabang     = Cabang::orderBy('nama','asc')->get();
+        $jabatan    = Jabatan::orderBy('nama','asc')->get();
+        $user       = ModelsUser::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
 
         return view('admin/user-setting/profile', [
             'cabang'    => $cabang,
@@ -63,15 +63,22 @@ class UserSettingController extends \App\Http\Controllers\Controller
      */
     public function updateProfile(Request $request)
     {
+        $JabatanXCabang = '';
+        if(Auth::user()->role_id == 5)
+        {
+            $JabatanXCabang = 'required';
+        }
         // Validation
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:200',
-            'email' => [
+            'name'          => 'required|max:200',
+            'email'         => [
                 'required', 'email', Rule::unique('users', 'email')->ignore(Auth::user()->id, 'id')
             ],
-            'gender' => 'required',
-            'country_code' => 'required',
-            'phone_number' => 'required|numeric'
+            'gender'        => 'required',
+            'country_code'  => 'required',
+            'phone_number'  => 'required|numeric',
+            'cabang_id'     => $JabatanXCabang,
+            'jabatan_id'    => $JabatanXCabang,
         ]);
 
         // Check errors
@@ -94,6 +101,11 @@ class UserSettingController extends \App\Http\Controllers\Controller
                 $user->attribute->country_code = $request->country_code;
                 $user->attribute->dial_code = dial_code($request->country_code);
                 $user->attribute->phone_number = $request->phone_number;
+                if(Auth::user()->role_id == 5)
+                {
+                    $user->attribute->cabang_id = $request->cabang_id;
+                    $user->attribute->jabatan_id = $request->jabatan_id;
+                }
                 $user->attribute->save();
             }
 
