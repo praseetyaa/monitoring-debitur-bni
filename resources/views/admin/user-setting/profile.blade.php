@@ -85,6 +85,42 @@
                             @endif
                         </div>
                     </div>
+                    @if(Auth::user()->role_id == 5)
+                        <div class="row mb-3">
+                            <label class="col-lg-3 col-md-4 col-form-label">Jabatan <span class="text-danger">*</span></label>
+
+                            <div class="col-lg-9 col-md-8">
+                                <div class="input-group">
+                                    <select name="jabatan_id" class="form-select form-select-sm {{ $errors->has('jabatan_id') ? 'border-danger' : '' }}" id="select2" style="width: 40%">
+                                            <option value="" disabled>Jabatan</option>
+                                        @foreach ($jabatan as $item)
+                                            <option {{ Auth::user()->attribute ? (Auth::user()->attribute->jabatan_id == $item->id ? 'selected' : '') : '' }} value="{{$item->id}}">{{$item->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @if($errors->has('jabatan_id'))
+                                    <div class="small text-danger">{{ $errors->first('jabatan_id') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-lg-3 col-md-4 col-form-label">Cabang <span class="text-danger">*</span></label>
+                            <div class="col-lg-9 col-md-8">
+                                <div class="input-group">
+                                    <select name="cabang_id" class="form-select form-select-sm {{ $errors->has('cabang_id') ? 'border-danger' : '' }}" id="select2" style="width: 40%">
+                                            <option value="" disabled>Cabang</option>
+                                        @foreach ($cabang as $item)
+                                            <option {{ Auth::user()->attribute ? (Auth::user()->attribute->cabang_id == $item->id ? 'selected' : '') : '' }} value="{{$item->id}}">{{$item->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @if($errors->has('cabang_id'))
+                                    <div class="small text-danger">{{ $errors->first('cabang_id') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
                     <hr>
                     <div class="row">
                         <div class="col-lg-3 col-md-4"></div>
