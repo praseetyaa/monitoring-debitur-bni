@@ -23,16 +23,38 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="mb-2" style="font-weight: bold">Cabang</label>
+
+                            <!-- PERLU DI TINJAU -->
+                            @if (Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
+                            <select required id="cabang" class="form-select" disabled="">
+                                <option value="" {{$cabang == '' ? 'selected' : ''}}>AUTO SELECT CABANG</option>
+                                @foreach($DCabang as $c)
+                                    <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                            @else
                             <select required id="cabang" class="form-select">
                                 <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
                                 @foreach($DCabang as $c)
                                     <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
                                 @endforeach
                             </select>
+                            @endif
+                            <!-- END -->
+
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label class="mb-2" style="font-weight: bold">Unit</label>
+                            <select required id="unit" class="form-select">
+                                <option value="" {{$unit == '' ? 'selected' : ''}}>Semua Unit</option>
+                                @foreach($DUnit as $c)
+                                    <option value="{{ $c->id }}" {{$unit == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
                             <label class="mb-2" style="font-weight: bold">Role</label>
                             <select required id="role" class="form-select">
                                 <option value="" {{$role == '' ? 'selected' : ''}}>Semua Role</option>
@@ -57,8 +79,9 @@
                         {
                             var role = $('#role').val() != '' ?  $('#role').val() : null
                             var cabang = $('#cabang').val() != '' ?  $('#cabang').val() : null
+                            var unit = $('#unit').val() != '' ?  $('#unit').val() : null
 
-                            var NewUrl = "<?= URL::to('monitoring/"+cabang+"/"+role+"') ?>"
+                            var NewUrl = "<?= URL::to('monitoring/"+cabang+"/"+unit+"/"+role+"') ?>"
                             window.location.href = NewUrl
                         }
                     </script>

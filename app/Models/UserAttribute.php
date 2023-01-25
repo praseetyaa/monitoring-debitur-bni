@@ -20,6 +20,11 @@ class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
         return $this->belongsTo(Jabatan::class, 'jabatan_id')->withTrashed();
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id')->withTrashed();
+    }
+
     /**
      * Vendor.
      */

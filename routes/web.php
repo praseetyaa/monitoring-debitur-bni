@@ -55,7 +55,7 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::get('/printdata/{id?}', 'DataDebiturController@printdata')->name('printdata');
 
     Route::prefix('monitoring')->group(function(){
-        Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
+        Route::get('/{cabang?}/{unit?}/{role?}', 'MonitoringController@index')->name('monitoring');
     });
     Route::prefix('daftarmonitoring')->group(function(){
         Route::get('/{id_user?}/{status?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
@@ -130,6 +130,13 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::post('/cabangstore', 'MstCabangController@store')->name('cabangstore');
         Route::get('/cabangedit/{id?}', 'MstCabangController@edit')->name('cabangedit');
         Route::post('/cabangupdate', 'MstCabangController@update')->name('cabangupdate');
+
+        Route::get('/unit', 'MstUnitController@index')->name('unit');
+        Route::post('/unitdelete', 'MstUnitController@delete')->name('unitdelete');
+        Route::get('/unitcreate', 'MstUnitController@create')->name('unitcreate');
+        Route::post('/unitstore', 'MstUnitController@store')->name('unitstore');
+        Route::get('/unitedit/{id?}', 'MstUnitController@edit')->name('unitedit');
+        Route::post('/unitupdate', 'MstUnitController@update')->name('unitupdate');
 
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
         Route::get('/picapproval', 'MstUserController@index')->name('picapproval');

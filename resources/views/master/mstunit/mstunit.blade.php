@@ -1,14 +1,14 @@
 @extends('faturhelper::layouts/admin/main')
 
-@section('title', 'Manajemen Pengguna')
+@section('title', 'Master Unit')
 
 @section('content')
 
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-2 mb-sm-0">Manajemen Pengguna</h1>
+    <h1 class="h3 mb-2 mb-sm-0">Master Unit</h1>
     @if(Auth::user()->role_id != role('monitoring'))
     <div class="btn-group">
-        <a href="{{ route('piccreate', ['role'=>$role]) }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Pengguna</a>
+        <a href="{{ route('unitcreate') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Data</a>
     </div>
     @endif
 </div>
@@ -27,30 +27,20 @@
                         <thead class="bg-light">
                             <tr>
                                 <th width="30">No</th>
-                                <th>Nama</th>
-                                <th>Username</th>
-                                <th>Role</th>
-                                <th>Cabang</th>
-                                <th>Jabatan</th>
                                 <th>Unit</th>
                                 @if(Auth::user()->role_id != role('monitoring'))
-                                <th width="60">Opsi</th>
+                                    <th width="60">Opsi</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($user as $index=>$a)
+                            @foreach($data as $index=>$a)
                             <tr>
                                 <td class="text-center">{{$index+1}}</td>
-                                <td>{{ $a->name }}</td>
-                                <td>{{ $a->username }}</td>
-                                <td>{{ $a->role->name }}</td>
-                                <td>{{ $a->attribute->cabang->nama }}</td>
-                                <td>{{ $a->attribute->jabatan->nama }}</td>
-                                <td>{{ $a->attribute->unit->nama }}</td>
+                                <td>{{ $a->nama }}</td>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                 <td class="text-center" style="white-space: nowrap">
-                                    <a href="{{ route('picedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                    <a href="{{ route('unitedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                     <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $a->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                 </td>
                                 @endif
@@ -64,10 +54,9 @@
 	</div>
 </div>
 
-<form class="form-delete d-none" method="post" action="{{ route('picdelete') }}">
+<form class="form-delete d-none" method="post" action="{{ route('unitdelete') }}">
     @csrf
     <input type="hidden" name="id">
-    <input type="hidden" name="routename" value="{{Request::route()->getName()}}">
 </form>
 
 @endsection

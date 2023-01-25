@@ -63,6 +63,10 @@
                         <div>{{ $user->attribute->jabatan->nama }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
+                        <div>Unit:</div>
+                        <div>{{ $user->attribute->unit->nama }}</div>
+                    </li>
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Email:</div>
                         <div>{{ $user->email }}</div>
                     </li>

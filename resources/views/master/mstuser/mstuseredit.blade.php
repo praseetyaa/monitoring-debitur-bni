@@ -71,6 +71,20 @@
                             @endif
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Unit <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <select name="unit" class="form-select form-select-sm {{ $errors->has('unit') ? 'border-danger' : '' }}">
+                                <option value="" disabled selected>--Pilih--</option>
+                                @foreach($unit as $c)
+                                <option value="{{ $c->id }}" {{ $pengguna->attribute->unit_id == $c->id ? 'selected' : '' }}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('unit'))
+                            <div class="small text-danger">{{ $errors->first('unit') }}</div>
+                            @endif
+                        </div>
+                    </div>
                     <hr>
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Email <span class="text-danger">*</span></label>
