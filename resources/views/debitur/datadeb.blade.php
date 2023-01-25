@@ -257,7 +257,12 @@
                                     <span class="redirectdetail_{{ $a->id }}">
                                         {{ $a->detail_alamat }}
                                     </span> <br>
-                                    <a target="_blank" href="{{ route('openfile', ['path' => $a->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
+
+                                    @if($a->dokumen_lokasi != '')
+                                        @foreach (explode(';', $a->dokumen_lokasi) as $index=>$item)
+                                            <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100 mb-2">Foto Lokasi {{$index+1}}</a>
+                                        @endforeach
+                                    @endif
                                 </td>
                                 <td class="pointer redirectdetail_{{ $a->id }} text-center nowrap">{{ $a->kodepos }}</td>
 

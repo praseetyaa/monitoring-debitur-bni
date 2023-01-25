@@ -114,7 +114,11 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 mb-2 mt-2">
-                            <a target="_blank" href="{{ route('openfile', ['path' => $data->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
+                            @if($data->dokumen_lokasi != '')
+                                @foreach (explode(';', $data->dokumen_lokasi) as $index=>$item)
+                                        <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100 mb-2">Foto Lokasi {{$index+1}}</a>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="row">

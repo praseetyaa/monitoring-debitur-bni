@@ -98,22 +98,52 @@
                         </div>
                     </div>
                     <hr>
-                        <div class="row">
-                            <div class="col-md-12 mb-2">
-                                <a target="_blank" href="{{ route('openfile', ['path' => $data->dokumen_lokasi]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi</a>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label class="mb-2" style="font-weight: bold" id="titlefotolok">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
-                                <div class="input-group mb-3">
-                                    <input type="file" class="form-control" id="foto_lokasi" name="foto_lokasi" accept="image/*" capture="camera">
-                                    <div class="input-group-append bg-primary">
-                                        <a class="btn btn-primary" id="btnchangecapture" onclick="inputfromgalery()">From File</a>
+                        @if($data->dokumen_lokasi != '')
+                            <input required type="hidden" class="form-control" id="jumlah_foto" name="jumlah_foto" value="{{count(explode(';', $data->dokumen_lokasi))}}">
+                            @foreach (explode(';', $data->dokumen_lokasi) as $index=>$item)
+                                <div class="row" id="cont_image_rep_{{$index+1}}">
+                                    <div class="col-md-12 mb-2">
+                                        <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100">Foto Lokasi {{$index+1}}</a>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="mb-2" style="font-weight: bold" id="titlefotolok_rep_{{$index+1}}">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <input type="file" class="form-control" id="foto_lokasi_rep_{{$index+1}}" name="foto_lokasi_rep_{{$index+1}}" accept="image/*" capture="camera">
+                                            <div class="input-group-append bg-primary">
+                                                <a class="btn btn-primary" id="btnchangecapture_rep_{{$index+1}}" onclick="inputfromgalery({{$index+1}})">From Cam</a>
+                                            </div>
+                                        </div>
+                                        <small>*Silahkan pilih file jika ingin memperbaharui</small>
                                     </div>
                                 </div>
-                                <small>*Silahkan pilih file jika ingin memperbaharui</small>
+                            @endforeach
+                        @else
+                            <input required type="hidden" class="form-control" id="jumlah_foto" name="jumlah_foto" value="1">
+                            <div class="row" id="cont_image_rep_1">
+                                <div class="col-md-12">
+                                    <label class="mb-2" style="font-weight: bold" id="titlefotolok_rep_1">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
+
+                                    <div class="input-group mb-3">
+                                        <input required type="file" class="form-control" id="foto_lokasi_rep_1" name="foto_lokasi_rep_1" accept="image/*" capture="camera">
+                                        <div class="input-group-append bg-primary">
+                                            <a class="btn btn-primary" id="btnchangecapture_rep_1" onclick="inputfromgalery(1)">From Cam</a>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
+                        @endif
+                        {{-- <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <a onclick="KurangiGambar()" class="btn btn-sm btn-danger">Kurangi Gambar</a>
+                                <a onclick="TambahGambar()" class="btn btn-sm btn-success">Tambah Gambar</a>
+                            </div>
+                        </div> --}}
                     <script>
+                        var jumlahgambar        = parseInt($('#jumlah_foto').val());
+                        var jumlahgambarfixed   = parseInt($('#jumlah_foto').val());
+
+
                         $(document).ready(function(){
                             if(detectMob())
                             {
@@ -125,20 +155,51 @@
                             }
                         })
 
-                        function inputfromkamera()
+                        function TambahGambar()
                         {
-                            $('#titlefotolok').html('Foto Lokasi Dari Kamera')
-                            $('#btnchangecapture').html('From File')
-                            $('#foto_lokasi').attr('capture', 'camera')
-                            $('#btnchangecapture').attr('onclick', 'inputfromgalery()')
+                            jumlahgambar += 1;
+                            $('#cont_image_rep_'+(jumlahgambar-1)).after(`
+                                <div class="row" id="cont_image_rep_`+jumlahgambar+`">
+                                    <div class="col-md-12">
+                                        <label class="mb-2" style="font-weight: bold" id="titlefotolok_rep_`+jumlahgambar+`">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <input required type="file" class="form-control" id="foto_lokasi_rep_`+jumlahgambar+`" name="foto_lokasi_rep_`+jumlahgambar+`" accept="image/*" capture="camera">
+                                            <div class="input-group-append bg-primary">
+                                                <a class="btn btn-primary" id="btnchangecapture_rep_`+jumlahgambar+`" onclick="inputfromgalery(`+jumlahgambar+`)">From Cam</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `)
+
+                            $('#jumlah_foto').val(jumlahgambar)
+
                         }
 
-                        function inputfromgalery()
+                        function KurangiGambar()
                         {
-                            $('#titlefotolok').html('Foto Lokasi Dari File')
-                            $('#btnchangecapture').html('From Cam')
-                            $('#foto_lokasi').attr('capture', 'filesystem')
-                            $('#btnchangecapture').attr('onclick', 'inputfromkamera()')
+                            if(jumlahgambar > jumlahgambarfixed)
+                            {
+                                $('#cont_image_rep_'+jumlahgambar).remove()
+                                jumlahgambar -= 1;
+                                $('#jumlah_foto').val(jumlahgambar)
+                            }
+                        }
+
+                        function inputfromkamera(rep)
+                        {
+                            $('#titlefotolok_rep_'+rep).html('Foto Lokasi Dari Kamera')
+                            $('#btnchangecapture_rep_'+rep).html('From File  &nbsp;')
+                            $('#foto_lokasi_rep_'+rep).attr('capture', 'camera')
+                            $('#btnchangecapture_rep_'+rep).attr('onclick', 'inputfromgalery('+rep+')')
+                        }
+
+                        function inputfromgalery(rep)
+                        {
+                            $('#titlefotolok_rep_'+rep).html('Foto Lokasi Dari File')
+                            $('#btnchangecapture_rep_'+rep).html('From Cam')
+                            $('#foto_lokasi_rep_'+rep).attr('capture', 'filesystem')
+                            $('#btnchangecapture_rep_'+rep).attr('onclick', 'inputfromkamera('+rep+')')
                         }
 
                         function detectMob() {

@@ -368,8 +368,15 @@ class DataDebiturController extends Controller
 
     public function store(Request $request)
     {
-        $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi')->extension();;
-        Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi'), $nama);
+        $dokumen_lokasi = array();
+        for($i=1; $i<=$request->jumlah_foto; $i++)
+        {
+            $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();;
+            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
+
+            $dokumen_lokasi[] = 'Dokumen Lokasi/'.$nama;
+        }
+
         $user = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data = new DataDebitur();
         $data->nama_debitur                 = $request->nama_debitur;
@@ -396,7 +403,7 @@ class DataDebiturController extends Controller
         $data->id_input                     = $user->id;
         $data->nama_input                   = $user->name;
         $data->npp_input                    = $user->attribute->npp;
-        $data->dokumen_lokasi               = 'Dokumen Lokasi/'.$nama;
+        $data->dokumen_lokasi               = implode(';',$dokumen_lokasi);
 
         $data->save();
 
@@ -445,15 +452,22 @@ class DataDebiturController extends Controller
         $user              = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data              = DataDebitur::find($request->id);
 
-        if ($request->hasFile('foto_lokasi')) {
-            $datadebitur       = DataDebitur::where('id', $request->id)->first();
-            if (Storage::exists($datadebitur->dokumen_lokasi)) {
-                Storage::delete($datadebitur->dokumen_lokasi);
+        $datadebitur        = DataDebitur::where('id', $request->id)->first();
+        $listfilex          = explode(';', $datadebitur->dokumen_lokasi);
+
+        foreach($listfilex as $index=>$filex)
+        {
+            $i = $index+1;
+            if ($request->hasFile('foto_lokasi_rep_'.$i)) {
+                if (Storage::exists($filex)) {
+                    Storage::delete($filex);
+                }
+                $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();;
+                Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
+                $listfilex[$index] = 'Dokumen Lokasi/'.$nama;
             }
-            $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi')->extension();;
-            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi'), $nama);
-            $data->dokumen_lokasi               = 'Dokumen Lokasi/'.$nama;
         }
+        $data->dokumen_lokasi               = implode(';',$listfilex);
 
         $data->nama_debitur                 = $request->nama_debitur;
         $data->latitude                     = $request->latitude;
