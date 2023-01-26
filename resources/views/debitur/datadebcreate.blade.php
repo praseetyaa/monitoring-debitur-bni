@@ -105,7 +105,7 @@
                                 <div class="input-group mb-3">
                                     <input required type="file" class="form-control" id="foto_lokasi_rep_1" name="foto_lokasi_rep_1" accept="image/*" capture="camera">
                                     <div class="input-group-append bg-primary">
-                                        <a class="btn btn-primary" id="btnchangecapture_rep_1" onclick="inputfromgalery(1)">From Cam</a>
+                                        <a class="btn btn-primary" id="btnchangecapture_rep_1" onclick="inputfromgalery(1)">From File  &nbsp;</a>
                                     </div>
                                   </div>
 

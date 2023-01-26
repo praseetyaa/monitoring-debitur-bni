@@ -453,20 +453,59 @@ class DataDebiturController extends Controller
         $data              = DataDebitur::find($request->id);
 
         $datadebitur        = DataDebitur::where('id', $request->id)->first();
-        $listfilex          = explode(';', $datadebitur->dokumen_lokasi);
+        if($datadebitur->dokumen_lokasi != '')
+        {
+            $listfilex          = explode(';', $datadebitur->dokumen_lokasi);
+        }
+        else
+        {
+            $listfilex          = array();
+        }
 
+        /////////////////////// UPDATE ///////////////////////
         foreach($listfilex as $index=>$filex)
         {
             $i = $index+1;
-            if ($request->hasFile('foto_lokasi_rep_'.$i)) {
-                if (Storage::exists($filex)) {
-                    Storage::delete($filex);
+            if($request->has('foto_lokasi_rep_'.$i))
+            {
+                if ($request->hasFile('foto_lokasi_rep_'.$i)) {
+                    if (Storage::exists($filex)) {
+                        Storage::delete($filex);
+                    }
+                    $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();
+                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
+                    $listfilex[$index] = 'Dokumen Lokasi/'.$nama;
                 }
-                $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();;
-                Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
-                $listfilex[$index] = 'Dokumen Lokasi/'.$nama;
             }
         }
+        /////////////////////// DELETE ///////////////////////
+        if($request->hapus_foto != '')
+        {
+            foreach(explode(';', $request->hapus_foto) as $item)
+            {
+                if($item != '')
+                {
+                    if (Storage::exists($listfilex[$item-1])) {
+                        Storage::delete($listfilex[$item-1]);
+                    }
+                    unset($listfilex[$item-1]);
+                }
+            }
+        }
+        /////////////////////// ADD ///////////////////////
+        if($request->jumlah_foto_baru > 0)
+        {
+            for($i=1; $i<=$request->jumlah_foto_baru; $i++)
+            {
+                if ($request->hasFile('foto_lokasi_baru_rep_'.$i)) {
+                    $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_baru_rep_'.$i)->extension();
+                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_baru_rep_'.$i), $nama);
+                    $listfilex[] = 'Dokumen Lokasi/'.$nama;
+                }
+            }
+        }
+
+
         $data->dokumen_lokasi               = implode(';',$listfilex);
 
         $data->nama_debitur                 = $request->nama_debitur;
