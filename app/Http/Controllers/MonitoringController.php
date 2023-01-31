@@ -10,7 +10,7 @@ use App\Models\User;
 
 class MonitoringController extends Controller
 {
-    public function index($cabang ='', $unit ='', $role = '')
+    public function index($cabang ='', $unit ='', $role ='')
     {
         $DCabang = Cabang::get();
         $DUnit = Unit::get();

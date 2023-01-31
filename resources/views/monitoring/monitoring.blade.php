@@ -29,9 +29,11 @@
                             <!-- PERLU DI TINJAU -->
                             @if (Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
                             <select required id="cabang" class="form-select" disabled="">
-                                <option value="" {{$cabang == '' ? 'selected' : ''}}>AUTO SELECT CABANG</option>
-                                @foreach($DCabang as $c)
-                                    <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @foreach($user as $index=>$a)
+                                    <option value="{{ $a->attribute->cabang->id }}" {{$cabang == $a->attribute->cabang->id ? 'selected' : $a->attribute->cabang->id}}>{{ $a->attribute->cabang->nama }}</option>
+                                    @foreach($DCabang as $c)
+                                        <option value="{{ $a->attribute->cabang->id }}" {{$cabang == $a->attribute->cabang->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                    @endforeach
                                 @endforeach
                             </select>
                             @else
