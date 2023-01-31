@@ -37,6 +37,7 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang        = Cabang::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>=', 1)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -127,6 +128,7 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang = Cabang::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', 3)->orwhere('status_debitur', 4)->get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -173,6 +175,7 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -214,6 +217,8 @@ class DataDebiturController extends Controller
         {
             $enddxx = date('Y-m-d', strtotime($endd));
         }
+
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
@@ -256,6 +261,7 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang = Cabang::get();
         $StatusDebitur = StatusDebitur::get();
         $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang')
