@@ -25,25 +25,30 @@
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <label class="mb-2" style="font-weight: bold">Cabang</label>
-
                             <!-- PERLU DI TINJAU -->
-                            @if (Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
-                            <select required id="cabang" class="form-select" disabled="">
-                                @foreach($user as $index=>$a)
-                                    <option value="{{ $a->attribute->cabang->id }}" {{$cabang == $a->attribute->cabang->id ? 'selected' : $a->attribute->cabang->id}}>{{ $a->attribute->cabang->nama }}</option>
+                            {{-- @if (Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
+                                <select required id="cabang" class="form-select" disabled="">
+                                    <option value="" {{$cabang == '' ? 'selected' : ''}}>AUTO SELECT CABANG</option>
                                     @foreach($DCabang as $c)
-                                        <option value="{{ $a->attribute->cabang->id }}" {{$cabang == $a->attribute->cabang->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                        <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
                                     @endforeach
-                                @endforeach
-                            </select>
+                                </select>
                             @else
-                            <select required id="cabang" class="form-select">
-                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
-                                @foreach($DCabang as $c)
-                                    <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
-                                @endforeach
-                            </select>
-                            @endif
+                                <select required id="cabang" class="form-select">
+                                    <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
+                                    @foreach($DCabang as $c)
+                                        <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                    @endforeach
+                                </select>
+                            @endif --}}
+
+                                <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
+                                    <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
+                                    @foreach($DCabang as $c)
+                                        <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                    @endforeach
+                                </select>
+
                             <!-- END -->
 
                         </div>

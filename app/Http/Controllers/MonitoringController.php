@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Cabang;
 use App\Models\Unit;
 use App\Models\Role;
@@ -12,9 +13,10 @@ class MonitoringController extends Controller
 {
     public function index($cabang ='', $unit ='', $role ='')
     {
-        $DCabang = Cabang::get();
-        $DUnit = Unit::get();
-        $DRoles = Role::whereIn('id', [3,4,6])->get();
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $DCabang  = Cabang::get();
+        $DUnit    = Unit::get();
+        $DRoles   = Role::whereIn('id', [3,4,6])->get();
 
         $user    = User::with('role', 'attribute.cabang', 'attribute.jabatan', 'attribute.unit')
                 ->whereIn('role_id', [3,4,6])
