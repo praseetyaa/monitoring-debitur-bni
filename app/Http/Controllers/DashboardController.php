@@ -31,10 +31,10 @@ class DashboardController extends Controller
             $tahun = date('Y');
         }
 
-        $verifsolicit       = DataDebitur::with('statusdebitur')->where('status_debitur','=',1)->get();
-        $appsolicit         = DataDebitur::with('statusdebitur')->where('status_debitur','=',2)->get();
+        $verifsolicit       = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',1)->get();
+        $appsolicit         = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',2)->get();
         $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->where('id_input','=',Auth::user()->id)->get();
-        $appprospek         = DataDebitur::with('statusdebitur')->where('status_debitur','=',4)->get();
+        $appprospek         = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',4)->get();
         $needpipeline       = DataDebitur::with('statusdebitur')->where('status_debitur','=',5)->where('id_input','=',Auth::user()->id)->get();
         $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
         $pengumuman         = Pengumuman::orderBy("tanggal_pebuatan", "desc")->get();
@@ -87,24 +87,36 @@ class DashboardController extends Controller
         }
         else
         {
-            $jumlahsolicit      = DataDebitur::with('statusdebitur')->where('status_debitur','>=',1)->where('status_debitur','<=',2)->get();
-            $jumlahprospek      = DataDebitur::with('statusdebitur')->where('status_debitur','>=',3)->where('status_debitur','<=',4)->get();
-            $jumlahpipeline     = DataDebitur::with('statusdebitur')->where('status_debitur','=',5)->get();
-            $jumlahclose        = DataDebitur::with('statusdebitur')->where('status_debitur','=',6)->get();
-            $jumlahreject       = DataDebitur::with('statusdebitur')->where('status_debitur','<',1)->get();
+            if(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
+            {
+                $jumlahsolicit    = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','>=',1)->where('status_debitur','<=',2)->get();
+                $jumlahprospek    = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','>=',3)->where('status_debitur','<=',4)->get();
+                $jumlahpipeline   = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',5)->get();
+                $jumlahclose      = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',6)->get();
+                $jumlahreject     = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','<',1)->get();
+            }
+            else
+            {
+                $jumlahsolicit    = DataDebitur::with('statusdebitur')->where('status_debitur','>=',1)->where('status_debitur','<=',2)->get();
+                $jumlahprospek    = DataDebitur::with('statusdebitur')->where('status_debitur','>=',3)->where('status_debitur','<=',4)->get();
+                $jumlahpipeline   = DataDebitur::with('statusdebitur')->where('status_debitur','=',5)->get();
+                $jumlahclose      = DataDebitur::with('statusdebitur')->where('status_debitur','=',6)->get();
+                $jumlahreject     = DataDebitur::with('statusdebitur')->where('status_debitur','<',1)->get();
+            }
 
-            $jumlahsektor       = DataDebitur::whereRaw('extract(year from created_at) = ?', [$tahun])->select('sektor', DataDebitur::raw('count(*) as total'))
+
+            $jumlahsektor         = DataDebitur::whereRaw('extract(year from created_at) = ?', [$tahun])->select('sektor', DataDebitur::raw('count(*) as total'))
                                     ->groupBy('sektor')
                                     ->pluck('total','sektor');
 
             for($month=1; $month<=12; $month++)
             {
-                $dataclosed     = DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_pencairan) = ? AND extract(year from tanggal_pencairan) = ?', [$month, $tahun])->where('status_debitur','=',6)->get();
-                $dtsolicit[]    = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from created_at) = ? AND extract(year from created_at) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
-                $dtsolicitapp[] = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_approve) = ? AND extract(year from tanggal_approve) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
-                $dtprospect[]   = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_app_prospek) = ? AND extract(year from tanggal_app_prospek) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
-                $dtclose[]      = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_update_pipeline) = ? AND extract(year from tanggal_update_pipeline) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
-                $dtreject[]     = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_penolakan) = ? AND extract(year from tanggal_penolakan) = ?', [$month, $tahun])->where('status_debitur','<',1)->get());
+                $dataclosed       = DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_pencairan) = ? AND extract(year from tanggal_pencairan) = ?', [$month, $tahun])->where('status_debitur','=',6)->get();
+                $dtsolicit[]      = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from created_at) = ? AND extract(year from created_at) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
+                $dtsolicitapp[]   = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_approve) = ? AND extract(year from tanggal_approve) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
+                $dtprospect[]     = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_app_prospek) = ? AND extract(year from tanggal_app_prospek) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
+                $dtclose[]        = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_update_pipeline) = ? AND extract(year from tanggal_update_pipeline) = ?', [$month, $tahun])->where('status_debitur','>=',1)->get());
+                $dtreject[]       = count(DataDebitur::with('statusdebitur')->whereRaw('extract(month from tanggal_penolakan) = ? AND extract(year from tanggal_penolakan) = ?', [$month, $tahun])->where('status_debitur','<',1)->get());
 
                 if(count($dataclosed)>0)
                 {

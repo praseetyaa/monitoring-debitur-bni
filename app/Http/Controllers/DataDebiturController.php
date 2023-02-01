@@ -420,7 +420,16 @@ class DataDebiturController extends Controller
     {
         $mst_jenis_fasilitas    = Jenis_Fasilitas::get();
         $mst_skim               = SKIM::get();
-        $data                   = DataDebitur::with('statusdebitur', 'picinputer.attribute')->findOrFail($id);
+
+        if(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('Inputer'))
+        {
+            $data                   = DataDebitur::with('statusdebitur', 'picinputer.attribute')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->findOrFail($id);
+        }
+        else
+        {
+            $data                   = DataDebitur::with('statusdebitur', 'picinputer.attribute')->findOrFail($id);
+        }
+
         return view('debitur/datadebdetail', [
             'data'                      => $data,
             'mst_skim'                  => $mst_skim,
