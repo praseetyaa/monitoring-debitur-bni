@@ -62,7 +62,7 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     });
 
     Route::prefix('DataSol')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@index')->name('DataSol');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@index')->name('DataSol');
     });
 
     Route::prefix('DataPros')->group(function(){
