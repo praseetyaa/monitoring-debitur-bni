@@ -184,6 +184,7 @@
                                     <th class="text-center nowrap" rowspan="2">Nama Inputer</th>
                                     <th class="text-center nowrap" rowspan="2">NPP</th>
                                     <th class="text-center nowrap" rowspan="2">Cabang</th>
+                                    <th class="text-center nowrap" rowspan="2">Unit</th>
                                 @else
                                     <th class="text-center nowrap" rowspan="2">Nama Deb</th>
                                 @endif
@@ -226,6 +227,7 @@
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->nama_input }}</td>
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->npp_input }}</td>
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
+                                    <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ ($a->picinputer->attribute->unit_id != null ? $a->picinputer->attribute->unit->nama : '-') }}</td>
                                 @else
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->nama_debitur }}</td>
                                 @endif

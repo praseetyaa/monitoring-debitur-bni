@@ -81,6 +81,7 @@
                                     <th class="nowrap">Username</th>
                                     <th class="nowrap">Role</th>
                                     <th class="nowrap">Cabang</th>
+                                    <th class="nowrap">Unit</th>
                                     <th class="nowrap">Jabatan</th>
                                     <th class="nowrap">Total Input</th>
                                     <th class="nowrap">Verif Solicit</th>
@@ -97,6 +98,7 @@
                                     <td class="nowrap">{{ $a->username }}</td>
                                     <td class="nowrap">{{ $a->role->name }}</td>
                                     <td class="nowrap">{{ $a->attribute->cabang->nama }}</td>
+                                    <td class="nowrap">{{ $a->attribute->unit->nama }}</td>
                                     <td class="nowrap">{{ $a->attribute->jabatan->nama }}</td>
                                     <td class="text-center nowrap">
                                         @if($a->datainput_count > 0)
