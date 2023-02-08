@@ -30,9 +30,8 @@
                                 <th>Nama</th>
                                 <th>Username</th>
                                 <th>Role</th>
-                                <th>Cabang</th>
+                                <th>Unit / Cabang</th>
                                 <th>Jabatan</th>
-                                <th>Unit</th>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                 <th width="60">Opsi</th>
                                 @endif
@@ -47,7 +46,6 @@
                                 <td>{{ $a->role->name }}</td>
                                 <td>{{ $a->attribute->cabang->nama }}</td>
                                 <td>{{ $a->attribute->jabatan->nama }}</td>
-                                <td>{{ $a->attribute->unit->nama }}</td>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                 <td class="text-center" style="white-space: nowrap">
                                     <a href="{{ route('picedit', ['id' => $a->id]) }}" class="btn btn-sm btn-warning ml-2" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>

@@ -56,18 +56,18 @@
 
                 @if(strpos(Request::path() ,'daftarmonitoring') === false)
                     <div class="row mb-4">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label class="mb-2" style="font-weight: bold">Tanggal Awal</label>
                             <input required value="{{$startd != '' && $startd != 'null' ? $startd : ''}}" class="form-control datepicker" id="startd" placeholder="DD/MM/YYYY">
                             {{-- <input required type="date" value="{{$startd}}" class="form-control" id="startd"> --}}
                         </div>
-                        <div class="col-md-6 mb-2 mb-md-3">
+                        <div class="col-md-3 mb-2 mb-md-3">
                             <label class="mb-2" style="font-weight: bold">Tanggal Akhir</label>
                             <input required value="{{$endd != '' && $endd != 'null' ? $endd : ''}}" class="form-control datepicker" id="endd" placeholder="DD/MM/YYYY">
                             {{-- <input required type="date" value="{{$endd}}" class="form-control" id="endd"> --}}
                         </div>
 
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label class="mb-2" style="font-weight: bold">Status</label>
                             <select required id="status" class="form-control">
                                 <option value="" {{$status == '' ? 'selected' : ''}}>Semua Status Data</option>
@@ -76,21 +76,12 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="mb-2" style="font-weight: bold">Cabang</label>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Unit / Cabang</label>
                             <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
-                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
+                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Unit / Cabang</option>
                                 @foreach($DCabang as $c)
                                     <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="mb-2" style="font-weight: bold">Unit</label>
-                            <select required id="unit" class="form-select">
-                                <option value="" {{$unit == '' ? 'selected' : ''}}>Semua Unit</option>
-                                @foreach($DUnit as $c)
-                                    <option value="{{ $c->id }}" {{$unit == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -136,9 +127,8 @@
                             var endd = $('#endd').val() != '' ?  $('#endd').val() : null
                             var status = $('#status').val() != '' ?  $('#status').val() : null
                             var cabang = $('#cabang').val() != '' ?  $('#cabang').val() : null
-                            var unit = $('#unit').val() != '' ?  $('#unit').val() : null
 
-                            var NewUrl = "<?= URL::to('"+routename+"/"+stard+"/"+endd+"/"+status+"/"+cabang+"/"+unit+"') ?>"
+                            var NewUrl = "<?= URL::to('"+routename+"/"+stard+"/"+endd+"/"+status+"/"+cabang+"') ?>"
                             window.location.href = NewUrl
                         }
                     </script>
@@ -183,8 +173,7 @@
                                 @if(Auth::user()->role_id != role('inputer'))
                                     <th class="text-center nowrap" rowspan="2">Nama Inputer</th>
                                     <th class="text-center nowrap" rowspan="2">NPP</th>
-                                    <th class="text-center nowrap" rowspan="2">Cabang</th>
-                                    <th class="text-center nowrap" rowspan="2">Unit</th>
+                                    <th class="text-center nowrap" rowspan="2">Unit / Cabang</th>
                                 @else
                                     <th class="text-center nowrap" rowspan="2">Nama Deb</th>
                                 @endif
@@ -227,7 +216,6 @@
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->nama_input }}</td>
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->npp_input }}</td>
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ ($a->picinputer->attribute->cabang_id != null ? $a->picinputer->attribute->cabang->nama : '-') }}</td>
-                                    <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ ($a->picinputer->attribute->unit_id != null ? $a->picinputer->attribute->unit->nama : '-') }}</td>
                                 @else
                                     <td class="pointer redirectdetail_{{ $a->id }} nowrap">{{ $a->nama_debitur }}</td>
                                 @endif
@@ -434,7 +422,7 @@
         }
         else if("{{Request::route()->getName() == 'CloseDeb'}}")
         {
-            var titleee = 'Data Close';
+            var titleee = 'Data Booking';
         }
         else if("{{Request::route()->getName() == 'RejectDeb'}}")
         {

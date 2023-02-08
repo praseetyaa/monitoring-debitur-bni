@@ -91,6 +91,7 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang        = Cabang::get();
         $DUnit          = Unit::get();
         $StatusDebitur  = StatusDebitur::get();
@@ -275,7 +276,7 @@ class DataDebiturController extends Controller
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
             'DUnit'             => $DUnit,
-            'title'             => 'Data Closed'
+            'title'             => 'Data Booking'
         ]);
     }
 
@@ -441,6 +442,7 @@ class DataDebiturController extends Controller
         $data->kategori                     = $request->kategori;
         $data->orientasiekspor              = $request->orientasiekspor;
         $data->indikasi_kebutuhan_produk    = $request->indikasi_kebutuhan_produk;
+        $data->layanantransaksilain         = $request->layanantransaksilain;
         $data->sumber                       = $request->sumber;
         $data->dataleads                    = $request->dataleads;
         $data->id_input                     = $user->id;
@@ -574,6 +576,7 @@ class DataDebiturController extends Controller
         $data->kategori                     = $request->kategori;
         $data->orientasiekspor              = $request->orientasiekspor;
         $data->indikasi_kebutuhan_produk    = $request->indikasi_kebutuhan_produk;
+        $data->layanantransaksilain         = $request->layanantransaksilain;
         $data->sumber                       = $request->sumber;
         $data->dataleads                    = $request->dataleads;
         $data->id_update                    = $user->id;

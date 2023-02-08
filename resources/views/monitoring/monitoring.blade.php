@@ -23,25 +23,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-4">
-                        <div class="col-md-4 mb-2">
-                            <label class="mb-2" style="font-weight: bold">Cabang</label>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Unit / Cabang</label>
                             <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
-                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Cabang</option>
+                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Unit / Cabang</option>
                                 @foreach($DCabang as $c)
                                     <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="mb-2" style="font-weight: bold">Unit</label>
-                            <select required id="unit" class="form-select">
-                                <option value="" {{$unit == '' ? 'selected' : ''}}>Semua Unit</option>
-                                @foreach($DUnit as $c)
-                                    <option value="{{ $c->id }}" {{$unit == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="mb-2" style="font-weight: bold">Role</label>
                             <select required id="role" class="form-select">
                                 <option value="" {{$role == '' ? 'selected' : ''}}>Semua Role</option>
@@ -80,8 +71,7 @@
                                     <th class="nowrap">Nama</th>
                                     <th class="nowrap">Username</th>
                                     <th class="nowrap">Role</th>
-                                    <th class="nowrap">Cabang</th>
-                                    <th class="nowrap">Unit</th>
+                                    <th class="nowrap">Unit / Cabang</th>
                                     <th class="nowrap">Jabatan</th>
                                     <th class="nowrap">Total Input</th>
                                     <th class="nowrap">Verif Solicit</th>
@@ -98,7 +88,6 @@
                                     <td class="nowrap">{{ $a->username }}</td>
                                     <td class="nowrap">{{ $a->role->name }}</td>
                                     <td class="nowrap">{{ $a->attribute->cabang->nama }}</td>
-                                    <td class="nowrap">{{ $a->attribute->unit->nama }}</td>
                                     <td class="nowrap">{{ $a->attribute->jabatan->nama }}</td>
                                     <td class="text-center nowrap">
                                         @if($a->datainput_count > 0)

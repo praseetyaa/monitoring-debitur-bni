@@ -44,8 +44,8 @@
                     <img src="{{ asset('assets/images/illustrations/sign-in.png') }}" alt="sign-in" class="img-fluid">
                     <div class="greetings text-white text-center mt-3 p-4 rounded-3" style="background-color:#00669980">
                         <img class="mb-3" src="{{ asset('assets/images/illustrations/energy.png') }}" alt="light" width="60">
-                        <p class="mb-0 fw-bold">Selamat Datang Di Aplikasi Monitoring Debitur</p>
-                        <p class="small mb-0">Anda dapat melakukan monitoring jalanya debitur dan melakukan report</p>
+                        <p class="mb-0 fw-bold">Selamat Datang Di Aplikasi Digital Data (DITA)</p>
+                        <p class="small mb-0">Solusi monitoring, reporting, dan feeding data <i>sales management</i></p>
                     </div>
                 </div>
                 <div class="col-12 col-lg-7 px-lg-5 sign-r">

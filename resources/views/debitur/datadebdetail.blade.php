@@ -95,13 +95,17 @@
                             <label class="mb-2"  style="font-weight: bold">Kategori</label>
                             <input disabled type="text" name="kategori" id="kategori" class="form-control" value="{{ $data->kategori }}" autofocus>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Orientasi Ekspor</label>
                             <input disabled type="text" name="orientasiekspor" id="orientasiekspor" class="form-control" value="{{ $data->orientasiekspor }}" autofocus>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Indikasi Kebutuhan Produk/Jasa</label>
                             <input disabled type="text" name="indikasi_kebutuhan_produk" id="indikasi_kebutuhan_produk" class="form-control" value="{{ $data->indikasi_kebutuhan_produk }}" autofocus>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Layanan Transaksi Lain</label>
+                            <input disabled type="text" name="layanantransaksilain" id="layanantransaksilain" class="form-control" value="{{ $data->layanantransaksilain }}" autofocus>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Sumber</label>

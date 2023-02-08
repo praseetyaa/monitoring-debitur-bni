@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\Cabang;
 use Ajifatur\FaturHelper\Models\UserAttribute;
 use App\Models\Jabatan;
-use App\Models\Unit;
 
 class MstUserController extends Controller
 {
@@ -24,7 +23,7 @@ class MstUserController extends Controller
     {
         $role = array_reverse(explode('/', $request->fullUrl()));
         $role = str_replace('pic', '', $role[0]);
-        $user = User::with('role', 'attribute.cabang', 'attribute.jabatan', 'attribute.unit')->where('role_id','=',role($role))->get();
+        $user = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('role_id','=',role($role))->get();
         return view('master/mstuser/mstuser', [
             'user'  => $user,
             'role'  => $role
@@ -44,13 +43,11 @@ class MstUserController extends Controller
         // Get cabang
         $cabang = Cabang::orderBy('nama','asc')->get();
         $jabatan = Jabatan::orderBy('nama','asc')->get();
-        $unit = Unit::orderBy('nama','asc')->get();
 
         // View
         return view('master/mstuser/mstusercreate', [
             'cabang' => $cabang,
             'jabatan' => $jabatan,
-            'unit' => $unit,
         ]);
     }
 
@@ -64,11 +61,10 @@ class MstUserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'npp' => 'required',
+            'npp' => 'required|alpha_dash|unique:user_attributes',
             'phone_number' => 'required',
             'cabang' => 'required',
             'jabatan' => 'required',
-            'unit' => 'required',
 
             'email' => 'required|email|unique:users',
             'username' => 'required|alpha_dash|min:4|unique:users',
@@ -99,7 +95,6 @@ class MstUserController extends Controller
             $pengguna_attribute->phone_number = $request->phone_number;
             $pengguna_attribute->cabang_id = $request->cabang;
             $pengguna_attribute->jabatan_id = $request->jabatan;
-            $pengguna_attribute->unit_id = $request->unit;
             $pengguna_attribute->save();
 
             return redirect()->route('pic'.$request->route)->with(['message' => 'Berhasil menambah data.']);
@@ -123,13 +118,11 @@ class MstUserController extends Controller
         // Get cabang
         $cabang = Cabang::orderBy('nama','asc')->get();
         $jabatan = Jabatan::orderBy('nama','asc')->get();
-        $unit = Unit::orderBy('nama','asc')->get();
         // View
         return view('master/mstuser/mstuseredit', [
             'pengguna' => $pengguna,
             'cabang' => $cabang,
             'jabatan' => $jabatan,
-            'unit' => $unit,
             'role' => $pengguna->role->code,
         ]);
 }
@@ -146,11 +139,12 @@ class MstUserController extends Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'npp' => 'required',
+            'npp' => [
+                'required', 'alpha_dash', Rule::unique('user_attributes')->ignore($request->id, 'user_id')
+            ],
             'phone_number' => 'required',
             'cabang' => 'required',
             'jabatan' => 'required',
-            'unit' => 'required',
             'email' => [
                 'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
             ],
@@ -180,7 +174,6 @@ class MstUserController extends Controller
             $pengguna_attribute->phone_number = $request->phone_number;
             $pengguna_attribute->cabang_id = $request->cabang;
             $pengguna_attribute->jabatan_id = $request->jabatan;
-            $pengguna_attribute->unit_id = $request->unit;
             $pengguna_attribute->save();
 
             // Redirect

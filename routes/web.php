@@ -55,37 +55,37 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::get('/printdata/{id?}', 'DataDebiturController@printdata')->name('printdata');
 
     Route::prefix('monitoring')->group(function(){
-        Route::get('/{cabang?}/{unit?}/{role?}', 'MonitoringController@index')->name('monitoring');
+        Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
     });
     Route::prefix('daftarmonitoring')->group(function(){
         Route::get('/{id_user?}/{status?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
     });
 
     Route::prefix('DataSol')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@index')->name('DataSol');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@index')->name('DataSol');
     });
 
     Route::prefix('DataPros')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@DataPros')->name('DataPros');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPros')->name('DataPros');
         Route::post('/prospekdata', 'DataDebiturController@prospekdata')->name('prospekdata');
         Route::post('/appprospek', 'DataDebiturController@appprospek')->name('appprospek');
         Route::post('/prospectappall', 'DataDebiturController@prospectappall')->name('prospectappall');
     });
 
     Route::prefix('MasterData')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@MasterData')->name('MasterData');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@MasterData')->name('MasterData');
     });
 
     Route::prefix('DataPipe')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@DataPipe')->name('DataPipe');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPipe')->name('DataPipe');
         Route::post('/pipelinedata', 'DataDebiturController@pipelinedata')->name('pipelinedata');
     });
 
     Route::prefix('CloseDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
     });
     Route::prefix('RejectDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
     });
 
     Route::prefix('solicit')->group(function(){

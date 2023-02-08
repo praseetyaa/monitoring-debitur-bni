@@ -293,9 +293,9 @@
                 <a class="text-decoration-none" href="{{route('CloseDeb')}}">
                     <div class="card" style="background-color: #900c3e">
                         <div class="card-body">
-                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Close</h5>
+                            <h5 class="fw-bold text-white" style="margin-bottom:0!important; padding-bottom:0!important">Booking</h5>
                             <h1 class="fw-bold text-white">{{count($jumlahclose)}}</h1>
-                            <small class="text-white">Jumlah Data Close</small>
+                            <small class="text-white">Jumlah Booking</small>
                         </div>
                     </div>
                 </a>
@@ -549,7 +549,7 @@
                             data  : @json($dtprospect),
                             color : '#c70039',
                         },{
-                            name  : 'Data Close',
+                            name  : 'Booking',
                             data  : @json($dtclose),
                             color : '#900c3e',
                         },{
