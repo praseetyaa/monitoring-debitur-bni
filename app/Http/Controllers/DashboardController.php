@@ -36,7 +36,14 @@ class DashboardController extends Controller
         $needprospek        = DataDebitur::with('statusdebitur')->where('status_debitur','=',3)->where('id_input','=',Auth::user()->id)->get();
         $appprospek         = DataDebitur::with('statusdebitur')->whereRelation('picinputer.attribute', 'cabang_id', '=', Auth::user()->attribute->cabang_id)->where('status_debitur','=',4)->get();
         $needpipeline       = DataDebitur::with('statusdebitur')->where('status_debitur','=',5)->where('id_input','=',Auth::user()->id)->get();
-        $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('id','=',Auth::user()->id)->first();
+        $user               = User::with('role', 'attribute.cabang', 'attribute.jabatan')
+                            ->whereIn('role_id', [3,4,6])
+                            ->withCount('datainput')
+                            ->withCount('dataverif')
+                            ->withCount('dataapp')
+                            ->withCount('dataapppros')
+                            ->withCount('totalpipeline')
+                            ->get();
         $pengumuman         = Pengumuman::orderBy("tanggal_pebuatan", "desc")->get();
 
         $danacair           = array();

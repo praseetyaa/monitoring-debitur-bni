@@ -4,10 +4,15 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}">
-{{-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/> --}}
-<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/DataTables-1.13.1/css/dataTables.bootstrap4.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Select-1.5.0/css/select.bootstrap4.min.css"/>
-<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/>
+<!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/DataTables-1.13.1/css/dataTables.bootstrap4.min.css"/> -->
+<!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Select-1.5.0/css/select.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/> -->
+
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/jquery.dataTables.css"/> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Buttons-2.3.3/css/buttons.bootstrap4.min.css"/> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/FixedColumns-4.2.1/css/fixedColumns.bootstrap4.min.css"/> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/datatablescustom.css"/> -->
 
 <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
 <style>
@@ -314,7 +319,106 @@
         </div>
     </div>
 
-
+<!-- ////////////////////////////////////////// MONITORING ////////////////////////////////////////// -->
+@if(Auth::user()->role_id == role('super-admin') || Auth::user()->role_id == role('admin'))
+<div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" style="padding-bottom: 0!important">
+                    <h4><i class="bi bi-person"></i> Monitoring Pengguna</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover table-bordered" id="datatablexxx">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="30">No</th>
+                                    <th class="nowrap">Nama</th>
+                                    <th class="nowrap">Username</th>
+                                    <th class="nowrap">Role</th>
+                                    <th class="nowrap">Unit / Cabang</th>
+                                    <th class="nowrap">Jabatan</th>
+                                    <th class="nowrap">Total Input</th>
+                                    <th class="nowrap">Verif Solicit</th>
+                                    <th class="nowrap">Total Solicit</th>
+                                    <th class="nowrap">Total Prospect</th>
+                                    <th class="nowrap">Total Pipeline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($user as $index=>$a)
+                                <tr>
+                                    <td class="text-center">{{$index+1}}</td>
+                                    <td class="nowrap">{{ $a->name }}</td>
+                                    <td class="nowrap">{{ $a->username }}</td>
+                                    <td class="nowrap">{{ $a->role->name }}</td>
+                                    <td class="nowrap">{{ $a->attribute->cabang->nama }}</td>
+                                    <td class="nowrap">{{ $a->attribute->jabatan->nama }}</td>
+                                    <td class="text-center nowrap">
+                                        @if($a->datainput_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '1')">
+                                                {{$a->datainput_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="text-center nowrap">
+                                        @if($a->dataverif_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '2')">
+                                                {{$a->dataverif_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="text-center nowrap">
+                                        @if($a->dataapp_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '3')">
+                                                {{$a->dataapp_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="text-center nowrap">
+                                        @if($a->dataapppros_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '4')">
+                                                {{$a->dataapppros_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="text-center nowrap">
+                                        @if($a->totalpipeline_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '5')">
+                                                {{$a->totalpipeline_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 {{-- //////////////////////////////////////////// TAHUN //////////////////////////////////////////// --}}
 <div class="row mb-2">
     <div class="col-md-12 mb-2">
@@ -586,7 +690,7 @@
     @if(count($pengumuman)>0)
         <div class="card">
             <div class="card-header" style="padding-bottom: 0!important">
-                <h3 style="font-weight:bold"><i class="bi bi-megaphone"></i> Pengumuman</h3>
+                <h4><i class="bi bi-megaphone"></i> Pengumuman</h4>
             </div>
             <div class="card-body">
                 <div class="input-group mb-3">
@@ -747,4 +851,11 @@
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/timeline.js"></script>
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/exporting.js"></script>
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/export-data.js"></script>
+    <script>
+        function OpenURLMon(id, status)
+        {
+            var NewUrl = "<?= URL::to('daftarmonitoring/"+id+"/"+status+"') ?>"
+            window.location.href = NewUrl
+        }
+    </script>
 @endsection
