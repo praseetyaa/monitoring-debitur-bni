@@ -364,7 +364,7 @@
                             type: 'column'
                         },
                         title: {
-                            text: "Monitoring Pencairan Kredit Tahun {{$tahun}}"
+                            text: "Monitoring Booking Debitur Tahun {{$tahun}}"
                         },
                         subtitle: {
                             text: 'Jumlah dana yang dicairkan setiap bulannya berdasarkan tanggal pencairan pada tahap pipeline'
