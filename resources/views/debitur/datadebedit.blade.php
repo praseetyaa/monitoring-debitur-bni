@@ -252,6 +252,20 @@
                             });
                         }
                     </script>
+                    @if($data->file_prescreening != '')
+                    <div class="row mt-3">
+                        <div class="col-md-12 mb-2">
+                            <a target="_blank" href="{{ route('openfile', ['path' => $data->file_prescreening]) }}" class="btn btn-sm btn-primary w-100">Dokumen Pre Screen</a>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <label class="mb-2" style="font-weight: bold" id="titlefotolok">Perbarui File Prescreening<span class="text-danger" style="display: none">*</span></label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="file_prescreening" name="file_prescreening" accept="application/pdf,application/image">
+                            </div>
+                            <small>*Silahkan pilih file jika ingin memperbaharui</small>
+                        </div>
+                    </div>
+                    @endif
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">

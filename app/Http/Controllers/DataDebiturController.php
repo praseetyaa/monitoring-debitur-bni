@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
-use App\Models\Unit;
+use App\Models\Tim;
 use App\Models\DataDebitur;
 use App\Models\Jenis_Fasilitas;
 use App\Models\Sektor;
@@ -25,7 +25,7 @@ use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class DataDebiturController extends Controller
 {
-    public function index($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function index($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -40,9 +40,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang        = Cabang::get();
-        $DUnit    = Unit::get();
+        $DTim    = Tim::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>=', 1)->get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -58,8 +58,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->where('status_debitur', '>=', 1)
                 ->where('status_debitur', '<', 3)
@@ -70,15 +70,15 @@ class DataDebiturController extends Controller
             'endd'              => $endd,
             'status'            => $status_deb,
             'cabang'            => $cabang,
-            'unit'              => $unit,
+            'tim'               => $tim,
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
-            'DUnit'             => $DUnit,
+            'DTim'              => $DTim,
             'title'             => 'Data Solicit'
         ]);
     }
 
-    public function MasterData($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function MasterData($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -93,9 +93,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang        = Cabang::get();
-        $DUnit          = Unit::get();
+        $DTim          = Tim::get();
         $StatusDebitur  = StatusDebitur::get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -111,8 +111,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->get();
         return view('debitur/datadeb',[
@@ -121,15 +121,15 @@ class DataDebiturController extends Controller
             'endd'              => $endd,
             'status'            => $status_deb,
             'cabang'            => $cabang,
-            'unit'              => $unit,
+            'tim'               => $tim,
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
-            'DUnit'             => $DUnit,
+            'DTim'              => $DTim,
             'title'             => 'Semua Data'
         ]);
     }
 
-    public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function DataPros($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -144,9 +144,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang  = Cabang::get();
-        $DUnit    = Unit::get();
+        $DTim    = Tim::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', 3)->orwhere('status_debitur', 4)->get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -162,8 +162,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->where('status_debitur', '>=', 3)
                 ->where('status_debitur', '<=', 4)
@@ -174,15 +174,15 @@ class DataDebiturController extends Controller
             'endd'          => $endd,
             'status'        => $status_deb,
             'cabang'        => $cabang,
-            'unit'          => $unit,
+            'tim'           => $tim,
             'StatusDebitur' => $StatusDebitur,
             'DCabang'       => $DCabang,
-            'DUnit'         => $DUnit,
+            'DTim'          => $DTim,
             'title'         => 'Data Prospek'
         ]);
     }
 
-    public function DataPipe($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function DataPipe($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -197,9 +197,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang  = Cabang::get();
-        $DUnit    = Unit::get();
+        $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -212,8 +212,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->where('status_debitur', 5)
                 ->get();
@@ -223,15 +223,15 @@ class DataDebiturController extends Controller
             'endd'              => $endd,
             'status'            => 5,
             'cabang'            => $cabang,
-            'unit'              => $unit,
+            'tim'               => $tim,
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
-            'DUnit'             => $DUnit,
+            'DTim'              => $DTim,
             'title'             => 'Data Pipeline'
         ]);
     }
 
-    public function CloseDeb($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function CloseDeb($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -246,9 +246,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang  = Cabang::get();
-        $DUnit    = Unit::get();
+        $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -261,8 +261,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->where('status_debitur', 6)
                 ->get();
@@ -272,15 +272,15 @@ class DataDebiturController extends Controller
             'endd'              => $endd,
             'status'            => 6,
             'cabang'            => $cabang,
-            'unit'              => $unit,
+            'tim'               => $tim,
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
-            'DUnit'             => $DUnit,
+            'DTim'              => $DTim,
             'title'             => 'Data Booking'
         ]);
     }
 
-    public function RejectDeb($startd = '', $endd = '', $status_deb = '', $cabang = '', $unit = '')
+    public function RejectDeb($startd = '', $endd = '', $status_deb = '', $cabang = '', $tim = '')
     {
         $startdxx = 'null';
         $enddxx = 'null';
@@ -295,9 +295,9 @@ class DataDebiturController extends Controller
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
         $DCabang  = Cabang::get();
-        $DUnit    = Unit::get();
+        $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();
-        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+        $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                 ->when(Auth::user()->role_id == 4, function($query){
                     $query->where('id_input', Auth::user()->id);
                 })
@@ -310,8 +310,8 @@ class DataDebiturController extends Controller
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){
                     $query->whereRelation('picinputer.attribute', 'cabang_id' ,$cabang);
                 })
-                ->when($unit !== '' && $unit !== 'null', function($query) use($unit){
-                    $query->whereRelation('picinputer.attribute', 'unit_id' ,$unit);
+                ->when($tim !== '' && $tim !== 'null', function($query) use($tim){
+                    $query->whereRelation('picinputer.attribute', 'tim_id' ,$tim);
                 })
                 ->where('status_debitur', '<', 1)
                 ->get();
@@ -321,10 +321,10 @@ class DataDebiturController extends Controller
             'endd'              => $endd,
             'status'            => '',
             'cabang'            => $cabang,
-            'unit'              => $unit,
+            'tim'               => $tim,
             'StatusDebitur'     => $StatusDebitur,
             'DCabang'           => $DCabang,
-            'DUnit'             => $DUnit,
+            'DTim'              => $DTim,
             'title'             => 'Data Rejected'
         ]);
     }
@@ -335,7 +335,7 @@ class DataDebiturController extends Controller
         {
             $DCabang = Cabang::get();
             $StatusDebitur = StatusDebitur::get();
-            $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.unit')
+            $data = DataDebitur::with('statusdebitur', 'picinputer.attribute.cabang', 'picinputer.attribute.tim')
                     ->when($status == '1', function($query) use ($id_user){
                         $query->where('id_input', $id_user);
                     })
@@ -360,7 +360,7 @@ class DataDebiturController extends Controller
                 'cabang'        => '',
                 'StatusDebitur' => $StatusDebitur,
                 'DCabang'       => $DCabang,
-                'title'     => 'Data Monitoring'
+                'title'         => 'Data Monitoring'
             ]);
         }
         else
@@ -412,6 +412,7 @@ class DataDebiturController extends Controller
 
     public function store(Request $request)
     {
+        // multiple image
         $dokumen_lokasi = array();
         for($i=1; $i<=$request->jumlah_foto; $i++)
         {
@@ -420,6 +421,10 @@ class DataDebiturController extends Controller
 
             $dokumen_lokasi[] = 'Dokumen Lokasi/'.$nama;
         }
+
+        // doc pre screen
+        $nama_file_prescreening   = "Document_Location_".rand().".".$request->file('file_prescreening')->extension();;
+        Storage::putFileAs('Dokumen Lokasi', $request->file('file_prescreening'), $nama_file_prescreening);
 
         $user = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data = new DataDebitur();
@@ -449,7 +454,7 @@ class DataDebiturController extends Controller
         $data->nama_input                   = $user->name;
         $data->npp_input                    = $user->attribute->npp;
         $data->dokumen_lokasi               = implode(';',$dokumen_lokasi);
-
+        $data->file_prescreening            = 'Dokumen Lokasi/'.$nama_file_prescreening;
         $data->save();
 
         return redirect()->route('DataSol')->with(['message' => 'Berhasil menambah data.']);
@@ -559,6 +564,16 @@ class DataDebiturController extends Controller
             }
         }
 
+        // doc pre screen
+        if ($request->hasFile('file_prescreening')) {
+            $datadebitur       = DataDebitur::where('id', $request->id)->first();
+            if (Storage::exists($datadebitur->dokumen_lokasi)) {
+                Storage::delete($datadebitur->dokumen_lokasi);
+            }
+            $nama_file_prescreening   = "Document_Location_".rand().".".$request->file('file_prescreening')->extension();;
+            Storage::putFileAs('Dokumen Lokasi', $request->file('file_prescreening'), $nama_file_prescreening);
+            $data->file_prescreening               = 'Dokumen Lokasi/'.$nama_file_prescreening;
+        }
 
         $data->dokumen_lokasi               = implode(';',$listfilex);
 

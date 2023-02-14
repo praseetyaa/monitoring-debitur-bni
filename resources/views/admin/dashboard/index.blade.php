@@ -4,6 +4,7 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/css/style-admin.css') }}">
+<link rel="stylesheet" type="text/css" href="{{asset('/datepicker')}}/datepicker.min.css"/>
 <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Bootstrap-4-4.6.0/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/DataTables-1.13.1/css/dataTables.bootstrap4.min.css"/> -->
 <!-- <link rel="stylesheet" type="text/css" href="{{asset('/dttables')}}/Select-1.5.0/css/select.bootstrap4.min.css"/>
@@ -320,7 +321,7 @@
     </div>
 
 <!-- ////////////////////////////////////////// MONITORING ////////////////////////////////////////// -->
-@if(Auth::user()->role_id == role('super-admin') || Auth::user()->role_id == role('admin'))
+@if(Auth::user()->role_id == role('super-admin') || Auth::user()->role_id == role('monitoring') || Auth::user()->role_id == role('admin') || Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator'))
 <div class="row">
         <div class="col-12">
             <div class="card">
@@ -328,6 +329,73 @@
                     <h4><i class="bi bi-person"></i> Monitoring Pengguna</h4>
                 </div>
                 <div class="card-body">
+                <div class="row mb-4">
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Tanggal Awal</label>
+                            <input required value="{{$startd != '' && $startd != 'null' ? $startd : ''}}" class="form-control datepicker" id="startd" placeholder="DD/MM/YYYY">
+                        </div>
+                        <div class="col-md-6 mb-2 mb-md-3">
+                            <label class="mb-2" style="font-weight: bold">Tanggal Akhir</label>
+                            <input required value="{{$endd != '' && $endd != 'null' ? $endd : ''}}" class="form-control datepicker" id="endd" placeholder="DD/MM/YYYY">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Unit / Cabang</label>
+                            <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
+                                <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Unit / Cabang</option>
+                                @foreach($DCabang as $c)
+                                    <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Role</label>
+                            <select required id="role" class="form-select">
+                                <option value="" {{$role == '' ? 'selected' : ''}}>Semua Role</option>
+                                @foreach($DRoles as $c)
+                                    <option value="{{ $c->id }}" {{$role == $c->id ? 'selected' : ''}}>{{ $c->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Tim</label>
+                            <select required id="tim" class="form-select">
+                                <option value="" {{$tim == '' ? 'selected' : ''}}>Semua Tim</option>
+                                @foreach($DTim as $c)
+                                    <option value="{{ $c->id }}" {{$tim == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <label class="mb-2" style="font-weight: bold">&nbsp;</label><br>
+                            <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2"><i class="bi bi-filter-square"></i> Filter Data</a>
+                            <a onclick="resetfilter()" class="btn btn-sm btn-warning"><i class="bi bi-x-circle"></i> Reset Filter</a>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('.datepicker').datepicker({
+                                format: 'dd-mm-yyyy',
+                            });
+                        })
+                        
+                        function resetfilter()
+                        {
+                            var NewUrl = "<?= URL::to('dashboard/') ?>"
+                            window.location.href = NewUrl
+                        }
+                        function setfilter()
+                        {
+                            var tahun = $('#tahun').val() != '' ?  $('#tahun').val() : null
+                            var start = $('#startd').val() != '' ?  $('#startd').val() : null
+                            var end = $('#endd').val() != '' ?  $('#endd').val() : null
+                            var role = $('#role').val() != '' ?  $('#role').val() : null
+                            var cabang = $('#cabang').val() != '' ?  $('#cabang').val() : null
+                            var tim = $('#tim').val() != '' ?  $('#tim').val() : null
+
+                            var NewUrl = "<?= URL::to('dashboard/"+tahun+"/"+start+"/"+end+"/"+cabang+"/"+tim+"/"+role+"') ?>"
+                            window.location.href = NewUrl
+                        }
+                    </script>
                     <div class="table-responsive">
                         <table class="table table-sm table-hover table-bordered" id="datatablexxx">
                             <thead class="bg-light">
@@ -337,12 +405,14 @@
                                     <th class="nowrap">Username</th>
                                     <th class="nowrap">Role</th>
                                     <th class="nowrap">Unit / Cabang</th>
+                                    <th class="nowrap">Tim</th>
                                     <th class="nowrap">Jabatan</th>
                                     <th class="nowrap">Total Input</th>
                                     <th class="nowrap">Verif Solicit</th>
                                     <th class="nowrap">Total Solicit</th>
                                     <th class="nowrap">Total Prospect</th>
                                     <th class="nowrap">Total Pipeline</th>
+                                    <th class="nowrap">Nominal Pencairan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -353,6 +423,7 @@
                                     <td class="nowrap">{{ $a->username }}</td>
                                     <td class="nowrap">{{ $a->role->name }}</td>
                                     <td class="nowrap">{{ $a->attribute->cabang->nama }}</td>
+                                    <td class="nowrap">{{ $a->attribute->tim->nama }}</td>
                                     <td class="nowrap">{{ $a->attribute->jabatan->nama }}</td>
                                     <td class="text-center nowrap">
                                         @if($a->datainput_count > 0)
@@ -409,6 +480,7 @@
                                             </a>
                                         @endif
                                     </td>
+                                    <td></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -699,7 +771,7 @@
                         <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
                     </div>
                 </div>
-                <table class="table table-sm table-borderless" id="datatablexxx" style="table-layout:fixed;">
+                <table class="table table-sm table-borderless" id="datatablePengumuman" style="table-layout:fixed;">
                     <thead class="d-none">
                         <tr>
                             <th></th>
@@ -743,7 +815,7 @@
         </div>
         <script>
             $(document).ready(function(){
-                let table = new DataTable('#datatablexxx', {
+                let table = new DataTable('#datatablePengumuman', {
                         scrollX: false,
                         scrollCollapse: true,
                         paging: true,
@@ -843,7 +915,41 @@
 
 @section('js')
     <script type="text/javascript" src="{{asset('/')}}jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            setTimeout(function() {
+                table = new DataTable('#datatablexxx', {
+                    scrollX: true,
+                    scrollCollapse: true,
+                    paging: true,
+                    fixedColumns:
+                    {
+                        leftColumns: 0,
+                        rightColumns:0
+                    },
+                    bFilter: true,
+                    bInfo: true,
+                    dom: 'Blfrtip',
+                    responsive: false,
+                    buttons: [
+                        {
+                            extend: 'excel',
+                            className: 'exportbtn',
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'exportbtn',
+                        },
+                        {
+                            extend: 'print',
+                            className: 'exportbtn',
+                        }
 
+                    ]
+                });
+            }, 1000);
+        })
+    </script>
     <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="{{asset('/dttables')}}/DataTables-1.13.1/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="{{asset('/dttables')}}/Select-1.5.0/js/dataTables.select.min.js"></script>
@@ -851,6 +957,7 @@
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/timeline.js"></script>
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/exporting.js"></script>
 	<script type="text/javascript" src="{{asset('/')}}hc/code/modules/export-data.js"></script>
+    <script type="text/javascript" src="{{asset('/datepicker')}}/datepicker.min.js"></script>
     <script>
         function OpenURLMon(id, status)
         {

@@ -50,13 +50,14 @@ Route::group(['middleware' => ['faturhelper.guest']], function() {
 // Admin Routes
 Route::group(['middleware' => ['faturhelper.admin']], function() {
     // Dashboard
-    Route::get('/dashboard/{tahun?}', 'DashboardController@index')->name('admin.dashboard');
+    Route::get('/dashboard/{tahun?}/{start?}/{end?}/{cabang?}/{tim?}/{role?}', 'DashboardController@index')->name('admin.dashboard');
 
     Route::get('/printdata/{id?}', 'DataDebiturController@printdata')->name('printdata');
 
-    Route::prefix('monitoring')->group(function(){
-        Route::get('/{cabang?}/{role?}', 'MonitoringController@index')->name('monitoring');
+    Route::prefix('notifikasi')->group(function(){
+        Route::get('/notifikasi', 'NotifikasiController@index')->name('notifikasi');
     });
+
     Route::prefix('daftarmonitoring')->group(function(){
         Route::get('/{id_user?}/{status?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
     });
@@ -131,12 +132,12 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/cabangedit/{id?}', 'MstCabangController@edit')->name('cabangedit');
         Route::post('/cabangupdate', 'MstCabangController@update')->name('cabangupdate');
 
-        Route::get('/unit', 'MstUnitController@index')->name('unit');
-        Route::post('/unitdelete', 'MstUnitController@delete')->name('unitdelete');
-        Route::get('/unitcreate', 'MstUnitController@create')->name('unitcreate');
-        Route::post('/unitstore', 'MstUnitController@store')->name('unitstore');
-        Route::get('/unitedit/{id?}', 'MstUnitController@edit')->name('unitedit');
-        Route::post('/unitupdate', 'MstUnitController@update')->name('unitupdate');
+        Route::get('/tim', 'MstTimController@index')->name('tim');
+        Route::post('/timdelete', 'MstTimController@delete')->name('timdelete');
+        Route::get('/timcreate', 'MstTimController@create')->name('timcreate');
+        Route::post('/timstore', 'MstTimController@store')->name('timstore');
+        Route::get('/timedit/{id?}', 'MstTimController@edit')->name('timedit');
+        Route::post('/timupdate', 'MstTimController@update')->name('timupdate');
 
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
         Route::get('/picapproval', 'MstUserController@index')->name('picapproval');
