@@ -129,11 +129,13 @@
                             @endif
                         </div>
                     </div>
+                    @if($data->file_prescreening != '')
                     <div class="row" >
                         <div class="col-md-12 mb-2 mt-2">
                             <a target="_blank" href="{{ route('openfile', ['path' => $data->file_prescreening]) }}" class="btn btn-sm btn-primary w-100 mb-2">Dokumen Pre Screen</a>
                         </div>
                     </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Latitude</label>
