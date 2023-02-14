@@ -31,6 +31,7 @@
                                 <th>Username</th>
                                 <th>Role</th>
                                 <th>Unit / Cabang</th>
+                                <th>Tim</th>
                                 <th>Jabatan</th>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                 <th width="60">Opsi</th>
@@ -45,6 +46,7 @@
                                 <td>{{ $a->username }}</td>
                                 <td>{{ $a->role->name }}</td>
                                 <td>{{ $a->attribute->cabang->nama }}</td>
+                                <td>{{ $a->attribute->tim->nama }}</td>
                                 <td>{{ $a->attribute->jabatan->nama }}</td>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                 <td class="text-center" style="white-space: nowrap">

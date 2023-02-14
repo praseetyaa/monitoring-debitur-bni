@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Cabang;
+use App\Models\Tim;
 use Ajifatur\FaturHelper\Models\UserAttribute;
 use App\Models\Jabatan;
 
@@ -23,7 +24,7 @@ class MstUserController extends Controller
     {
         $role = array_reverse(explode('/', $request->fullUrl()));
         $role = str_replace('pic', '', $role[0]);
-        $user = User::with('role', 'attribute.cabang', 'attribute.jabatan')->where('role_id','=',role($role))->get();
+        $user = User::with('role', 'attribute.cabang', 'attribute.tim', 'attribute.jabatan')->where('role_id','=',role($role))->get();
         return view('master/mstuser/mstuser', [
             'user'  => $user,
             'role'  => $role
@@ -41,13 +42,15 @@ class MstUserController extends Controller
         // has_access(method(__METHOD__), Auth::user()->role_id);
 
         // Get cabang
-        $cabang = Cabang::orderBy('nama','asc')->get();
+        $cabang  = Cabang::orderBy('nama','asc')->get();
+        $tim     = Tim::orderBy('nama','asc')->get();
         $jabatan = Jabatan::orderBy('nama','asc')->get();
 
         // View
         return view('master/mstuser/mstusercreate', [
-            'cabang' => $cabang,
-            'jabatan' => $jabatan,
+            'cabang'    => $cabang,
+            'tim'       => $tim,
+            'jabatan'   => $jabatan,
         ]);
     }
 
@@ -64,6 +67,7 @@ class MstUserController extends Controller
             'npp' => 'required|alpha_dash|unique:user_attributes',
             'phone_number' => 'required',
             'cabang' => 'required',
+            'tim' => 'required',
             'jabatan' => 'required',
 
             'email' => 'required|email|unique:users',
@@ -94,6 +98,7 @@ class MstUserController extends Controller
             $pengguna_attribute->npp = $request->npp;
             $pengguna_attribute->phone_number = $request->phone_number;
             $pengguna_attribute->cabang_id = $request->cabang;
+            $pengguna_attribute->tim_id = $request->tim;
             $pengguna_attribute->jabatan_id = $request->jabatan;
             $pengguna_attribute->save();
 
@@ -116,14 +121,16 @@ class MstUserController extends Controller
         $pengguna = User::with('role')->findOrFail($id);
 
         // Get cabang
-        $cabang = Cabang::orderBy('nama','asc')->get();
+        $cabang  = Cabang::orderBy('nama','asc')->get();
+        $tim     = Tim::orderBy('nama','asc')->get();
         $jabatan = Jabatan::orderBy('nama','asc')->get();
         // View
         return view('master/mstuser/mstuseredit', [
-            'pengguna' => $pengguna,
-            'cabang' => $cabang,
-            'jabatan' => $jabatan,
-            'role' => $pengguna->role->code,
+            'pengguna'  => $pengguna,
+            'cabang'    => $cabang,
+            'tim'       => $tim,
+            'jabatan'   => $jabatan,
+            'role'      => $pengguna->role->code,
         ]);
 }
 
@@ -138,20 +145,21 @@ class MstUserController extends Controller
         //
         // Validation
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
-            'npp' => [
+            'nama'          => 'required',
+            'npp'           => [
                 'required', 'alpha_dash', Rule::unique('user_attributes')->ignore($request->id, 'user_id')
             ],
-            'phone_number' => 'required',
-            'cabang' => 'required',
-            'jabatan' => 'required',
-            'email' => [
+            'phone_number'  => 'required',
+            'cabang'        => 'required',
+            'tim'           => 'required',
+            'jabatan'       => 'required',
+            'email'         => [
                 'required', 'email', Rule::unique('users')->ignore($request->id, 'id')
             ],
-            'username' => [
+            'username'      => [
                 'required', 'alpha_dash', 'min:4', Rule::unique('users')->ignore($request->id, 'id')
             ],
-            'password' => $request->password != '' ? 'required|min:6' : '',
+            'password'      => $request->password != '' ? 'required|min:6' : '',
         ]);
         // Check errors
         if($validator->fails()) {
@@ -173,6 +181,7 @@ class MstUserController extends Controller
             $pengguna_attribute->npp = $request->npp;
             $pengguna_attribute->phone_number = $request->phone_number;
             $pengguna_attribute->cabang_id = $request->cabang;
+            $pengguna_attribute->tim_id = $request->tim;
             $pengguna_attribute->jabatan_id = $request->jabatan;
             $pengguna_attribute->save();
 
