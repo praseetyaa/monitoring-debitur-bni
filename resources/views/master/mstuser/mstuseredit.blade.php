@@ -58,6 +58,20 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tim <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <select name="tim" class="form-select form-select-sm {{ $errors->has('tim') ? 'border-danger' : '' }}">
+                                <option value="" disabled selected>--Pilih--</option>
+                                @foreach($tim as $c)
+                                <option value="{{ $c->id }}" {{ $pengguna->attribute->tim_id == $c->id ? 'selected' : '' }}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('tim'))
+                            <div class="small text-danger">{{ $errors->first('tim') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">Jabatan <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <select name="jabatan" class="form-select form-select-sm {{ $errors->has('jabatan') ? 'border-danger' : '' }}">
@@ -68,20 +82,6 @@
                             </select>
                             @if($errors->has('jabatan'))
                             <div class="small text-danger">{{ $errors->first('jabatan') }}</div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-lg-2 col-md-3 col-form-label">Unit <span class="text-danger">*</span></label>
-                        <div class="col-lg-10 col-md-9">
-                            <select name="unit" class="form-select form-select-sm {{ $errors->has('unit') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih--</option>
-                                @foreach($unit as $c)
-                                <option value="{{ $c->id }}" {{ $pengguna->attribute->unit_id == $c->id ? 'selected' : '' }}>{{ $c->nama }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('unit'))
-                            <div class="small text-danger">{{ $errors->first('unit') }}</div>
                             @endif
                         </div>
                     </div>

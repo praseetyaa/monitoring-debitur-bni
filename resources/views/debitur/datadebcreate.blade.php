@@ -52,7 +52,7 @@
                             <div class="small text-danger">{{ $errors->first('kategori') }}</div>
                             @endif
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Orientasi Ekspor<span class="text-danger">*</span></label>
                             <select required name="orientasiekspor" class="form-select {{ $errors->has('orientasiekspor') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Orientasi Ekspor--</option>
@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Indikasi Kebutuhan Produk/Jasa<span class="text-danger">*</span></label>
-                            <select required name="indikasi_kebutuhan_produk" class="form-select {{ $errors->has('indikasi_kebutuhan_produk') ? 'border-danger' : '' }}">
+                            <select required name="indikasi_kebutuhan_produk" id="indikasi" class="form-select {{ $errors->has('indikasi_kebutuhan_produk') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih Indikasi Kebutuhan Produk/Jasa--</option>
                                 <option value="Kredit Produkif">Kredit Produkif</option>
                                 <option value="Kredit Konsumer">Kredit Konsumer</option>
@@ -74,6 +74,13 @@
                             </select>
                             @if($errors->has('indikasi_kebutuhan_produk'))
                             <div class="small text-danger">{{ $errors->first('indikasi_kebutuhan_produk') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Layanan Transaksi Lain<span class="text-danger reqlayanantransaksilain" style="display: none">*</span></label>
+                            <input readonly placeholder="Layanan Transaksi Lain" type="text" name="layanantransaksilain" id="layanantransaksilain" class="form-control {{ $errors->has('layanantransaksilain') ? 'border-danger' : '' }}" value="{{ old('layanantransaksilain') }}" autofocus>
+                            @if($errors->has('layanantransaksilain'))
+                                <div class="small text-danger">{{ $errors->first('layanantransaksilain') }}</div>
                             @endif
                         </div>
                         <div class="col-md-6 mb-2">
@@ -192,6 +199,16 @@
                                 });
                             }
                         </script>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <label class="mb-2" style="font-weight: bold" id="titlefotolok">Upload File Prescreening<span class="text-danger" style="display: none">*</span></label>
+
+                                <div class="input-group mb-3">
+                                    <input required type="file" class="form-control" id="file_prescreening" name="file_prescreening" accept="application/pdf,application/image">
+                                  </div>
+
+                            </div>
+                        </div>
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
@@ -288,6 +305,22 @@
                 $('#dataleads').attr('readonly', true)
                 $('#dataleads').attr('required', false)
                 $('#dataleads').val('')
+            }
+        })
+
+        $('#indikasi').on('change', function(){
+            if(this.value == 'Layanan Transaksi Lain')
+            {
+                $('.reqlayanantransaksilain').css('display', 'inline-block')
+                $('#layanantransaksilain').attr('readonly', false)
+                $('#layanantransaksilain').attr('required', true)
+            }
+            else
+            {
+                $('.reqlayanantransaksilain').css('display', 'none')
+                $('#layanantransaksilain').attr('readonly', true)
+                $('#layanantransaksilain').attr('required', false)
+                $('#layanantransaksilain').val('')
             }
         })
     })

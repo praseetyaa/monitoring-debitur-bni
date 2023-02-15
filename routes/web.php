@@ -50,42 +50,43 @@ Route::group(['middleware' => ['faturhelper.guest']], function() {
 // Admin Routes
 Route::group(['middleware' => ['faturhelper.admin']], function() {
     // Dashboard
-    Route::get('/dashboard/{tahun?}', 'DashboardController@index')->name('admin.dashboard');
+    Route::get('/dashboard/{tahun?}/{start?}/{end?}/{cabang?}/{tim?}/{role?}', 'DashboardController@index')->name('admin.dashboard');
 
     Route::get('/printdata/{id?}', 'DataDebiturController@printdata')->name('printdata');
 
-    Route::prefix('monitoring')->group(function(){
-        Route::get('/{cabang?}/{unit?}/{role?}', 'MonitoringController@index')->name('monitoring');
+    Route::prefix('notifikasi')->group(function(){
+        Route::get('/notifikasi', 'NotifikasiController@index')->name('notifikasi');
     });
+
     Route::prefix('daftarmonitoring')->group(function(){
-        Route::get('/{id_user?}/{status?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
+        Route::get('/{id_user?}/{status?}/{startd?}/{endd?}', 'DataDebiturController@daftarmonitoring')->name('daftarmonitoring');
     });
 
     Route::prefix('DataSol')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@index')->name('DataSol');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@index')->name('DataSol');
     });
 
     Route::prefix('DataPros')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@DataPros')->name('DataPros');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@DataPros')->name('DataPros');
         Route::post('/prospekdata', 'DataDebiturController@prospekdata')->name('prospekdata');
         Route::post('/appprospek', 'DataDebiturController@appprospek')->name('appprospek');
         Route::post('/prospectappall', 'DataDebiturController@prospectappall')->name('prospectappall');
     });
 
     Route::prefix('MasterData')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@MasterData')->name('MasterData');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@MasterData')->name('MasterData');
     });
 
     Route::prefix('DataPipe')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@DataPipe')->name('DataPipe');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@DataPipe')->name('DataPipe');
         Route::post('/pipelinedata', 'DataDebiturController@pipelinedata')->name('pipelinedata');
     });
 
     Route::prefix('CloseDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
     });
     Route::prefix('RejectDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{unit?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
     });
 
     Route::prefix('solicit')->group(function(){
@@ -131,12 +132,12 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
         Route::get('/cabangedit/{id?}', 'MstCabangController@edit')->name('cabangedit');
         Route::post('/cabangupdate', 'MstCabangController@update')->name('cabangupdate');
 
-        Route::get('/unit', 'MstUnitController@index')->name('unit');
-        Route::post('/unitdelete', 'MstUnitController@delete')->name('unitdelete');
-        Route::get('/unitcreate', 'MstUnitController@create')->name('unitcreate');
-        Route::post('/unitstore', 'MstUnitController@store')->name('unitstore');
-        Route::get('/unitedit/{id?}', 'MstUnitController@edit')->name('unitedit');
-        Route::post('/unitupdate', 'MstUnitController@update')->name('unitupdate');
+        Route::get('/tim', 'MstTimController@index')->name('tim');
+        Route::post('/timdelete', 'MstTimController@delete')->name('timdelete');
+        Route::get('/timcreate', 'MstTimController@create')->name('timcreate');
+        Route::post('/timstore', 'MstTimController@store')->name('timstore');
+        Route::get('/timedit/{id?}', 'MstTimController@edit')->name('timedit');
+        Route::post('/timupdate', 'MstTimController@update')->name('timupdate');
 
         Route::get('/picmonitoring', 'MstUserController@index')->name('picmonitoring');
         Route::get('/picapproval', 'MstUserController@index')->name('picapproval');

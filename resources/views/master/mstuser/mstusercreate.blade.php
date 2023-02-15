@@ -36,14 +36,14 @@
                     <div class="row mb-3">
                         <label class="col-lg-2 col-md-3 col-form-label">No. Telephone <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
-                            <input type="text" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ old('phone_number') }}">
+                            <input type="number" name="phone_number" class="form-control form-control-sm {{ $errors->has('phone_number') ? 'border-danger' : '' }}" value="{{ old('phone_number') }}">
                             @if($errors->has('phone_number'))
                             <div class="small text-danger">{{ $errors->first('phone_number') }}</div>
                             @endif
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-lg-2 col-md-3 col-form-label">Cabang <span class="text-danger">*</span></label>
+                        <label class="col-lg-2 col-md-3 col-form-label">Unit / Cabang <span class="text-danger">*</span></label>
                         <div class="col-lg-10 col-md-9">
                             <select name="cabang" class="form-select form-select-sm {{ $errors->has('cabang') ? 'border-danger' : '' }}">
                                 <option value="" disabled selected>--Pilih--</option>
@@ -53,6 +53,20 @@
                             </select>
                             @if($errors->has('cabang'))
                             <div class="small text-danger">{{ $errors->first('cabang') }}</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-md-3 col-form-label">Tim <span class="text-danger">*</span></label>
+                        <div class="col-lg-10 col-md-9">
+                            <select name="tim" class="form-select form-select-sm {{ $errors->has('tim') ? 'border-danger' : '' }}">
+                                <option value="" disabled selected>--Pilih--</option>
+                                @foreach($tim as $c)
+                                <option value="{{ $c->id }}" {{ old('tim') == $c->id ? 'selected' : '' }}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('tim'))
+                            <div class="small text-danger">{{ $errors->first('tim') }}</div>
                             @endif
                         </div>
                     </div>
@@ -67,20 +81,6 @@
                             </select>
                             @if($errors->has('jabatan'))
                             <div class="small text-danger">{{ $errors->first('jabatan') }}</div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-lg-2 col-md-3 col-form-label">Unit <span class="text-danger">*</span></label>
-                        <div class="col-lg-10 col-md-9">
-                            <select name="unit" class="form-select form-select-sm {{ $errors->has('unit') ? 'border-danger' : '' }}">
-                                <option value="" disabled selected>--Pilih--</option>
-                                @foreach($unit as $c)
-                                <option value="{{ $c->id }}" {{ old('unit') == $c->id ? 'selected' : '' }}>{{ $c->nama }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('unit'))
-                            <div class="small text-danger">{{ $errors->first('unit') }}</div>
                             @endif
                         </div>
                     </div>

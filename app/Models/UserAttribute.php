@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
 {
+    use SoftDeletes;
     /**
      * Cabang.
      */
@@ -15,14 +17,20 @@ class UserAttribute extends \Ajifatur\FaturHelper\Models\UserAttribute
         return $this->belongsTo(Cabang::class, 'cabang_id')->withTrashed();
     }
 
+    /**
+     * Jabatan.
+     */
     public function jabatan()
     {
         return $this->belongsTo(Jabatan::class, 'jabatan_id')->withTrashed();
     }
 
-    public function unit()
+    /**
+     * Tim.
+     */
+    public function tim()
     {
-        return $this->belongsTo(Unit::class, 'unit_id')->withTrashed();
+        return $this->belongsTo(Tim::class, 'tim_id')->withTrashed();
     }
 
     /**

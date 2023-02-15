@@ -1,11 +1,11 @@
 @extends('faturhelper::layouts/admin/main')
 
-@section('title', 'Master Cabang')
+@section('title', 'Master Unit / Cabang')
 
 @section('content')
 
 <div class="d-sm-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-2 mb-sm-0">Master Cabang</h1>
+    <h1 class="h3 mb-2 mb-sm-0">Master Unit / Cabang</h1>
     @if(Auth::user()->role_id != role('monitoring'))
     <div class="btn-group">
         <a href="{{ route('cabangcreate') }}" class="btn btn-sm btn-primary"><i class="bi-plus me-1"></i> Tambah Data</a>
@@ -27,7 +27,7 @@
                         <thead class="bg-light">
                             <tr>
                                 <th width="30">No</th>
-                                <th>Cabang</th>
+                                <th>Unit / Cabang</th>
                                 @if(Auth::user()->role_id != role('monitoring'))
                                     <th width="60">Opsi</th>
                                 @endif

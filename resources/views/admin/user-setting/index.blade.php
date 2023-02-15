@@ -55,16 +55,12 @@
                         <div>{{ $user->attribute->phone_number }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
-                        <div>Cabang:</div>
+                        <div>Unit / Cabang:</div>
                         <div>{{ $user->attribute->cabang->nama }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Jabatan:</div>
                         <div>{{ $user->attribute->jabatan->nama }}</div>
-                    </li>
-                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
-                        <div>Unit:</div>
-                        <div>{{ $user->attribute->unit->nama }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Email:</div>

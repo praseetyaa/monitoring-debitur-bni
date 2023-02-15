@@ -55,8 +55,12 @@
                                     </div>
                                 @endif
                                 @if(Auth::user()->role_id == 6 || Auth::user()->role_id == 3)
+                                    @php
+                                        $nomortlp = $data->picinputer->attribute->phone_number;
+                                        $nomortlp = (substr($nomortlp, 0, 2) == '08' ? 'https://wa.me/62'.substr($nomortlp, 1) : (substr($nomortlp, 0, 2) == '+6' ? 'https://wa.me/'.substr($nomortlp, 1) : (substr($nomortlp, 0, 2) == '62' ? 'https://wa.me/'.$nomortlp : 'https://wa.me/'.$nomortlp)));
+                                    @endphp
                                     <div class="col-lg-3 mb-3">
-                                        <div><span class="fw-bold">Hubungi Inputer</span><br><a href="https://wa.me/{{$data->picinputer->attribute->phone_number}}">{{$data->nama_input}} | {{$data->picinputer->attribute->phone_number}}</a></div>
+                                        <div><span class="fw-bold">Hubungi Inputer</span><br><a href="{{$nomortlp}}">{{$data->nama_input}} | {{$data->picinputer->attribute->phone_number}}</a></div>
                                     </div>
                                 @endif
                             </div>
@@ -95,13 +99,17 @@
                             <label class="mb-2"  style="font-weight: bold">Kategori</label>
                             <input disabled type="text" name="kategori" id="kategori" class="form-control" value="{{ $data->kategori }}" autofocus>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-12 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Orientasi Ekspor</label>
                             <input disabled type="text" name="orientasiekspor" id="orientasiekspor" class="form-control" value="{{ $data->orientasiekspor }}" autofocus>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Indikasi Kebutuhan Produk/Jasa</label>
                             <input disabled type="text" name="indikasi_kebutuhan_produk" id="indikasi_kebutuhan_produk" class="form-control" value="{{ $data->indikasi_kebutuhan_produk }}" autofocus>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="mb-2"  style="font-weight: bold">Layanan Transaksi Lain</label>
+                            <input disabled type="text" name="layanantransaksilain" id="layanantransaksilain" class="form-control" value="{{ $data->layanantransaksilain }}" autofocus>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Sumber</label>
@@ -121,6 +129,13 @@
                             @endif
                         </div>
                     </div>
+                    @if($data->file_prescreening != '')
+                    <div class="row" >
+                        <div class="col-md-12 mb-2 mt-2">
+                            <a target="_blank" href="{{ route('openfile', ['path' => $data->file_prescreening]) }}" class="btn btn-sm btn-primary w-100 mb-2">Dokumen Pre Screen</a>
+                        </div>
+                    </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Latitude</label>
