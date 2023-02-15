@@ -63,30 +63,30 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     });
 
     Route::prefix('DataSol')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@index')->name('DataSol');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@index')->name('DataSol');
     });
 
     Route::prefix('DataPros')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPros')->name('DataPros');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@DataPros')->name('DataPros');
         Route::post('/prospekdata', 'DataDebiturController@prospekdata')->name('prospekdata');
         Route::post('/appprospek', 'DataDebiturController@appprospek')->name('appprospek');
         Route::post('/prospectappall', 'DataDebiturController@prospectappall')->name('prospectappall');
     });
 
     Route::prefix('MasterData')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@MasterData')->name('MasterData');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@MasterData')->name('MasterData');
     });
 
     Route::prefix('DataPipe')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@DataPipe')->name('DataPipe');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@DataPipe')->name('DataPipe');
         Route::post('/pipelinedata', 'DataDebiturController@pipelinedata')->name('pipelinedata');
     });
 
     Route::prefix('CloseDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@CloseDeb')->name('CloseDeb');
     });
     Route::prefix('RejectDeb')->group(function(){
-        Route::get('/{start?}/{end?}/{status?}/{cabang?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
+        Route::get('/{start?}/{end?}/{status?}/{cabang?}/{tim?}', 'DataDebiturController@RejectDeb')->name('RejectDeb');
     });
 
     Route::prefix('solicit')->group(function(){

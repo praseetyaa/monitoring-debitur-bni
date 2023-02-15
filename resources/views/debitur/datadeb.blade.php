@@ -85,6 +85,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-2" style="font-weight: bold">Tim</label>
+                            <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="tim" class="form-select">
+                                <option value="" {{$tim == '' ? 'selected' : ''}}>Semua Tim</option>
+                                @foreach($DTim as $c)
+                                    <option value="{{ $c->id }}" {{$tim == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-md-12 text-center">
                             <label class="mb-2" style="font-weight: bold">&nbsp;</label><br>
                             <a onclick="setfilter()" class="btn btn-sm btn-secondary mr-2"><i class="bi bi-filter-square"></i> Filter Data</a>
@@ -101,6 +110,8 @@
                             {
                                 $('#cabang').attr('disabled', true)
                                 $('#cabang').val('{{Auth::user()->attribute->cabang_id}}')
+                                $('#tim').attr('disabled', true)
+                                $('#tim').val('{{Auth::user()->attribute->tim_id}}')
                             }
 
                             if("{{Request::route()->getName() != 'DataSol'}}" && "{{Request::route()->getName() != 'DataPros'}}" && "{{Request::route()->getName() != 'MasterData'}}")
@@ -127,8 +138,9 @@
                             var endd = $('#endd').val() != '' ?  $('#endd').val() : null
                             var status = $('#status').val() != '' ?  $('#status').val() : null
                             var cabang = $('#cabang').val() != '' ?  $('#cabang').val() : null
+                            var tim = $('#tim').val() != '' ?  $('#tim').val() : null
 
-                            var NewUrl = "<?= URL::to('"+routename+"/"+stard+"/"+endd+"/"+status+"/"+cabang+"') ?>"
+                            var NewUrl = "<?= URL::to('"+routename+"/"+stard+"/"+endd+"/"+status+"/"+cabang+"/"+tim+"') ?>"
                             window.location.href = NewUrl
                         }
                     </script>
