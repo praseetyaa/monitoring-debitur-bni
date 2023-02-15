@@ -56,18 +56,18 @@
 
                 @if(strpos(Request::path() ,'daftarmonitoring') === false)
                     <div class="row mb-4">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label class="mb-2" style="font-weight: bold">Tanggal Awal</label>
                             <input required value="{{$startd != '' && $startd != 'null' ? $startd : ''}}" class="form-control datepicker" id="startd" placeholder="DD/MM/YYYY">
                             {{-- <input required type="date" value="{{$startd}}" class="form-control" id="startd"> --}}
                         </div>
-                        <div class="col-md-3 mb-2 mb-md-3">
+                        <div class="col-md-6 mb-2 mb-md-3">
                             <label class="mb-2" style="font-weight: bold">Tanggal Akhir</label>
                             <input required value="{{$endd != '' && $endd != 'null' ? $endd : ''}}" class="form-control datepicker" id="endd" placeholder="DD/MM/YYYY">
                             {{-- <input required type="date" value="{{$endd}}" class="form-control" id="endd"> --}}
                         </div>
 
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <label class="mb-2" style="font-weight: bold">Status</label>
                             <select required id="status" class="form-control">
                                 <option value="" {{$status == '' ? 'selected' : ''}}>Semua Status Data</option>
@@ -76,7 +76,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <label class="mb-2" style="font-weight: bold">Unit / Cabang</label>
                             <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
                                 <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Unit / Cabang</option>
@@ -85,7 +85,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <label class="mb-2" style="font-weight: bold">Tim</label>
                             <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="tim" class="form-select">
                                 <option value="" {{$tim == '' ? 'selected' : ''}}>Semua Tim</option>
