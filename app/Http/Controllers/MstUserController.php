@@ -208,10 +208,7 @@ class MstUserController extends Controller
         $pengguna->delete();
 
         // Get the admin cabang attribute
-        $pengguna_attribute = UserAttribute::where('user_id','=',$pengguna->id)->first();
-
-        // Delete the admin cabang attribute
-        $pengguna_attribute->delete();
+        $pengguna_attribute = UserAttribute::where('user_id','=',$pengguna->id)->update(['deleted_at'=>now()]);
 
         // // Redirect
         return redirect()->route($request->routename)->with(['message' => 'Berhasil menghapus data.']);

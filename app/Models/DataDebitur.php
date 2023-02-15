@@ -22,6 +22,8 @@ class DataDebitur extends Model
 
     public function picinputer()
     {
-        return $this->hasOne(User::class, 'id', 'id_input');
+        // return $this->hasOne(User::class, 'id', 'id_input');
+        return $this->hasOne(User::class, 'id', 'id_input')->withTrashed();
+
     }
 }

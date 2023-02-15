@@ -45,7 +45,7 @@ class User extends \Ajifatur\FaturHelper\Models\User
      */
     public function attribute()
     {
-        return $this->hasOne(UserAttribute::class);
+        return $this->hasOne(UserAttribute::class)->withTrashed();
     }
 
 
