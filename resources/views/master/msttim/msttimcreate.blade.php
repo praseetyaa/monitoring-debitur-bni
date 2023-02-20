@@ -11,7 +11,7 @@
 	<div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form method="post" action="{{ route('unitstore') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('timstore') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="route" value="{{@$_GET['role']}}">
 
