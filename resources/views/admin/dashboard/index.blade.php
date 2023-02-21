@@ -412,6 +412,7 @@
                                     <th class="nowrap">Total Solicit</th>
                                     <th class="nowrap">Total Prospect</th>
                                     <th class="nowrap">Total Pipeline</th>
+                                    <th class="nowrap">Total Reject</th>
                                     <th class="nowrap">Nominal Pencairan</th>
                                 </tr>
                             </thead>
@@ -473,6 +474,17 @@
                                         @if($a->totalpipeline_count > 0)
                                             <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '5', '{{$startd}}', '{{$endd}}')">
                                                 {{$a->totalpipeline_count}}
+                                            </a>
+                                        @else
+                                            <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
+                                                0
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="text-center nowrap">
+                                        @if($a->totalreject_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '6', '{{$startd}}', '{{$endd}}')">
+                                                {{$a->totalreject_count}}
                                             </a>
                                         @else
                                             <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">
@@ -582,7 +594,7 @@
                             data  : @json($danacair),
                             color :'#c70039'
                         }],
-
+                        tooltip: { enabled: false },
                         responsive: {
                             rules: [{
                                 condition: {
