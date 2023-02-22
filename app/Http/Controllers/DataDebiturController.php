@@ -361,6 +361,9 @@ class DataDebiturController extends Controller
                     ->when($status == '5', function($query) use ($id_user){
                         $query->where('id_update_pipeline', $id_user);
                     })
+                    ->when($status == 'rejected', function($query) use ($id_user){
+                        $query->whereIn('status_debitur', array(0.61,0.32,0.34))->where('id_input', $id_user);;
+                    })
                     ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx, $status){
                         $query->when($status == '1', function($query2) use ($startdxx){
                             $query2->whereDate('created_at', '>=' ,$startdxx);

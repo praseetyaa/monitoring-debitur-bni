@@ -482,9 +482,9 @@
                                         @endif
                                     </td>
                                     <td class="text-center nowrap">
-                                        @if($a->totalreject_count > 0)
-                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', '6', '{{$startd}}', '{{$endd}}')">
-                                                {{$a->totalreject_count}}
+                                        @if($a->datainputrejected_count > 0)
+                                            <a class="btn btn-sm bg-info text-white" onclick="OpenURLMon('{{ $a->id }}', 'rejected', '{{$startd}}', '{{$endd}}')">
+                                                {{$a->datainputrejected_count}}
                                             </a>
                                         @else
                                             <a style="cursor: default;" class="btn btn-sm bg-secondary text-white">

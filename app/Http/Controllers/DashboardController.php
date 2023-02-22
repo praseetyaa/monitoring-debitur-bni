@@ -91,11 +91,12 @@ class DashboardController extends Controller
                         $query->whereDate('tanggal_update_pipeline', '<=' ,$enddxx);
                     });
                 }])
-                ->withCount(['totalreject' => function ($item) use ($startdxx, $enddxx) {
-                    $item->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
-                        $query->whereDate('tanggal_penolakan', '>=' ,$startdxx);
+                ->withCount(['datainputrejected' => function ($item) use ($startdxx, $enddxx) {
+                    $item->whereIn('status_debitur', array(0.61,0.32,0.34))
+                    ->when($startdxx !== '' && $startdxx !== 'null', function($query) use($startdxx){
+                        $query->whereDate('created_at', '>=' ,$startdxx);
                     })->when($enddxx !== '' && $enddxx !== 'null', function($query) use($enddxx){
-                        $query->whereDate('tanggal_penolakan', '<=' ,$enddxx);
+                        $query->whereDate('created_at', '<=' ,$enddxx);
                     });
                 }])
                 ->when($cabang !== '' && $cabang !== 'null', function($query) use($cabang){

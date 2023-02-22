@@ -86,9 +86,14 @@ class User extends \Ajifatur\FaturHelper\Models\User
     {
         return $this->hasMany(DataDebitur::class, 'id_update_pipeline', 'id');
     }
-    
+
     public function totalreject()
     {
         return $this->hasMany(DataDebitur::class, 'id_penolak', 'id');
+    }
+
+    public function datainputrejected()
+    {
+        return $this->hasMany(DataDebitur::class, 'id_input', 'id');
     }
 }
