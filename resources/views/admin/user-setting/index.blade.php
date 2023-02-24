@@ -59,6 +59,10 @@
                         <div>{{ $user->attribute->cabang->nama }}</div>
                     </li>
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
+                        <div>Tim:</div>
+                        <div>{{ $user->attribute->tim->nama }}</div>
+                    </li>
+                    <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Jabatan:</div>
                         <div>{{ $user->attribute->jabatan->nama }}</div>
                     </li>
