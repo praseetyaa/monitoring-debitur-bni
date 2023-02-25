@@ -38,7 +38,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang        = Cabang::get();
         $DTim    = Tim::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', '<', 3)->where('status_debitur', '>=', 1)->get();
@@ -91,7 +92,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang        = Cabang::get();
         $DTim          = Tim::get();
         $StatusDebitur  = StatusDebitur::get();
@@ -142,7 +144,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang  = Cabang::get();
         $DTim    = Tim::get();
         $StatusDebitur  = StatusDebitur::where('status_debitur', 3)->orwhere('status_debitur', 4)->get();
@@ -195,7 +198,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang  = Cabang::get();
         $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();
@@ -244,7 +248,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang  = Cabang::get();
         $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();
@@ -293,7 +298,8 @@ class DataDebiturController extends Controller
             $enddxx = date('Y-m-d', strtotime($endd));
         }
 
-        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang  = Cabang::get();
         $DTim    = Tim::get();
         $StatusDebitur = StatusDebitur::get();

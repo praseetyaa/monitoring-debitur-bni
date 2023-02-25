@@ -45,6 +45,7 @@ class DashboardController extends Controller
         }
 
         $cabang   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->cabang_id : $cabang;
+        $tim   = Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? Auth::user()->attribute->tim_id : $tim;
         $DCabang  = Cabang::get();
         $DTim    = Tim::get();
         $DRoles   = Role::whereIn('id', [3,4,6])->get();

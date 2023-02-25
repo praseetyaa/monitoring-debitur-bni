@@ -340,7 +340,7 @@
                         </div>
                         <div class="col-md-4 mb-2">
                             <label class="mb-2" style="font-weight: bold">Unit / Cabang</label>
-                            <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') ? 'disabled' : '')}} id="cabang" class="form-select">
+                            <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? 'disabled' : '')}} id="cabang" class="form-select">
                                 <option value="" {{$cabang == '' ? 'selected' : ''}}>Semua Unit / Cabang</option>
                                 @foreach($DCabang as $c)
                                     <option value="{{ $c->id }}" {{$cabang == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
@@ -358,7 +358,7 @@
                         </div>
                         <div class="col-md-4 mb-2">
                             <label class="mb-2" style="font-weight: bold">Tim</label>
-                            <select required id="tim" class="form-select">
+                            <select required {{(Auth::user()->role_id == role('approval') || Auth::user()->role_id == role('verifikator') || Auth::user()->role_id == role('monitoring') ? 'disabled' : '')}} id="tim" class="form-select">
                                 <option value="" {{$tim == '' ? 'selected' : ''}}>Semua Tim</option>
                                 @foreach($DTim as $c)
                                     <option value="{{ $c->id }}" {{$tim == $c->id ? 'selected' : ''}}>{{ $c->nama }}</option>
