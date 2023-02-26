@@ -104,24 +104,27 @@
                         </div>
                     </div>
                     <hr>
+
+                    <!-- ================================================== Upload Gambar ================================================== -->
+
                         <input required type="hidden" class="form-control" id="jumlah_foto" name="jumlah_foto" value="1">
                         <div class="row" id="cont_image_rep_1">
-                            <div class="col-md-12">
+                             <div class="col-md-12">
                                 <label class="mb-2" style="font-weight: bold" id="titlefotolok_rep_1">Foto Lokasi Dari Kamera<span class="text-danger" style="display: none">*</span></label>
 
                                 <div class="input-group mb-3">
                                     <input required type="file" class="form-control" id="foto_lokasi_rep_1" name="foto_lokasi_rep_1" accept="image/*" capture="camera">
                                     <div class="input-group-append bg-primary">
-                                        <a class="btn btn-primary" id="btnchangecapture_rep_1" onclick="inputfromgalery(1)">From File  &nbsp;</a>
+                                        <a class="btn btn-primary" id="btnchangecapture_rep_1" onclick="inputfromgalery(1)"><i class="bi bi-archive-fill"></i> From File  &nbsp;</a>
                                     </div>
                                   </div>
 
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-12 mb-2">
-                                <a onclick="KurangiGambar()" class="btn btn-sm btn-danger">Kurangi Gambar</a>
-                                <a onclick="TambahGambar()" class="btn btn-sm btn-success">Tambah Gambar</a>
+                                <a onclick="KurangiGambar()" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Kurangi Gambar</a>
+                                <a onclick="TambahGambar()" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Tambah Gambar</a>
                             </div>
                         </div>
                         <script>
@@ -147,7 +150,7 @@
                                             <div class="input-group mb-3">
                                                 <input required type="file" class="form-control" id="foto_lokasi_rep_`+jumlahgambar+`" name="foto_lokasi_rep_`+jumlahgambar+`" accept="image/*" capture="camera">
                                                 <div class="input-group-append bg-primary">
-                                                    <a class="btn btn-primary" id="btnchangecapture_rep_`+jumlahgambar+`" onclick="inputfromgalery(`+jumlahgambar+`)">From File  &nbsp;</a>
+                                                    <a class="btn btn-primary" id="btnchangecapture_rep_`+jumlahgambar+`" onclick="inputfromgalery(`+jumlahgambar+`)"><i class="bi bi-archive-fill"></i> From File  &nbsp;</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,7 +174,7 @@
                             function inputfromkamera(rep)
                             {
                                 $('#titlefotolok_rep_'+rep).html('Foto Lokasi Dari Kamera')
-                                $('#btnchangecapture_rep_'+rep).html('From File  &nbsp;')
+                                $('#btnchangecapture_rep_'+rep).html('<i class="bi bi-archive-fill"></i> From File  &nbsp;')
                                 $('#foto_lokasi_rep_'+rep).attr('capture', 'camera')
                                 $('#btnchangecapture_rep_'+rep).attr('onclick', 'inputfromgalery('+rep+')')
                             }
@@ -179,7 +182,7 @@
                             function inputfromgalery(rep)
                             {
                                 $('#titlefotolok_rep_'+rep).html('Foto Lokasi Dari File')
-                                $('#btnchangecapture_rep_'+rep).html('From Cam')
+                                $('#btnchangecapture_rep_'+rep).html('<i class="bi bi-camera-fill"></i> From Cam')
                                 $('#foto_lokasi_rep_'+rep).attr('capture', 'filesystem')
                                 $('#btnchangecapture_rep_'+rep).attr('onclick', 'inputfromkamera('+rep+')')
                             }
@@ -199,20 +202,71 @@
                                 });
                             }
                         </script>
-                        <div class="row">
-                            <div class="col-md-12 mb-2">
-                                <label class="mb-2" style="font-weight: bold" id="titlefotolok">Upload File Prescreening<span class="text-danger" style="display: none">*</span></label>
+
+                        <!-- ================================================== Upload File Prescreen (Dokumen) ================================================== -->
+
+                        <input required type="hidden" class="form-control" id="jumlah_dok" name="jumlah_dok" value="1">
+                        <div class="row" id="cont_dok_rep_1">
+                             <div class="col-md-12">
+                                <label class="mb-2" style="font-weight: bold" id="titledok_rep_1">Upload File Prescreening (PDF<span class="text-danger">*</span>)<span class="text-danger" style="display: none">*</span></label>
 
                                 <div class="input-group mb-3">
-                                    <input required type="file" class="form-control" id="file_prescreening" name="file_prescreening" accept="application/pdf,application/image">
+                                    <input required type="file" class="form-control" id="foto_dok_rep_1" name="foto_dok_rep_1" accept="application/pdf">
                                   </div>
 
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <a onclick="KurangiGambarDok()" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Kurangi Gambar</a>
+                                <a onclick="TambahGambarDok()" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Tambah Gambar</a>
+                            </div>
+                        </div>
+                        <script>
+                            var jumlahdok = 1;
+                            $(document).ready(function(){
+                                if(detectMob())
+                                {
+                                    inputfromkameradok()
+                                }
+                                else
+                                {
+                                    inputfromgalerydok()
+                                }
+                            })
+
+                            function TambahGambarDok()
+                            {
+                                jumlahdok += 1;
+                                $('#cont_dok_rep_'+(jumlahdok-1)).after(`
+                                    <div class="row" id="cont_dok_rep_`+jumlahdok+`">
+                                        <div class="col-md-12">
+                                            <label class="mb-2" style="font-weight: bold" id="titledok_rep_`+jumlahdok+`">Upload File Prescreening<span class="text-danger" style="display: none">*</span></label>
+                                            <div class="input-group mb-3">
+                                                <input required type="file" class="form-control" id="foto_dok_rep_`+jumlahdok+`" name="foto_dok_rep_`+jumlahdok+`" accept="application/pdf" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                `)
+
+                                $('#jumlah_dok').val(jumlahdok)
+
+                            }
+
+                            function KurangiGambarDok()
+                            {
+                                if(jumlahdok > 1)
+                                {
+                                    $('#cont_dok_rep_'+jumlahdok).remove()
+                                    jumlahdok -= 1;
+                                    $('#jumlah_dok').val(jumlahdok)
+                                }
+                            }
+                        </script>
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">
-                            <a class="btn btn-primary btn-block" onclick="GetLocation()">Ambil Data lokasi</a>
+                            <a class="btn btn-primary btn-block" onclick="GetLocation()"><i class="bi bi-geo-alt-fill"></i> Ambil Data lokasi</a>
                         </div>
 
                         <div class="col-md-6 mb-2">

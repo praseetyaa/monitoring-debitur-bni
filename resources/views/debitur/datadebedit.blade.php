@@ -105,6 +105,9 @@
                         </div>
                     </div>
                     <hr>
+
+                    <!-- ================================================== Upload Gambar ================================================== -->
+
                         @if($data->dokumen_lokasi != '')
                             <input required type="hidden" class="form-control" id="jumlah_foto" name="jumlah_foto" value="{{count(explode(';', $data->dokumen_lokasi))}}">
                             @foreach (explode(';', $data->dokumen_lokasi) as $index=>$item)
@@ -118,7 +121,7 @@
                                             <input type="file" class="form-control" id="foto_lokasi_rep_{{$index+1}}" name="foto_lokasi_rep_{{$index+1}}" accept="image/*" capture="camera">
                                             <div class="input-group-append bg-primary">
                                                 <a class="btn btn-primary" id="btnchangecapture_rep_{{$index+1}}" onclick="inputfromgalery({{$index+1}})">From File  &nbsp;</a>
-                                                <a class="btn btn-danger" onclick="hapusfoto({{$index+1}})">Del</a>
+                                                <a class="btn btn-danger" onclick="hapusfoto({{$index+1}})"><i class="bi bi-trash-fill"></i> Del</a>
                                             </div>
                                         </div>
                                         <small>*Silahkan pilih file jika ingin memperbaharui</small>
@@ -131,10 +134,10 @@
                         <div class="mt-4" id="div_cont_foto_baru">
 
                         </div>
-                        <div class="row">
+                        <div class="row mb-5">
                             <div class="col-md-12 mb-2">
-                                <a onclick="KurangiGambar()" class="btn btn-sm btn-danger">Kurangi Gambar Baru</a>
-                                <a onclick="TambahGambar()" class="btn btn-sm btn-success">Tambah Gambar Baru</a>
+                                <a onclick="KurangiGambar()" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Kurangi Gambar</a>
+                                <a onclick="TambahGambar()" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Tambah Gambar</a>
                             </div>
                         </div>
                     <script>
@@ -252,20 +255,97 @@
                             });
                         }
                     </script>
-                    @if($data->file_prescreening != '')
-                    <div class="row mt-3">
-                        <div class="col-md-12 mb-2">
-                            <a target="_blank" href="{{ route('openfile', ['path' => $data->file_prescreening]) }}" class="btn btn-sm btn-primary w-100">Dokumen Pre Screen</a>
+
+                    <!-- ================================================== Upload File Prescreen (Dokumen) ================================================== -->
+
+                    @if($data->dokumen_prescreen != '')
+                            <input required type="hidden" class="form-control" id="jumlah_dok" name="jumlah_dok" value="{{count(explode(';', $data->dokumen_prescreen))}}">
+                            @foreach (explode(';', $data->dokumen_prescreen) as $index=>$item)
+                                <div class="row" id="cont_dok_rep_{{$index+1}}">
+                                    <div class="col-md-12 mb-2">
+                                        <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100">Dokumen Prescreen {{$index+1}}</a>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label class="mb-2" style="font-weight: bold" id="titledok_rep_{{$index+1}}">Perbaharui Dokumen Prescreen {{$index+1}}<span class="text-danger" style="display: none">*</span></label>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="foto_dok_rep_{{$index+1}}" name="foto_dok_rep_{{$index+1}}" accept="application/pdf">
+                                            <div class="input-group-append bg-primary">
+                                                <a class="btn btn-danger" onclick="hapusdok({{$index+1}})"><i class="bi bi-trash-fill"></i> Del</a>
+                                            </div>
+                                        </div>
+                                        <small>*Silahkan pilih file jika ingin memperbaharui</small>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                        <input required type="hidden" class="form-control mt-4" id="hapus_dok" name="hapus_dok" value="">
+                        <input required type="hidden" class="form-control mt-4" id="jumlah_dok_baru" name="jumlah_dok_baru" value="0">
+                        <div class="mt-4" id="div_cont_dok_baru">
+
                         </div>
-                        <div class="col-md-12 mb-2">
-                            <label class="mb-2" style="font-weight: bold" id="titlefotolok">Perbarui File Prescreening<span class="text-danger" style="display: none">*</span></label>
-                            <div class="input-group">
-                                <input type="file" class="form-control" id="file_prescreening" name="file_prescreening" accept="application/pdf,application/image">
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <a onclick="KurangiDok()" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Kurangi Gambar</a>
+                                <a onclick="TambahDok()" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Tambah Gambar</a>
                             </div>
-                            <small>*Silahkan pilih file jika ingin memperbaharui</small>
                         </div>
-                    </div>
-                    @endif
+                    <script>
+                        var jumlahdokbaru    = parseInt($('#jumlah_dok_baru').val());
+                        var jumlahdok          = parseInt($('#jumlah_dok').val());
+
+                        function hapusdok(rep)
+                        {
+                            var idhapusdok  = $('#hapus_dok').val();
+                            if(idhapusdok != '')
+                            {
+                                var arrayidhapus = idhapusdok.split(';')
+                            }
+                            else
+                            {
+                                var arrayidhapus = [];
+                            }
+
+                            arrayidhapus.push(rep)
+                            $('#hapus_dok').val(arrayidhapus.join(';'));
+                            $('#cont_dok_rep_'+rep).remove()
+
+                            if(jumlahdok == arrayidhapus.length)
+                            {
+                                TambahDok()
+                            }
+                        }
+
+                        function TambahDok()
+                        {
+                            jumlahdokbaru += 1;
+                            $('#div_cont_dok_baru').append(`
+                                <div class="row" id="cont_dok_baru_rep_`+jumlahdokbaru+`">
+                                    <div class="col-md-12">
+                                        <label class="mb-2" style="font-weight: bold" id="titledok_baru_rep_`+jumlahdokbaru+`">Upload File Prescreening Baru<span class="text-danger" style="display: none">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <input required type="file" class="form-control" id="foto_dok_baru_rep_`+jumlahdokbaru+`" name="foto_dok_baru_rep_`+jumlahdokbaru+`" accept="application/pdf">
+                                        </div>
+                                    </div>
+                                </div>
+                            `)
+
+                            $('#jumlah_dok_baru').val(jumlahdokbaru)
+
+                        }
+
+                        function KurangiDok()
+                        {
+                            if(jumlahdokbaru > 0)
+                            {
+                                $('#cont_dok_baru_rep_'+jumlahdokbaru).remove()
+                                jumlahdokbaru -= 1;
+                                $('#jumlah_dok_baru').val(jumlahdokbaru)
+                            }
+                        }
+                    </script>
+
+                    <!-- ================================================== END ================================================== -->
+
                     <hr>
                     <div class="row">
                         <div class="col-md-12 mb-2 text-center">

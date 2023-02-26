@@ -468,8 +468,14 @@ class DataDebiturController extends Controller
         }
 
         // doc pre screen
-        $nama_file_prescreening   = "Document_Location_".rand().".".$request->file('file_prescreening')->extension();;
-        Storage::putFileAs('Dokumen Lokasi', $request->file('file_prescreening'), $nama_file_prescreening);
+        $dokumen_prescreen = array();
+        for($i=1; $i<=$request->jumlah_foto; $i++)
+        {
+            $nama   = "Document_Location_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();;
+            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_rep_'.$i), $nama);
+
+            $dokumen_prescreen[] = 'Dokumen Lokasi/'.$nama;
+        }
 
         $user = User::with('attribute')->where('id', Auth::user()->id)->first();
         $data = new DataDebitur();
@@ -499,7 +505,7 @@ class DataDebiturController extends Controller
         $data->nama_input                   = $user->name;
         $data->npp_input                    = $user->attribute->npp;
         $data->dokumen_lokasi               = implode(';',$dokumen_lokasi);
-        $data->file_prescreening            = 'Dokumen Lokasi/'.$nama_file_prescreening;
+        $data->dokumen_prescreen            = implode(';',$dokumen_prescreen);
         $data->save();
 
         return redirect()->route('DataSol')->with(['message' => 'Berhasil menambah data.']);
@@ -610,17 +616,60 @@ class DataDebiturController extends Controller
         }
 
         // doc pre screen
-        if ($request->hasFile('file_prescreening')) {
-            $datadebitur       = DataDebitur::where('id', $request->id)->first();
-            if (Storage::exists($datadebitur->dokumen_lokasi)) {
-                Storage::delete($datadebitur->dokumen_lokasi);
+        if($datadebitur->dokumen_prescreen != '')
+        {
+            $listfilexdok          = explode(';', $datadebitur->dokumen_prescreen);
+        }
+        else
+        {
+            $listfilexdok          = array();
+        }
+
+        /////////////////////// UPDATE ///////////////////////
+        foreach($listfilexdok as $index=>$filexdok)
+        {
+            $i = $index+1;
+            if($request->has('foto_dok_rep_'.$i))
+            {
+                if ($request->hasFile('foto_dok_rep_'.$i)) {
+                    if (Storage::exists($filexdok)) {
+                        Storage::delete($filexdok);
+                    }
+                    $nama   = "Document_Location_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();
+                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_rep_'.$i), $nama);
+                    $listfilexdok[$index] = 'Dokumen Lokasi/'.$nama;
+                }
             }
-            $nama_file_prescreening   = "Document_Location_".rand().".".$request->file('file_prescreening')->extension();;
-            Storage::putFileAs('Dokumen Lokasi', $request->file('file_prescreening'), $nama_file_prescreening);
-            $data->file_prescreening               = 'Dokumen Lokasi/'.$nama_file_prescreening;
+        }
+        /////////////////////// DELETE ///////////////////////
+        if($request->hapus_dok != '')
+        {
+            foreach(explode(';', $request->hapus_dok) as $item)
+            {
+                if($item != '')
+                {
+                    if (Storage::exists($listfilexdok[$item-1])) {
+                        Storage::delete($listfilexdok[$item-1]);
+                    }
+                    unset($listfilexdok[$item-1]);
+                }
+            }
+        }
+        /////////////////////// ADD ///////////////////////
+        if($request->jumlah_dok_baru > 0)
+        {
+            for($i=1; $i<=$request->jumlah_dok_baru; $i++)
+            {
+                if ($request->hasFile('foto_dok_baru_rep_'.$i)) {
+                    $nama   = "Document_Location_".rand().".".$request->file('foto_dok_baru_rep_'.$i)->extension();
+                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_baru_rep_'.$i), $nama);
+                    $listfilexdok[] = 'Dokumen Lokasi/'.$nama;
+                }
+            }
         }
 
         $data->dokumen_lokasi               = implode(';',$listfilex);
+        $data->dokumen_prescreen            = implode(';',$listfilex);
 
         $data->nama_debitur                 = $request->nama_debitur;
         $data->latitude                     = $request->latitude;

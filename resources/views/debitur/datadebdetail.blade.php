@@ -123,19 +123,23 @@
                     <div class="row">
                         <div class="col-md-12 mb-2 mt-2">
                             @if($data->dokumen_lokasi != '')
+                                    <label class="mb-2"  style="font-weight: bold">Foto Lokasi</label>
                                 @foreach (explode(';', $data->dokumen_lokasi) as $index=>$item)
-                                        <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100 mb-2">Foto Lokasi {{$index+1}}</a>
+                                    <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100 mb-2">Foto Lokasi {{$index+1}}</a>
                                 @endforeach
                             @endif
                         </div>
                     </div>
-                    @if($data->file_prescreening != '')
-                    <div class="row" >
+                    <div class="row">
                         <div class="col-md-12 mb-2 mt-2">
-                            <a target="_blank" href="{{ route('openfile', ['path' => $data->file_prescreening]) }}" class="btn btn-sm btn-primary w-100 mb-2">Dokumen Pre Screen</a>
+                            @if($data->dokumen_prescreen != '')
+                                    <label class="mb-2"  style="font-weight: bold">Dokumen Prescreen</label>
+                                @foreach (explode(';', $data->dokumen_prescreen) as $index=>$item)
+                                    <a target="_blank" href="{{ route('openfile', ['path' => $item]) }}" class="btn btn-sm btn-primary w-100 mb-2">Dokumen Prescreen {{$index+1}}</a>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
-                    @endif
                     <div class="row">
                         <div class="col-md-6 mb-2">
                             <label class="mb-2"  style="font-weight: bold">Latitude</label>
