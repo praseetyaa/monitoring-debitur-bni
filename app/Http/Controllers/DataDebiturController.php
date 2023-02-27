@@ -469,12 +469,12 @@ class DataDebiturController extends Controller
 
         // doc pre screen
         $dokumen_prescreen = array();
-        for($i=1; $i<=$request->jumlah_foto; $i++)
+        for($i=1; $i<=$request->jumlah_dok; $i++)
         {
-            $nama   = "Document_Location_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();;
-            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_rep_'.$i), $nama);
+            $nama   = "Document_Prescreen_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();;
+            Storage::putFileAs('Dokumen Prescreen', $request->file('foto_dok_rep_'.$i), $nama);
 
-            $dokumen_prescreen[] = 'Dokumen Lokasi/'.$nama;
+            $dokumen_prescreen[] = 'Dokumen Prescreen/'.$nama;
         }
 
         $user = User::with('attribute')->where('id', Auth::user()->id)->first();
@@ -563,113 +563,114 @@ class DataDebiturController extends Controller
         $data              = DataDebitur::find($request->id);
 
         $datadebitur        = DataDebitur::where('id', $request->id)->first();
-        if($datadebitur->dokumen_lokasi != '')
-        {
-            $listfilex          = explode(';', $datadebitur->dokumen_lokasi);
-        }
-        else
-        {
-            $listfilex          = array();
-        }
-
-        /////////////////////// UPDATE ///////////////////////
-        foreach($listfilex as $index=>$filex)
-        {
-            $i = $index+1;
-            if($request->has('foto_lokasi_rep_'.$i))
-            {
-                if ($request->hasFile('foto_lokasi_rep_'.$i)) {
-                    if (Storage::exists($filex)) {
-                        Storage::delete($filex);
-                    }
-                    $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();
-                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
-                    $listfilex[$index] = 'Dokumen Lokasi/'.$nama;
-                }
-            }
-        }
-        /////////////////////// DELETE ///////////////////////
-        if($request->hapus_foto != '')
-        {
-            foreach(explode(';', $request->hapus_foto) as $item)
-            {
-                if($item != '')
+        //////////////////////// GAMBAR LOKASI
+                if($datadebitur->dokumen_lokasi != '')
                 {
-                    if (Storage::exists($listfilex[$item-1])) {
-                        Storage::delete($listfilex[$item-1]);
-                    }
-                    unset($listfilex[$item-1]);
+                    $listfile_lok          = explode(';', $datadebitur->dokumen_lokasi);
                 }
-            }
-        }
-        /////////////////////// ADD ///////////////////////
-        if($request->jumlah_foto_baru > 0)
-        {
-            for($i=1; $i<=$request->jumlah_foto_baru; $i++)
-            {
-                if ($request->hasFile('foto_lokasi_baru_rep_'.$i)) {
-                    $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_baru_rep_'.$i)->extension();
-                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_baru_rep_'.$i), $nama);
-                    $listfilex[] = 'Dokumen Lokasi/'.$nama;
-                }
-            }
-        }
-
-        // doc pre screen
-        if($datadebitur->dokumen_prescreen != '')
-        {
-            $listfilexdok          = explode(';', $datadebitur->dokumen_prescreen);
-        }
-        else
-        {
-            $listfilexdok          = array();
-        }
-
-        /////////////////////// UPDATE ///////////////////////
-        foreach($listfilexdok as $index=>$filexdok)
-        {
-            $i = $index+1;
-            if($request->has('foto_dok_rep_'.$i))
-            {
-                if ($request->hasFile('foto_dok_rep_'.$i)) {
-                    if (Storage::exists($filexdok)) {
-                        Storage::delete($filexdok);
-                    }
-                    $nama   = "Document_Location_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();
-                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_rep_'.$i), $nama);
-                    $listfilexdok[$index] = 'Dokumen Lokasi/'.$nama;
-                }
-            }
-        }
-        /////////////////////// DELETE ///////////////////////
-        if($request->hapus_dok != '')
-        {
-            foreach(explode(';', $request->hapus_dok) as $item)
-            {
-                if($item != '')
+                else
                 {
-                    if (Storage::exists($listfilexdok[$item-1])) {
-                        Storage::delete($listfilexdok[$item-1]);
+                    $listfile_lok          = array();
+                }
+            /////////////////////// UPDATE ///////////////////////
+                foreach($listfile_lok as $index=>$filex)
+                {
+                    $i = $index+1;
+                    if($request->has('foto_lokasi_rep_'.$i))
+                    {
+                        if ($request->hasFile('foto_lokasi_rep_'.$i)) {
+                            if (Storage::exists($filex)) {
+                                Storage::delete($filex);
+                            }
+                            $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_rep_'.$i)->extension();
+                            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_rep_'.$i), $nama);
+                            $listfile_lok[$index] = 'Dokumen Lokasi/'.$nama;
+                        }
                     }
-                    unset($listfilexdok[$item-1]);
                 }
-            }
-        }
-        /////////////////////// ADD ///////////////////////
-        if($request->jumlah_dok_baru > 0)
-        {
-            for($i=1; $i<=$request->jumlah_dok_baru; $i++)
-            {
-                if ($request->hasFile('foto_dok_baru_rep_'.$i)) {
-                    $nama   = "Document_Location_".rand().".".$request->file('foto_dok_baru_rep_'.$i)->extension();
-                    Storage::putFileAs('Dokumen Lokasi', $request->file('foto_dok_baru_rep_'.$i), $nama);
-                    $listfilexdok[] = 'Dokumen Lokasi/'.$nama;
+            /////////////////////// DELETE ///////////////////////
+                if($request->hapus_foto != '')
+                {
+                    foreach(explode(';', $request->hapus_foto) as $item)
+                    {
+                        if($item != '')
+                        {
+                            if (Storage::exists($listfile_lok[$item-1])) {
+                                Storage::delete($listfile_lok[$item-1]);
+                            }
+                            unset($listfile_lok[$item-1]);
+                        }
+                    }
                 }
-            }
-        }
 
-        $data->dokumen_lokasi               = implode(';',$listfilex);
-        $data->dokumen_prescreen            = implode(';',$listfilex);
+            /////////////////////// ADD ///////////////////////
+                if($request->jumlah_foto_baru > 0)
+                {
+                    for($i=1; $i<=$request->jumlah_foto_baru; $i++)
+                    {
+                        if ($request->hasFile('foto_lokasi_baru_rep_'.$i)) {
+                            $nama   = "Document_Location_".rand().".".$request->file('foto_lokasi_baru_rep_'.$i)->extension();
+                            Storage::putFileAs('Dokumen Lokasi', $request->file('foto_lokasi_baru_rep_'.$i), $nama);
+                            $listfile_lok[] = 'Dokumen Lokasi/'.$nama;
+                        }
+                    }
+                }
+
+        //////////////////////// DOKUMEN PRESCREEN
+                if($datadebitur->dokumen_prescreen != '')
+                {
+                    $listfile_pre          = explode(';', $datadebitur->dokumen_prescreen);
+                }
+                else
+                {
+                    $listfile_pre          = array();
+                }
+            /////////////////////// UPDATE ///////////////////////
+                foreach($listfile_pre as $index=>$filex)
+                {
+                    $i = $index+1;
+                    if($request->has('foto_dok_rep_'.$i))
+                    {
+                        if ($request->hasFile('foto_dok_rep_'.$i)) {
+                            if (Storage::exists($filex)) {
+                                Storage::delete($filex);
+                            }
+                            $nama   = "Document_".rand().".".$request->file('foto_dok_rep_'.$i)->extension();
+                            Storage::putFileAs('Dokumen Prescreen', $request->file('foto_dok_rep_'.$i), $nama);
+                            $listfile_pre[$index] = 'Dokumen Prescreen/'.$nama;
+                        }
+                    }
+                }
+            /////////////////////// DELETE ///////////////////////
+                if($request->hapus_dok != '')
+                {
+                    foreach(explode(';', $request->hapus_dok) as $item)
+                    {
+                        if($item != '')
+                        {
+                            if (Storage::exists($listfile_pre[$item-1])) {
+                                Storage::delete($listfile_pre[$item-1]);
+                            }
+                            unset($listfile_pre[$item-1]);
+                        }
+                    }
+                }
+
+            /////////////////////// ADD ///////////////////////
+                if($request->jumlah_dok_baru > 0)
+                {
+                    for($i=1; $i<=$request->jumlah_dok_baru; $i++)
+                    {
+                        if ($request->hasFile('foto_dok_baru_rep_'.$i)) {
+                            $nama   = "Document_Prescreen_".rand().".".$request->file('foto_dok_baru_rep_'.$i)->extension();
+                            Storage::putFileAs('Dokumen Prescreen', $request->file('foto_dok_baru_rep_'.$i), $nama);
+                            $listfile_pre[] = 'Dokumen Prescreen/'.$nama;
+                        }
+                    }
+                }
+
+        $data->dokumen_lokasi               = implode(';',$listfile_lok);
+        $data->dokumen_prescreen            = implode(';',$listfile_pre);
 
         $data->nama_debitur                 = $request->nama_debitur;
         $data->latitude                     = $request->latitude;
