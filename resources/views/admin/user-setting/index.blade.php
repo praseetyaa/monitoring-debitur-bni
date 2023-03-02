@@ -58,10 +58,12 @@
                         <div>Unit / Cabang:</div>
                         <div>{{ $user->attribute->cabang->nama }}</div>
                     </li>
+                    @if(Auth::user()->role_id != role('admin'))
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Tim:</div>
                         <div>{{ $user->attribute->tim->nama }}</div>
                     </li>
+                    @endif
                     <li class="list-group-item px-0 py-1 d-sm-flex justify-content-between">
                         <div>Jabatan:</div>
                         <div>{{ $user->attribute->jabatan->nama }}</div>
